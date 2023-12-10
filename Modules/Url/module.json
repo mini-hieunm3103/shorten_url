@@ -1,0 +1,11 @@
+{
+    "name": "Url",
+    "alias": "url",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Url\\app\\Providers\\UrlServiceProvider"
+    ],
+    "files": []
+}
