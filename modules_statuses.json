@@ -1,0 +1,7 @@
+{
+    "Url": true,
+    "Admin": true,
+    "Clients": true,
+    "Client": true,
+    "User": true
+}
