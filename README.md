@@ -1,6 +1,6 @@
 # Logic Shorten Url: lấy url theo id
 - Ví dụ: lưu url vào id 
-với id là 10038 có url là https://github.com/UnicodeLession/Laravel_project  
+với id là 125 có url là https://github.com/UnicodeLession/Laravel_project  
 khi đó ta có 125 base 10 chuyển thành X base 62
 => X: 21  
 => shorten url: domain/21
@@ -9,7 +9,7 @@ khi đó ta có 125 base 10 chuyển thành X base 62
 - decode: lấy ra value đằng sau domain  
 base 64 -> base 10 -> lấy ra được id   
 từ id lấy ra url hoàn chỉnh
-
+## Front End: Clone https://www.shorturl.at/
 ## Module
 ### Admin : Quản Lý bảng: 
 - id bigint
