@@ -9,6 +9,9 @@ khi đó ta có 125 base 10 chuyển thành X base 62
 - decode: lấy ra value đằng sau domain  
 base 64 -> base 10 -> lấy ra được id   
 từ id lấy ra url hoàn chỉnh
+
+## Deploy web thì phải vào `getIdCounter` của UrlController để sửa regex match lấy ra base62
+
 ## Front End: Clone https://www.shorturl.at/
 ## Module
 ### Admin : Quản Lý bảng: 

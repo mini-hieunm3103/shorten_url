@@ -15,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'UrlController@create')->name('create');
 Route::post('/', 'UrlController@store')->name('store');
+
+Route::get('/click-counter.php', 'UrlController@getFormCounter')->name('counter');
+Route::post('/click-counter.php', 'UrlController@getIdCounter')->name('id-counter');
+
 Route::get('/detail-{id}.php', 'UrlController@show')->name('show');
+Route::get('/total-click-{id}.php', 'UrlController@totalClicks')->name('total-click');
+
 Route::get('/{shortenUrl}', 'UrlController@redirect')->where('shortenUrl', '.*');

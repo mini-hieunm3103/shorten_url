@@ -25,6 +25,7 @@
     </style>
 @endpush
 @section('content')
+    @include('url::parts.title', compact('title', 'paragraph'))
     <div style="max-width: 758px; margin: auto">
         @if(session('msg'))
             <div class="alert alert-{{session('type')}} text-center" style="font-size: 18px">
@@ -43,13 +44,14 @@
         <div id="formurl" class="mw450dblock">
             <p class="boxtextleft">
                 <a href="{{$url->long_url}}" target="_blank">{{$url->long_url}}</a><br><br>
-                <a href="{{route('create')}}" class="colorbuttonsmall mb-0">Shorten another URL</a><br><br>
-                <button class="colorbuttonsmall mb-2">Total of clicks of your short URL: {{$url->clicks}} clicks</button><br>
+
+                    <a href="{{route('create')}}" class="colorbuttonsmall mb-0">Shorten another URL</a><br><br>
+                    <a href="{{route('total-click', ['id'=>$url->id])}}" class="colorbuttonsmall mb-2">Total of clicks of your short URL</a><br>
+
                 <span class="textmedium">* Short URLs that do not have at least one click per month are disabled</span>
             </p>
         </div>
     </section>
-
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

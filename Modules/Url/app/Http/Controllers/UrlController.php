@@ -75,12 +75,14 @@ class UrlController extends Controller
      */
     public function show($id)
     {
+        $title = 'Your shortened URL';
+        $paragraph = 'Copy the short link and share it in messages, texts, posts, websites and other locations.';
         $url = $this->urlRepo->find($id);
         if(!$url){
             abort(404);
         }
         $url->short_url = request()->root().'/'.encodeUrl($id);
-        return view('url::show', compact( 'url'));
+        return view('url::show', compact( 'url','title', 'paragraph' ));
     }
     public function redirect($shortenUrl){
         $id = decodeUrl($shortenUrl);
@@ -100,6 +102,51 @@ class UrlController extends Controller
         ];
         $this->urlRepo->update($id, $dataUpdate);
         return Redirect::to($trueUrl);
+    }
+
+    public function getFormCounter()
+    {
+        $title = 'URL Click Counter';
+        $paragraph = 'Enter the URL to track how many clicks it received.';
+        return view('url::counter-clicks', compact('title', 'paragraph'));
+    }
+    public function getIdCounter(Request $request){
+        $request->validate([
+            'shortened' => 'required|string|max:255|url',
+        ], [
+            'required' => 'Please enter your shortened URL!',
+            'max' => 'The URL is too long! Please enter your SHORTENED URL!',
+            'url' => 'Must be a valid URL'
+        ]);
+        $shortenUrl = $request->except('_token')['shortened'];
+
+        // regex cho deploy web -> server
+//        preg_match('#.([a-z]+)\/([a-zA-Z0-9]+)$#', $shortenUrl, $base62);
+//        if(empty($base62[2])){return back()->withErrors(['Invalid URL format!']);}
+
+        //regex cho local dev
+        preg_match('#\/([a-zA-Z0-9]+)$#', $shortenUrl, $match);
+        $base62 = $match[1];
+        if(empty($base62)){
+            return back()->withErrors(['Invalid URL format!']);
+        }
+        $id = decodeUrl($base62);
+        $url = $this->urlRepo->find($id);
+        if(!$url){
+            abort(404);
+        }
+        return redirect()->route('total-click', compact('id') );
+    }
+    public function totalClicks($id)
+    {
+        $title = 'Total URL Clicks';
+        $paragraph = 'The number of clicks from the shortened URL that redirected the user to the destination page.';
+        $url = $this->urlRepo->find($id);
+        if(!$url){
+            abort(404);
+        }
+        $url->short_url = request()->root().'/'.encodeUrl($id);
+        return view('url::total-clicks', compact('url', 'title', 'paragraph'));
     }
 
     /**
