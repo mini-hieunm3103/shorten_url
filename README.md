@@ -35,7 +35,6 @@ từ id lấy ra url hoàn chỉnh
      * tổng url đã rút gọn
      * tổng lượng clicks
      * thời gian tạo
-     * tên người dùng: khi click người dùng thì sẽ redirect đến trang quản lý người dùng đó của admin (@show) 
      * Nút xem -> redirect đến trang client của user đó 
    - create, udpate, delete
    - show(detail)

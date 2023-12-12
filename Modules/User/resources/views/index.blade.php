@@ -12,32 +12,50 @@
                 <table id="example2" class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
+                        <th>STT</th>
+                        <th>Họ Và Tên</th>
+                        <th>Email</th>
+                        <th>Thời Gian</th>
+                        <th width="10%">Total Shorten URL</th>
+                        <th width="10%">Total Clicks</th>
+                        <th width="5%">Xem</th>
+                        <th width="5%">Sửa</th>
+                        <th width="5%">Xóa</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
+                        <th>STT</th>
+                        <th>Họ Và Tên</th>
+                        <th>Email</th>
+                        <th>Thời Gian</th>
+                        <th width="10%">Total Shorten URL</th>
+                        <th width="10%">Total Clicks</th>
+                        <th width="5%">Xem</th>
+                        <th width="5%">Sửa</th>
+                        <th width="5%">Xóa</th>
                     </tr>
                     </tfoot>
                     <tbody>
+                    @foreach($users as $key => $user)
                         <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 4.0
+                            <td>{{$key+1}}</td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->created_at}}</td>
+                            <td>{{$user->total_urls}}</td>
+                            <td>{{$user->total_clicks}}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">Xem</a>
                             </td>
-                            <td>Win 95+</td>
-                            <td> 4</td>
-                            <td>X</td>
+                            <td>
+                                <a href="{{route('admin.user.edit', $user)}}" class="btn btn-warning">Sửa</a>
+                            </td>
+                            <td>
+                                <a href="{{route('admin.user.destroy', $user)}}" class="btn btn-danger">Xóa</a>
+                            </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -69,7 +87,7 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
         });
     </script>
@@ -81,3 +99,4 @@
         }
     </style>
 @endsection
+
