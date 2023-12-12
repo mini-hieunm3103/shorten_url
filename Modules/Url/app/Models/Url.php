@@ -4,7 +4,7 @@ namespace Modules\Url\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Url\Database\factories\UrlFactory;
+use Modules\User\app\Models\User;
 
 class Url extends Model
 {
@@ -15,6 +15,8 @@ class Url extends Model
      */
     protected $fillable = [
         'long_url',
+        'back_half',
+        'user_id',
         'clicks',
         'expired_at',
         'user_id'
@@ -25,4 +27,8 @@ class Url extends Model
         //return UrlFactory::new();
     }
 
+    function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -6,5 +6,6 @@ use App\Repositories\RepositoryInterface;
 
 interface UrlRepositoryInterface extends RepositoryInterface
 {
-
+    function getAllUrls();
+    function getUserUrls($userId);
 }
