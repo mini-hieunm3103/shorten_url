@@ -28,8 +28,9 @@ class UrlController extends Controller
      */
     public function index()
     {
+        $title = 'Quản Lý Shorten URL';
         $urls = $this->urlRepo->getAllUrls()->get();
-        return view('url::index', compact('urls'));
+        return view('url::index', compact('urls', 'title'));
     }
 
     /**
@@ -37,6 +38,7 @@ class UrlController extends Controller
      */
     public function create()
     {
+        $title = 'Thêm Shorten URL';
         $users = $this->userRepo->getAllUsers()->get();
         return view('url::create', compact('users'));
     }
@@ -58,7 +60,7 @@ class UrlController extends Controller
 //        dd($data);
         $this->urlRepo->create($data);
         return redirect()->route('admin.url.index')
-            ->with('msg', 'URL Shortening Successfully!')
+            ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
     }
 
@@ -88,7 +90,8 @@ class UrlController extends Controller
     {
         $title = "Cập Nhật URL";
         $url = $this->urlRepo->getAllUrls()->find($id);
-        return view('url::edit', compact('url', 'title'));
+        $users = $this->userRepo->getAllUsers()->get();
+        return view('url::edit', compact('url', 'title', 'users'));
     }
 
     /**
@@ -96,7 +99,19 @@ class UrlController extends Controller
      */
     public function update(UrlRequest $request, $id): RedirectResponse
     {
-        //
+        $backHalfArr = $this->urlRepo->getBackHalf();
+        $data = $request->except('_token', '_method');
+        $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
+        if(empty($data['title'])){
+            $data['title'] = 'Untitled '.Carbon::now('UTC')->format('Y-m-d H:i:s');
+        }
+        if(empty($data['back_half'])){
+            $data['back_half'] = $this->getBackHalf($backHalfArr);
+        }
+        $this->urlRepo->update($id, $data);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
+            ->with('type', 'success');
     }
 
     /**
@@ -104,7 +119,9 @@ class UrlController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->urlRepo->delete($id);
+        return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Shorten URL']))
+            ->with('type', 'success');
     }
 
 }
