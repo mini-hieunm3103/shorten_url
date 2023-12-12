@@ -18,3 +18,9 @@ Route::group([
 ], function () {
     Route::resource('url', UrlController::class)->names('url');
 });
+Route::group([
+    'prefix' => 'quan-tri-vien',
+    'as' => 'admin.',
+], function () {
+    Route::get('user-urls/user={user}', 'UrlController@show')->name('user-urls.show');
+});

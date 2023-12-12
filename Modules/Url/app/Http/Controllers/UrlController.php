@@ -32,6 +32,21 @@ class UrlController extends Controller
         $urls = $this->urlRepo->getAllUrls()->get();
         return view('url::index', compact('urls', 'title'));
     }
+    /**
+     * Lấy ra thông tin của người dùng cùng với các shorten url của người đó
+     */
+    public function show($id)
+    {
+        $user = $this->userRepo->find($id);
+        $urls = $this->urlRepo->getUserUrls($id)->get();
+        $user->count_urls = $urls->count();
+        $countClicks = 0;
+        foreach ($urls as $url) {
+            $countClicks += $url->clicks;
+        }
+        $user->count_clicks = $countClicks;
+        return view('url::show', compact('user', 'urls'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -63,25 +78,6 @@ class UrlController extends Controller
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
     }
-
-    function getBackHalf($backHalfArr)
-    {
-        $backHalf = $this->faker->regexify('[a-zA-Z0-9]{4,7}');
-        $check = in_array($backHalf, $backHalfArr);
-        if(!$check) {
-            return $backHalf;
-        } else {
-            $this->getBackHalf($backHalfArr);
-        }
-    }
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-
-    }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -124,4 +120,14 @@ class UrlController extends Controller
             ->with('type', 'success');
     }
 
+    function getBackHalf($backHalfArr)
+    {
+        $backHalf = $this->faker->regexify('[a-zA-Z0-9]{4,7}');
+        $check = in_array($backHalf, $backHalfArr);
+        if(!$check) {
+            return $backHalf;
+        } else {
+            $this->getBackHalf($backHalfArr);
+        }
+    }
 }

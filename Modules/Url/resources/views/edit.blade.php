@@ -68,8 +68,8 @@
                 </div>
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">Lưu lại</button>
-                <a href="{{ route('admin.url.index') }}" class="btn btn-danger">Hủy</a>
+                <button type="submit" class="btn btn-success">Lưu lại</button>
+                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
             </div>
         </div>
         @method('PUT')

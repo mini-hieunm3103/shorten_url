@@ -55,7 +55,7 @@
                             <td>{{$user->total_urls}}</td>
                             <td>{{$user->total_clicks}}</td>
                             <td>
-                                <a href="#" class="btn btn-primary">Xem</a>
+                                <a href="{{route('admin.user-urls.show', $user->id)}}" class="btn btn-primary">Xem</a>
                             </td>
                             <td>
                                 <a href="{{route('admin.user.edit', $user)}}" class="btn btn-warning">Sửa</a>
