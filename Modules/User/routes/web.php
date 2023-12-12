@@ -15,7 +15,7 @@ use Modules\User\app\Http\Controllers\UserController;
 */
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'quan-tri-vien',
     'as' => 'admin.',
 ], function () {
     Route::resource('user', UserController::class)->names('user');

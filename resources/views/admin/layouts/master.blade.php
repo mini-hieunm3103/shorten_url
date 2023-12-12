@@ -35,9 +35,12 @@
     @include('admin/parts/sidebar')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
         <!-- Content Header (Page header) -->
-        @include('admin/parts/title')
+        @if(!empty($title))
+            @include('admin/parts/title', compact('title'))
+        @else
+            @include('admin/parts/title')
+        @endif
         <!-- /.content-header -->
 
         <!-- Main content -->

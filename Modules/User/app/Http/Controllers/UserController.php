@@ -4,12 +4,9 @@ namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Modules\Url\app\Http\Repositories\UrlRepository;
+use Modules\User\app\Http\Requests\UserRequest;
 use Modules\User\app\Repositories\UserRepository;
-use Yajra\DataTables\Facades\DataTables;
-use Carbon\Carbon;
 class UserController extends Controller
 {
     /**
@@ -25,48 +22,55 @@ class UserController extends Controller
 
     public function index()
     {
+        $title = 'Danh Sách Người Dùng';
         $users = $this->userRepo->getAllUsers()->get();
         $urls = $this->urlRepo->getAllUrls()->get();
-        $countUrls = [];
         $countClicks = [];
         foreach ($users as $key =>$user) {
-            $userId = $user->id;
-            $countUrls[$userId] = 0;
-            $countClicks[$userId] = 0;
-            foreach ($urls as $url) {
-                if ($url->user_id == $userId) {
-                    $countUrls[$userId]++;
-                    $countClicks[$userId] += $url->clicks;
+            $userUrls = $this->urlRepo->getUserUrls($user->id)->get();
+            $countUrls = $userUrls->count();
+            $countClicks = 0;
+            foreach ($userUrls as $url) {
+                if ($url->user_id == $user->id) {
+                    $countClicks += $url->clicks;
                 }
             }
-            $user->total_urls = $countUrls[$userId];
-            $user->total_clicks = $countClicks[$userId];
+            $user->total_urls = $countUrls;
+            $user->total_clicks = $countClicks;
             $users[$key] = $user;
         }
-        return view('user::index', compact('users'));
+        return view('user::index', compact('users', 'title'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('user::create');
+        $title = 'Thêm Người Dùng';
+        return view('user::create', compact('title'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserRequest $request): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('user::show');
+        $this->userRepo->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'group_id' => $request->group_id,
+        ]);
+        return redirect()->route('admin.user.index')
+            ->with('msg',
+                __('messages.success',
+                    [
+                        'action' => 'Thêm',
+                        'attribute' => 'Người Dùng'
+                    ]
+                )
+            )
+            ->with('type', 'success');
     }
 
     /**
@@ -74,15 +78,29 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        $urls = $this->urlRepo->getUserUrls($id)->get();
+        dd($urls);
+        $user = $this->userRepo->find($id);
+        if(!$user) {
+            abort(404);
+        }
+        $title = 'Cập Nhật Người Dùng';
+        return view('user::edit', compact('title', 'user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(UserRequest $request, $id): RedirectResponse
     {
-        //
+        $data = $request->except('_token', 'password'); // bỏ password bên trong data chứ bên request vẫn còn
+        if($request->password){
+            $data['password'] = bcrypt($request->password);
+        }
+        $this->userRepo->update($id, $data);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Cập Nhật', 'attribute' => 'Người Dùng']))
+            ->with('type', 'success');
     }
 
     /**
@@ -90,6 +108,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->userRepo->delete($id);
+        return back()->with('msg', __('messages.success', ['action' => 'Xóa', 'attribute' => 'Người Dùng']))
+            ->with('type', 'success');
     }
 }
