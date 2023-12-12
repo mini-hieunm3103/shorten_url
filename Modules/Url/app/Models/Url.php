@@ -19,7 +19,7 @@ class Url extends Model
         'user_id',
         'clicks',
         'expired_at',
-        'user_id'
+        'title'
     ];
 
     protected static function newFactory()
