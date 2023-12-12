@@ -22,4 +22,4 @@ Route::post('/click-counter.php', 'UrlController@getIdCounter')->name('id-counte
 Route::get('/detail-{id}.php', 'UrlController@show')->name('show');
 Route::get('/total-click-{id}.php', 'UrlController@totalClicks')->name('total-click');
 
-Route::get('/{shortenUrl}', 'UrlController@redirect')->where('shortenUrl', '.*');
+Route::get('/{shortenUrl}', 'UrlController@redirect')->where('shortenUrl', '([a-zA-Z0-9]+)$');

@@ -3,5 +3,6 @@
     "Admin": true,
     "Clients": true,
     "Client": true,
-    "User": true
+    "User": true,
+    "Dashboard": true
 }

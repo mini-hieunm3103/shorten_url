@@ -16,7 +16,8 @@ class Url extends Model
     protected $fillable = [
         'long_url',
         'clicks',
-        'expired_at'
+        'expired_at',
+        'user_id'
     ];
 
     protected static function newFactory()
