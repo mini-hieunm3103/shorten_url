@@ -13,4 +13,6 @@ interface TagRepositoryInterface extends RepositoryInterface
     function updateTagUrls($tag, $data=[]);
 
     function getRelatedUrls($tag);
+
+    function deleteTagUrls($tag);
 }

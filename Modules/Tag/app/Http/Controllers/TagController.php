@@ -111,6 +111,11 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = $this->tagRepo->find($id);
+        $this->tagRepo->deleteTagUrls($tag);
+        $this->tagRepo->delete($id);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Tag']))
+            ->with('type', 'success');
     }
 }
