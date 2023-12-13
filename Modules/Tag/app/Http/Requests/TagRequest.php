@@ -11,11 +11,37 @@ class TagRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route()->url;
+        $rules = [
+            'title' => 'required|max:255',
+            'description' => '',
+            'urls' => 'required',
+            'user_id' => ['integer', function($attribute, $value, $fail){
+                if ($value == 0){
+                    $fail(__('tag::validation.select'));
+                }
+            }]
+        ];
+        return $rules;
+    }
+    public function messages(): array
+    {
         return [
-            //
+            'required' => __('tag::validation.required'),
+            'max' => __('tag::validation.max'),
+            'integer' => __('tag::validation.integer'),
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'title' => __('url::validation.attributes.title'),
+            'description' => __('url::validation.attributes.description'),
+            'urls' => __('url::validation.attributes.urls'),
+            'user_id' => __('url::validation.attributes.user_id'),
+        ];
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

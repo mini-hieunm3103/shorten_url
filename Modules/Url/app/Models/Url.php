@@ -4,6 +4,7 @@ namespace Modules\Url\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Tag\app\Models\Tag;
 use Modules\User\app\Models\User;
 
 class Url extends Model
@@ -30,5 +31,8 @@ class Url extends Model
     function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'url_tag');
     }
 }

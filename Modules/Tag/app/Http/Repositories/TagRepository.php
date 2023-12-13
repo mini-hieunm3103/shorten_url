@@ -14,6 +14,10 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
 
     function getAllTags()
     {
-        return $this->model->select(['id','title', 'description', 'created_at']);
+        return $this->model->select(['id','title', 'description', 'user_id', 'created_at']);
     }
+    function createTagUrls($tag, $data=[]) {
+        return $tag->urls()->attach($data);
+    }
+
 }
