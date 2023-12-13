@@ -69,7 +69,7 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
-                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
+                <a href="{{ route('admin.url.index') }}" class="btn btn-primary">Quay Lại</a>
             </div>
         </div>
         @method('PUT')

@@ -33,6 +33,13 @@ class TagController extends Controller
     {
         $title = 'Danh Sách Nhãn Dán';
         $tags = $this->tagRepo->getAllTags()->get();
+
+        foreach ($tags as $tag) {
+            $urlIds = $this->tagRepo->getRelatedUrls($tag);
+            $tag->total_urls = count($urlIds);
+            $tags[] = $tag;
+        }
+//        dd($tags);
         return view('tag::index', compact('title', 'tags'));
     }
 

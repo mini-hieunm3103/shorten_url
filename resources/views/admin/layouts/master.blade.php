@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{asset('admin/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('admin/plugins/summernote/summernote-bs4.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     @yield('stylesheet')
     <link rel="stylesheet" href="{{asset('admin/dist/css/style.css')}}">
 </head>
