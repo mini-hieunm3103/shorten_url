@@ -42,6 +42,21 @@ class UserController extends Controller
         return view('user::index', compact('users', 'title'));
     }
     /**
+     * Lấy ra thông tin của người dùng cùng với các shorten url của người đó
+     */
+    public function show($id)
+    {
+        $user = $this->userRepo->find($id);
+        $urls = $this->urlRepo->getUserUrls($id)->get();
+        $user->count_urls = $urls->count();
+        $countClicks = 0;
+        foreach ($urls as $url) {
+            $countClicks += $url->clicks;
+        }
+        $user->count_clicks = $countClicks;
+        return view('url::show', compact('user', 'urls'));
+    }
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -78,8 +93,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $urls = $this->urlRepo->getUserUrls($id)->get();
-        dd($urls);
         $user = $this->userRepo->find($id);
         if(!$user) {
             abort(404);

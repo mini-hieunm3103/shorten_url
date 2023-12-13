@@ -8,7 +8,7 @@
         @endif
     </div>
     <div class="mb-3">
-        <a href="{{route('admin.user.create')}}" class="btn btn-primary">Thêm mới</a>
+        <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm mới</a>
     </div>
 <div class="row">
     <div class="col-12">
@@ -22,12 +22,13 @@
                     <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Họ Và Tên</th>
-                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Long URL</th>
+                        <th>Back-Half</th>
+                        <th>Người Đăng</th>
                         <th>Thời Gian</th>
-                        <th width="10%">Shorten URLs</th>
-                        <th width="10%">Total Clicks</th>
-                        <th width="5%">Xem</th>
+                        <th>Hết Hạn</th>
+                        <th width="5%">Clicks</th>
                         <th width="5%">Sửa</th>
                         <th width="5%">Xóa</th>
                     </tr>
@@ -35,33 +36,40 @@
                     <tfoot>
                     <tr>
                         <th>STT</th>
-                        <th>Họ Và Tên</th>
-                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Long URL</th>
+                        <th>Back-Half</th>
+                        <th>Người Đăng</th>
                         <th>Thời Gian</th>
-                        <th width="10%">Shorten URLs</th>
-                        <th width="10%">Total Clicks</th>
-                        <th width="5%">Xem</th>
+                        <th>Hết Hạn</th>
+                        <th width="5%">Clicks</th>
                         <th width="5%">Sửa</th>
                         <th width="5%">Xóa</th>
                     </tr>
                     </tfoot>
                     <tbody>
-                    @foreach($users as $key => $user)
+                    @foreach($urls as $key => $url)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$user->name}}</td>
-                            <td>{{$user->email}}</td>
-                            <td>{{$user->created_at}}</td>
-                            <td>{{$user->total_urls}}</td>
-                            <td>{{$user->total_clicks}}</td>
+                            <td>{{getLimitText($url->title)}}</td>
                             <td>
-                                <a href="{{route('admin.user-urls.show', $user->id)}}" class="btn btn-primary">Xem</a>
+                                <a class="limited-url" href="{{$url->long_url}}">{{getLimitUrl($url->long_url)}}</a>
                             </td>
                             <td>
-                                <a href="{{route('admin.user.edit', $user)}}" class="btn btn-warning">Sửa</a>
+                                <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                             </td>
                             <td>
-                                <a href="{{route('admin.user.destroy', $user)}}" class="btn btn-danger delete-action">Xóa</a>
+                                <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+
+                            </td>
+                            <td>{{$url->created_at}}</td>
+                            <td>{{$url->expired_at}}</td>
+                            <td>{{$url->clicks}}</td>
+                            <td>
+                                <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
+                            </td>
+                            <td>
+                                <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
                             </td>
                         </tr>
                     @endforeach
@@ -109,6 +117,19 @@
     <style>
         #dataTable_wrapper .row:first-child {
             margin-bottom: 16px;
+        }
+        .limited-url::after {
+            content: attr(href);
+            display: none;
+        }
+
+        .limited-url:hover::after {
+            display: inline-block;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            z-index: 1;
         }
     </style>
 @endsection

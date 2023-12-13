@@ -24,3 +24,38 @@ function decodeUrl($base62_number){
     }
     return $base10_number;
 }
+//Hàm cắt chữ
+function getLimitUrl($url, $limit=60){
+    $url = trim($url);
+
+    // Kiểm tra xem URL có hợp lệ không
+    if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+        return $url; // Nếu URL không hợp lệ, trả về nguyên bản
+    }
+
+    // Giả sử URL có chiều dài lớn hơn giới hạn
+    if (strlen($url) > $limit) {
+        // Cắt đoạn URL và thêm "..." ở cuối
+        $limitedUrl = substr($url, 0, $limit - 3) . '...';
+        return $limitedUrl;
+    }
+
+    return $url; // Nếu URL không vượt quá giới hạn, trả về nguyên bản
+}
+function getLimitText($content, $limit=20){
+    $content = strip_tags($content);
+    $content = trim($content);
+    $contentArr = explode(' ', $content);
+    $contentArr = array_filter($contentArr);
+    $wordsNumber = count($contentArr); //trả về số lượng phần tử mảng
+    if ($wordsNumber>$limit){
+        $contentArrLimit = explode(' ', $content, $limit+1);
+        array_pop($contentArrLimit);
+
+        $limitText = implode(' ', $contentArrLimit).'...';
+
+        return $limitText;
+    }
+
+    return $content;
+}

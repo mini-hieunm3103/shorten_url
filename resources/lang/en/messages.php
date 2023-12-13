@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'success' => ':action :attribute Thành Công',
-    'failure' => ':action :attribute Không Thành Công'
+    'success' => ':action :attribute Successfully',
+    'failure' => ':action :attribute Unsuccessful',
 ];

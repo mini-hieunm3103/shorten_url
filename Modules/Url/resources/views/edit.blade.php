@@ -1,13 +1,13 @@
 @extends('admin.layouts.master')
 @section('content')
-    @if($errors->any())
-        <div class="alert-danger alert text-center font-weight-bold"
-             style="
-                color:#c4434f;background-color:#f8d7da;border-color:#f5c6cb
-             "
-        >Vui Lòng Kiểm Tra Lại Dữ Liệu Đã Nhập</div>
-    @endif
-    <form action="{{route('admin.url.store')}}" method="post">
+    <div>
+        @if(session('msg'))
+            <div class="alert alert-{{session('type')}} text-center">
+                {{session('msg')}}
+            </div>
+        @endif
+    </div>
+    <form action="{{route('admin.url.update', compact('url'))}}" method="post">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -15,7 +15,7 @@
                     <label for="">Destination</label>
                     <input id="long_url" name="long_url" type="text" class="form-control
                     @error('long_url') is-invalid @enderror"
-                           value="{{ old('long_url') }}" autofocus placeholder="https://example.com/my-long-url">
+                           value="{{ old('long_url') ?? $url->long_url }}" autofocus placeholder="https://example.com/my-long-url">
                     @error('long_url')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -28,7 +28,7 @@
                     <label for="">Title <small style="font-size: 16px"> (optional)</small></label>
                     <input id="title" name="title" type="text" class="form-control
                     @error('title') is-invalid @enderror"
-                           value="{{ old('title') }}" autofocus placeholder="">
+                           value="{{ old('title') ?? $url->title }}" autofocus placeholder="">
                     @error('title')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -41,7 +41,7 @@
                     <label for="">Custom back-half <small style="font-size: 16px"> (optional)</small></label>
                     <input id="back_half" name="back_half" type="text" class="form-control
                     @error('back_half') is-invalid @enderror"
-                           value="{{ old('back_half') }}" autofocus placeholder="">
+                           value="{{ old('back_half') ?? $url->back_half }}" autofocus placeholder="">
                     @error('back_half')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -56,7 +56,7 @@
                         <option value="0">Select User</option>
                         @if($users->count())
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if(old('user_id') == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
+                                <option value="{{$user->id}}" @if(old('user_id') == $user->id || $url->user_id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -72,5 +72,6 @@
                 <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
             </div>
         </div>
+        @method('PUT')
     </form>
 @endsection

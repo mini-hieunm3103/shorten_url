@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('urls', function (Blueprint $table) {
             $table->id(); //bigint
-//            $table->string('title')->nullable();
+            $table->string('title')->nullable();
             $table->string('long_url');
-//            $table->integer('user_id')->nullable(); // người chưa đăng nhập vẫn có thể tạo shorten url
-//            $table->text('description')->nullable();
+            $table->string('back_half')->nullable(); //cái đằng sau domain
+            $table->integer('user_id');
             $table->integer('clicks')->default(0);
             $table->timestamps();
-            $table->timestamp('expired_at');
+            $table->timestamp('expired_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
