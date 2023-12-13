@@ -19,5 +19,11 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
     function createTagUrls($tag, $data=[]) {
         return $tag->urls()->attach($data);
     }
-
+    function updateTagUrls($tag, $data=[]) {
+        return $tag->urls()->sync($data);
+    }
+    function getRelatedUrls($tag) {
+        $urlIds = $tag->urls()->allRelatedIds()->toArray();
+        return $urlIds;
+    }
 }

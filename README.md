@@ -13,23 +13,16 @@ từ id lấy ra url hoàn chỉnh
 ## Deploy web
 #### -> thì phải vào `getIdCounter` của UrlController để sửa regex match lấy ra base62
 
-## Front End: Clone https://www.shorturl.at/
 ## Module
-### Url:
-- Nếu liên kết khóa ngoại giữa user_id của urls và id của users thì phải đăng nhập mới được tạo url
-- => muốn không đăng nhập vẫn tạo được urls -> user_id = 0 ( do có )
-- tạo ra 1 groups -> phân quyền
-  * Administration: làm được tất cả: xem, sửa, xóa, phân quyền
-1. Database:   
-   - urls
-     - id: bigint
-     - long_url: url muốn rút gọn : string:255
-     - title: lấy title ra từ url ❎
-     - clicks: lấy ra số lượng đã truy cập link ✅
-     - expired_at: +30 ngày kể từ lần truy cập cuối cùng ✅
-     - user_id: int
-   - users:
-      - 
+1. Database:
+   - urls (tham khảo [bitly](https://app.bitly.com))
+     - id bigint
+     - title string (optional input) (nếu không có thì sẽ thành: Untitled 2023-12-11 15:54:14 UTC)
+     - long_url
+     - back_half string unique (optional input): là cái đằng sau domain
+     - clicks
+     - timestamps
+     - expired_at
 2. Admin: Quản lý url đã rút gọn của người dùng trong trang sửa người dùng trong admin và được phép xóa? người dùng nhưng không được phép sửa thông tin cá nhân của họ: name, email, password ❎
    - Phân quyền:
      * được phép xóa người dùng
@@ -49,3 +42,23 @@ từ id lấy ra url hoàn chỉnh
    - tạo  ra 1 trang render riêng cho người dùng
    - tạo 1 thẻ riêng cho url [Adminlte 3](https://adminlte.io/themes/v3/pages/layout/top-nav.html)
 4. Super Admin: Quản lý tất cả về người dùng và url
+5. Url Module: 
+   - index
+     - STT
+     - Title (nếu không có title thì sẽ Điền: Untitled 2023-12-11 15:54:14 UTC) (tham khảo bitly)
+     - User -> khi click vào sẽ redirect đến trang show của User:
+     - Long URL
+     - Shorten URL 
+     - Created at
+     - Expired at
+   - edit:
+     - Title
+     - Long Url
+     - Short Url (cho phép sửa nhưng vẫn sẽ là dạng: domain.com/a-zA-Z0-9)
+6. Trang show của User(Admin) của Url Module:
+    - Name (Input readonly)
+    - Email (Input readonly)
+    - Group (Input readonly)
+    - Created at (Input readonly)
+    - Muốn sửa thông tin trên thì tạo 1 btn redirect đến edit user
+    - 1 bảng gồm các Url đã tạo < xem, sửa, xóa >

@@ -84,7 +84,11 @@ class TagController extends Controller
     public function edit($id)
     {
         $title = 'Cập Nhật Nhãn Dán';
-        return view('tag::edit', compact('title'));
+        $tag = $this->tagRepo->find($id);
+        $urlIds = $this->tagRepo->getRelatedUrls($tag);
+        $urls = $this->urlRepo->getAllUrls()->get();
+        $users = $this->userRepo->getAllUsers()->get();
+        return view('tag::edit', compact('title', 'urls', 'tag', 'urlIds', 'users' ));
     }
 
     /**
@@ -92,7 +96,14 @@ class TagController extends Controller
      */
     public function update(TagRequest $request, $id): RedirectResponse
     {
-        //
+        $tagData = $request->except(['_token', '_method']);
+        $this->tagRepo->update($id, $tagData);
+        $tag = $this->tagRepo->find($id);
+        $urls = $this->getUrls($tagData);
+        $this->tagRepo->updateTagUrls($tag, $urls);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Tag']))
+            ->with('type', 'success');
     }
 
     /**
