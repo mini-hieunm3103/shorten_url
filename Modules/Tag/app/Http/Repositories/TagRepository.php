@@ -29,4 +29,8 @@ class TagRepository extends BaseRepository implements TagRepositoryInterface
     function deleteTagUrls($tag) {
         return $tag->urls()->detach();
     }
+    function getUserTags($userId)
+    {
+        return $this->getAllTags()->where(['user_id' => $userId]);
+    }
 }

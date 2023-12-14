@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Http\Requests\UserRequest;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\Tag\app\Http\Repositories\TagRepository;
 class UserController extends Controller
 {
     /**
@@ -14,10 +15,17 @@ class UserController extends Controller
      */
     protected $userRepo;
     protected $urlRepo;
-    public function __construct(UserRepository $userRepo, UrlRepository $urlRepo)
+    protected $tagRepo;
+    public function __construct
+    (
+        UserRepository $userRepo,
+        UrlRepository $urlRepo,
+        TagRepository $tagRepo
+    )
     {
         $this->userRepo = $userRepo;
         $this->urlRepo = $urlRepo;
+        $this->tagRepo = $tagRepo;
     }
 
     public function index()
@@ -48,13 +56,13 @@ class UserController extends Controller
     {
         $user = $this->userRepo->find($id);
         $urls = $this->urlRepo->getUserUrls($id)->get();
-        $user->count_urls = $urls->count();
+        $tags = $this->tagRepo->getUserTags($id)->get();
         $countClicks = 0;
         foreach ($urls as $url) {
             $countClicks += $url->clicks;
         }
         $user->count_clicks = $countClicks;
-        return view('url::show', compact('user', 'urls'));
+        return view('user::show', compact('user','tags', 'urls'));
     }
     /**
      * Show the form for creating a new resource.

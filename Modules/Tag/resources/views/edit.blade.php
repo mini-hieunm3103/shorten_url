@@ -64,7 +64,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Select the url you want to add</h3>
+                        <h3 class="card-title"><strong>Select the url(s) you want to add</strong></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -118,6 +118,11 @@
                         </table>
                     </div>
                 </div>
+                @error('urls')
+                <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                @enderror
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>

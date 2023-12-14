@@ -25,12 +25,13 @@
                         <th>Title</th>
                         <th>Long URL</th>
                         <th>Back-Half</th>
-                        <th>Người Đăng</th>
-                        <th>Thời Gian</th>
-                        <th>Hết Hạn</th>
+                        <th>User</th>
+                        <th>Created At</th>
+                        <th>Expired At</th>
                         <th width="5%">Clicks</th>
-                        <th width="5%">Sửa</th>
-                        <th width="5%">Xóa</th>
+                        <th width="5%">Watch</th>
+                        <th width="5%">Edit</th>
+                        <th width="5%">Delete</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -39,12 +40,13 @@
                         <th>Title</th>
                         <th>Long URL</th>
                         <th>Back-Half</th>
-                        <th>Người Đăng</th>
-                        <th>Thời Gian</th>
-                        <th>Hết Hạn</th>
+                        <th>User</th>
+                        <th>Created At</th>
+                        <th>Expired At</th>
                         <th width="5%">Clicks</th>
-                        <th width="5%">Sửa</th>
-                        <th width="5%">Xóa</th>
+                        <th width="5%">Watch</th>
+                        <th width="5%">Edit</th>
+                        <th width="5%">Delete</th>
                     </tr>
                     </tfoot>
                     <tbody>
@@ -65,6 +67,9 @@
                             <td>{{$url->created_at}}</td>
                             <td>{{$url->expired_at}}</td>
                             <td>{{$url->clicks}}</td>
+                            <td>
+                                <a href="{{route('admin.url.show', $url)}}" class="btn btn-primary">Xem</a>
+                            </td>
                             <td>
                                 <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
                             </td>

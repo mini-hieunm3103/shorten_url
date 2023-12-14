@@ -45,15 +45,20 @@ class UrlController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userRepo->find($id);
-        $urls = $this->urlRepo->getUserUrls($id)->get();
-        $user->count_urls = $urls->count();
-        $countClicks = 0;
-        foreach ($urls as $url) {
-            $countClicks += $url->clicks;
+        $title = "Detail Shorten URL: ".$id;
+        $url = $this->urlRepo->find($id);
+        if (!$url) {
+            abort(404);
         }
-        $user->count_clicks = $countClicks;
-        return view('url::show', compact('user', 'urls'));
+        $tags = $this->tagRepo->getAllTags()->get();
+        $tagIds = $this->urlRepo->getRelatedTags($url);
+        $urlTags = [];
+        foreach ($tags as $tag) {
+            if(in_array($tag->id, $tagIds)){
+                $urlTags[] = $tag;
+            }
+        }
+        return view('url::show', compact( 'title', 'urlTags', 'url'));
     }
 
     /**
