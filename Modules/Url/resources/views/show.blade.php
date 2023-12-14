@@ -48,11 +48,11 @@
         @endif
     </div>
     <div class="mb-3">
-        <a href="{{route('admin.user.edit', compact('user'))}}" class="btn btn-warning" style="color: #3f3e3e">Chỉnh sửa người dùng</a>
-    </div>
-    <div class="mb-3">
+        <a href="{{route('admin.user.edit', compact('user'))}}" class="btn btn-warning" style="color: #ffffff">Chỉnh sửa người dùng</a>
         <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm Mới URL rút gọn</a>
+        <a href="{{route('admin.user.index')}}" class="btn btn-secondary">Quay về</a>
     </div>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -119,19 +119,6 @@
     </div>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 
     {{--    Sweet Alert--}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

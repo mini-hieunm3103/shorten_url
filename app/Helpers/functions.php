@@ -59,3 +59,16 @@ function getLimitText($content, $limit=20){
 
     return $content;
 }
+/** đưa vào currentUrl: quan-tri-vien/url/create
+ * đưa vào previous url: quan-tri-vien/url/create (do khi submit form không thành công , previous sẽ bị chuyển thành create thay vì là trang đi vào create)
+ *
+ */
+//function backUrl($currentUrl, $url)
+//{
+//    if ($currentUrl === $previousUrl) {
+//        // khi đó previous sẽ trở
+//        $previousUrl->previous();
+//        backUrl($currentUrl, $previousUrl);
+//    }
+//    return $previousUrl;
+//}

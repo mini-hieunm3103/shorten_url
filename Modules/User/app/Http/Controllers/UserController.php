@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $title = 'Danh Sách Người Dùng';
+        $title = 'Danh Sách User';
         $users = $this->userRepo->getAllUsers()->get();
         $urls = $this->urlRepo->getAllUrls()->get();
         $countClicks = [];
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = 'Thêm Người Dùng';
+        $title = 'Create User';
         return view('user::create', compact('title'));
     }
 
@@ -80,8 +80,8 @@ class UserController extends Controller
             ->with('msg',
                 __('messages.success',
                     [
-                        'action' => 'Thêm',
-                        'attribute' => 'Người Dùng'
+                        'action' => 'Create',
+                        'attribute' => 'User'
                     ]
                 )
             )
@@ -97,7 +97,7 @@ class UserController extends Controller
         if(!$user) {
             abort(404);
         }
-        $title = 'Cập Nhật Người Dùng';
+        $title = 'Update User';
         return view('user::edit', compact('title', 'user'));
     }
 
@@ -112,7 +112,7 @@ class UserController extends Controller
         }
         $this->userRepo->update($id, $data);
         return back()
-            ->with('msg', __('messages.success', ['action' => 'Cập Nhật', 'attribute' => 'Người Dùng']))
+            ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'User']))
             ->with('type', 'success');
     }
 
@@ -122,7 +122,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userRepo->delete($id);
-        return back()->with('msg', __('messages.success', ['action' => 'Xóa', 'attribute' => 'Người Dùng']))
+        return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'User']))
             ->with('type', 'success');
     }
 }

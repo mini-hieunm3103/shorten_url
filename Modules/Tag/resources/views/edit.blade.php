@@ -127,22 +127,6 @@
     </form>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-
-    {{--    DataTable Checkbox--}}
-    <script src="{{asset('admin/plugins/datatables-select/js/dataTables.select.js')}}"></script>
     <script>
         $(function () {
             $('#dataTable').DataTable({
@@ -157,16 +141,9 @@
                     // tắt tính năng sort
                     {
                         "orderable": false,
-                        'checkboxes': {
-                            'selectRow': true
-                        },
                         "targets": 0
                     }
                 ],
-                "select":{
-                    "style" : "multi",
-                    "selector": 'td:first-child input'
-                },
                 "order": [[5, 'asc']]
             });
         });
@@ -174,7 +151,6 @@
 
 @endsection
 @section('stylesheet')
-    <link rel="stylesheet" href="{{asset('admin/plugins/datatables-select/css/select.bootstrap4.min.css')}}">
     <style>
         #dataTable_wrapper .row:first-child {
             margin-bottom: 16px;
