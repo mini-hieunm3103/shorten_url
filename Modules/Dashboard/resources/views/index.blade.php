@@ -3,7 +3,6 @@
 @endsection
 
 @section('content')
-    <h1>Quản Trị Viên</h1>
 @endsection
 @section('scripts')
 @endsection

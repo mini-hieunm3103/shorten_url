@@ -5,5 +5,6 @@
     "Client": true,
     "User": true,
     "Dashboard": true,
-    "Tag": true
+    "Tag": true,
+    "Auth": true
 }

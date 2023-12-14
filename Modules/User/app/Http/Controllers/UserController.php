@@ -55,6 +55,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->userRepo->find($id);
+        $title = $user->name;
         $urls = $this->urlRepo->getUserUrls($id)->get();
         $tags = $this->tagRepo->getUserTags($id)->get();
         $countClicks = 0;
@@ -62,7 +63,7 @@ class UserController extends Controller
             $countClicks += $url->clicks;
         }
         $user->count_clicks = $countClicks;
-        return view('user::show', compact('user','tags', 'urls'));
+        return view('user::show', compact('title','user','tags', 'urls'));
     }
     /**
      * Show the form for creating a new resource.

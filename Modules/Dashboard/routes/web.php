@@ -13,10 +13,10 @@ use Modules\Dashboard\app\Http\Controllers\DashboardController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::group([
     'prefix' => 'quan-tri-vien',
-    'as' => 'admin.'
+    'as' => 'admin.',
+    'middleware' => 'web'
 ], function (){
-    Route::get('/', 'DashboardController@index')->name('index');
+    Route::get('/', 'DashboardController@index')->name('dashboard.index');
 });

@@ -1,4 +1,10 @@
-
+@php
+$moduleTitle = [
+    'user' => 'Người Dùng',
+    'url' => 'URL Rút Gọn',
+    'tag'=> 'Nhãn Dán'
+]
+@endphp
 <div class="content-header ">
     <div class="container-fluid mt-3">
         <div class="row mb-2">
@@ -9,13 +15,7 @@
                 <ol class="breadcrumb float-sm-right" style="
                 font-size: 18px;
                 ">
-                    @if(!empty($title))
-                        <li class="breadcrumb-item"><a href="{{route('admin.index')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.user.index')}}">Quản Lý Người Dùng</a></li>
-                        <li class="breadcrumb-item active">{{$title}}</li>
-                    @else
-                        <li class="breadcrumb-item active">Home</li>
-                    @endif
+                    {{titleBlade(request()->route()->getName(), $moduleTitle)}}
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
