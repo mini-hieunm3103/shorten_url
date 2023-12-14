@@ -1,34 +1,21 @@
 @extends('admin.layouts.master')
 @section('content')
-    <div>
-        @if(session('msg'))
-            <div class="alert alert-{{session('type')}} text-center">
-                {{session('msg')}}
-            </div>
-        @endif
-    </div>
-    <form action="{{route('admin.url.update', compact('url'))}}" method="post">
+    @if($errors->any())
+        <div class="alert-danger alert text-center font-weight-bold"
+             style="
+                color:#c4434f;background-color:#f8d7da;border-color:#f5c6cb
+             "
+        >Vui Lòng Kiểm Tra Lại Dữ Liệu Đã Nhập</div>
+    @endif
+    <form action="{{route('admin.tag.store')}}" method="post" id="formHandle">
         @csrf
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <div class="mb-3">
-                    <label for="">Destination</label>
-                    <input id="long_url" name="long_url" type="text" class="form-control
-                    @error('long_url') is-invalid @enderror"
-                           value="{{ old('long_url') ?? $url->long_url }}" autofocus placeholder="https://example.com/my-long-url">
-                    @error('long_url')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="mb-3">
-                    <label for="">Title <small style="font-size: 16px"> (optional)</small></label>
+                    <label for="">Title</label>
                     <input id="title" name="title" type="text" class="form-control
                     @error('title') is-invalid @enderror"
-                           value="{{ old('title') ?? $url->title }}" autofocus placeholder="">
+                           value="{{ old('title') }}" autofocus placeholder="">
                     @error('title')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -36,19 +23,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-4">
-                <div class="mb-3">
-                    <label for="">Custom back-half <small style="font-size: 16px"> (optional)</small></label>
-                    <input id="back_half" name="back_half" type="text" class="form-control
-                    @error('back_half') is-invalid @enderror"
-                           value="{{ old('back_half') ?? $url->back_half }}" autofocus placeholder="">
-                    @error('back_half')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div><div class="col-4">
+            <div class="col-6">
                 <div class="mb-3">
                     <label for="">User</label>
                     <select name="user_id" id=""
@@ -56,7 +31,7 @@
                         <option value="0">Select User</option>
                         @if($users->count())
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if(old('user_id') == $user->id || $url->user_id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
+                                <option value="{{$user->id}}" @if(old('user_id') == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -68,9 +43,22 @@
                 </div>
             </div>
             <div class="col-12">
+                <div class="mb-3">
+                    <label for="">Description <small style="font-size: 16px"> (optional)</small></label>
+                    <textarea id="description" name="description" type="text" class="form-control
+                    @error('description') is-invalid @enderror"
+                           value="{{ old('description') }}" autofocus placeholder=""></textarea>
+                    @error('description')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Select the tags you want to add<small style="font-size: 16px"> (optional)</small></h3>
+                        <h3 class="card-title">Select the url you want to add</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -78,39 +66,46 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>STT</th>
-                                <th>Title Tag</th>
-                                <th>Description</th>
-                                <th>User</th>
-                                <th>Created At</th>
-                                <th>Total Urls </th>
+                                <th>Title</th>
+                                <th>Long URL</th>
+                                <th>Back-Half</th>
+                                <th>Người Đăng</th>
+                                <th>Thời Gian</th>
+                                <th>Hết Hạn</th>
+                                <th width="5%">Clicks</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th></th>
-                                <th>STT</th>
-                                <th>Title Tag</th>
-                                <th>Description</th>
-                                <th>User</th>
-                                <th>Created At</th>
-                                <th>Total Urls </th>
+                                <th>Title</th>
+                                <th>Long URL</th>
+                                <th>Back-Half</th>
+                                <th>Người Đăng</th>
+                                <th>Thời Gian</th>
+                                <th>Hết Hạn</th>
+                                <th width="5%">Clicks</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($tags as $key => $tag)
-                                <tr class="{{(in_array($tag->id , old('tags') ?? $tagIds) ? 'selected': false)}}">
+                            @foreach($urls as $key => $url)
+                                <tr id="row{{$key+1}}">
                                     <td>
-                                        <input type="checkbox" name="tags[]" value="{{$tag->id}}" id="checkbox{{$key+1}}" {{(in_array($tag->id , old('tags') ?? $tagIds) ? 'checked': false)}}>
+                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" id="checkbox{{$key+1}}">
                                     </td>
-                                    <td>{{$key+1}}</td>
-                                    <td>{{getLimitText($tag->title)}}</td>
-                                    <td>{{getLimitText($tag->description)}}</td>
+                                    <td>{{getLimitText($url->title)}}</td>
                                     <td>
-                                        <a href="{{route('admin.user-urls.show', $tag->user->id)}}">{{$tag->user->name}}</a>
+                                        <a class="limited-url" href="{{$url->long_url}}">{{getLimitUrl($url->long_url)}}</a>
                                     </td>
-                                    <td>{{$tag->created_at}}</td>
-                                    <td>{{$tag->total_urls}}</td>
+                                    <td>
+                                        <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                    </td>
+                                    <td>{{$url->created_at}}</td>
+                                    <td>{{$url->expired_at}}</td>
+                                    <td>{{$url->clicks}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -120,10 +115,9 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
-                <a href="{{ route('admin.url.index') }}" class="btn btn-primary">Quay Lại</a>
+                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
             </div>
         </div>
-        @method('PUT')
     </form>
 @endsection
 @section('scripts')
@@ -141,7 +135,7 @@
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 
-    {{--    DataTable Checkbox--}}
+{{--    DataTable Checkbox--}}
     <script src="{{asset('admin/plugins/datatables-select/js/dataTables.select.js')}}"></script>
     <script>
         $(function () {
@@ -167,7 +161,7 @@
                     "style" : "multi",
                     "selector": 'td:first-child input'
                 },
-                "order": [[1, 'asc']]
+                "order": [[5, 'asc']]
             });
         });
     </script>

@@ -4,5 +4,6 @@
     "Clients": true,
     "Client": true,
     "User": true,
-    "Dashboard": true
+    "Dashboard": true,
+    "Tag": true
 }

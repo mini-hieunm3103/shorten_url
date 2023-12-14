@@ -1,38 +1,34 @@
 <?php
 
-namespace Modules\Url\app\Models;
+namespace Modules\Tag\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Tag\app\Models\Tag;
+use Modules\Url\app\Models\Url;
 use Modules\User\app\Models\User;
 
-class Url extends Model
+class Tag extends Model
 {
     use HasFactory;
-
+    protected $table = 'tags';
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'long_url',
-        'back_half',
+        'title',
+        'description',
         'user_id',
-        'clicks',
-        'expired_at',
-        'title'
     ];
 
-    protected static function newFactory()
+    protected static function newFactory(): TagFactory
     {
-        //return UrlFactory::new();
+        //return TagFactory::new();
     }
-
     function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function tags(){
-        return $this->belongsToMany(Tag::class, 'url_tag');
+    public function urls(){
+        return $this->belongsToMany(Url::class, 'url_tag');
     }
 }

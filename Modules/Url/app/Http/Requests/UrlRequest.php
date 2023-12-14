@@ -23,7 +23,7 @@ class UrlRequest extends FormRequest
             }]
         ];
         if (!empty($id)){
-            $rules['back-half'] = 'unique:urls,back_half,'.$id;
+            $rules['back_half'] = 'unique:urls,back_half,'.$id;
         }
         return $rules;
     }
