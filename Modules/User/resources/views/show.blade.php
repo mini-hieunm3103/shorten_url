@@ -55,9 +55,9 @@
     </div>
     <div class="mb-3 ml-2">
         <a href="{{route('admin.user.edit', compact('user'))}}" class="btn btn-warning" style="color: #ffffff">Chỉnh sửa người dùng</a>
-        <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm Mới URL rút gọn</a>
         <a href="{{route('admin.user.index')}}" class="btn btn-secondary">Quay về</a>
     </div>
+
 
         <div class="col-12">
             <div class="card">
@@ -121,6 +121,9 @@
                 </div>
             </div>
         </div>
+    <div class="mb-3 ml-2">
+        <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm Mới URL Rút Gọn</a>
+    </div>
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -172,6 +175,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="mb-3">
+            <a href="{{route('admin.tag.create')}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
         </div>
     </div>
 @endsection
