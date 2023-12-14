@@ -62,3 +62,30 @@ từ id lấy ra url hoàn chỉnh
     - Created at (Input readonly)
     - Muốn sửa thông tin trên thì tạo 1 btn redirect đến edit user
     - 1 bảng gồm các Url đã tạo < xem, sửa, xóa >
+7. TagController@show => render bảng url cùng với thông tin cơ bản của tag
+8. UrlController@show => render bảng tag cùng với thông tin cơ bản của url
+9. UserController@show => 
+           render thông tin cơ bản của user
+           render tên bảng : tag cùng với thông tin của bảng là url của tag đó
+10. Bên Clients:
+    - user A có thể lấy url shorten của user B ném vào tag của mình
+    - url có thể không có tag nhưng tag phải có url
+11. Với các trang show: 
+ - xử lý phần thêm
+ - ví dụ khi ở trang show tag muốn thêm url thì khi click vào thêm mới url ở trang show tag đó sẽ redirect đến thêm mới url đồng thời checked luôn input của tag đó
+ - tương tự với ở url thì khi ấn thêm tag thì sẽ checked luôn input của url đó 
+ - __method get url khi => ?tag_id=1 => khi đó ở tạo mới url sẽ checked luôn tag có id đó
+12. Nên ném trang admin vào sub domain ví dụ: admin.domain.com
+    Ném client vào sub domain ví dụ: app.domain.com
+    shorten url dùng domain chính: domain.com/shortenurl
+13. Lỗi nút checkbox datatable: (ví dụ ở tag, url tương tự)
+    - ở edit page: khi có giá trị `old('urls') ?? $` thì sẽ phải checked input và thêm class: selected vào tr chứa input đã checked đó
+    - -> khi đó có giá trị `old('urls')` với các input đã checked trước sẽ hiện xanh và được checked 
+    - nhưng khi ấn vào nút checked tiếp thì sẽ uncheckbox nhưng phần row vẫn sẽ bị tô xanh
+    - ___hướng giải quyết___: xóa vấn đề
+14. redirect back
+    - có nút quay lại: thì khi submit form (create) sai thì url()->previous() sẽ trả về chính url của page create đó thay vì page đã chuyển hướng đến create
+    
+    - hướng giải quyết: lưu vào session: https://stackoverflow.com/questions/36098589/how-to-return-back-twice-in-laravel
+    - i wouldn't recommend using session if the user is likely to use more than one tab as the session is shared between tabs
+    - https://laracasts.com/discuss/channels/laravel/url-previous-on-page-that-posts-to-itself

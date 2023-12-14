@@ -101,7 +101,7 @@
                             @foreach($tags as $key => $tag)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="tags[]" value="{{$tag->id}}" id="checkbox{{$key+1}}" {{(in_array($tag->id , old('tags')) ? 'checked': false)}}>
+                                        <input type="checkbox" name="tags[]" value="{{$tag->id}}" id="checkbox{{$key+1}}" {{(!empty(old('tags')) && in_array($tag->id , old('tags')) ? 'checked': false)}}>
                                     </td>
                                     <td>{{$key+1}}</td>
                                     <td>{{getLimitText($tag->title)}}</td>
@@ -120,28 +120,12 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
-                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
+                <a href="{{ route('admin.url.index') }}" class="btn btn-danger">Hủy</a>
             </div>
         </div>
     </form>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-
-    {{--    DataTable Checkbox--}}
-    <script src="{{asset('admin/plugins/datatables-select/js/dataTables.select.js')}}"></script>
     <script>
         $(function () {
             $('#dataTable').DataTable({
@@ -156,40 +140,19 @@
                     // tắt tính năng sort
                     {
                         "orderable": false,
-                        'checkboxes': {
-                            'selectRow': true
-                        },
                         "targets": 0
                     }
                 ],
-                "select":{
-                    "style" : "multi",
-                    "selector": 'td:first-child input'
-                },
-                "order": [[5, 'asc']]
+                "order": [[1, 'asc']]
             });
         });
     </script>
 
 @endsection
 @section('stylesheet')
-    <link rel="stylesheet" href="{{asset('admin/plugins/datatables-select/css/select.bootstrap4.min.css')}}">
     <style>
         #dataTable_wrapper .row:first-child {
             margin-bottom: 16px;
-        }
-        .limited-url::after {
-            content: attr(href);
-            display: none;
-        }
-
-        .limited-url:hover::after {
-            display: inline-block;
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 5px;
-            z-index: 1;
         }
         tr.selected a {
             color: #FFFFFF !important;

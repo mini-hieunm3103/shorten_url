@@ -37,7 +37,6 @@ class TagController extends Controller
         foreach ($tags as $tag) {
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
-            $tags[] = $tag;
         }
 //        dd($tags);
         return view('tag::index', compact('title', 'tags'));
@@ -82,7 +81,21 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        return view('tag::show');
+        $title = 'Tag Detail: '.$id;
+        $tag = $this->tagRepo->find($id);
+        if (!$tag) {
+            abort(404);
+        }
+        $urls = $this->urlRepo->getAllUrls()->get();
+        $urlIds = $this->tagRepo->getRelatedUrls($tag);
+        $tagUrls = [];
+//        dd($urlIds);
+        foreach ($urls as $url) {
+            if (in_array($url->id, $urlIds)){
+                $tagUrls[] = $url;
+            }
+        }
+        return view('tag::show', compact('title', 'tag', 'tagUrls'));
     }
 
     /**

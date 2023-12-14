@@ -58,7 +58,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Select the url you want to add</h3>
+                        <h3 class="card-title"><strong>Select the url(s) you want to add</strong></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -89,9 +89,9 @@
                             </tfoot>
                             <tbody>
                             @foreach($urls as $key => $url)
-                                <tr id="row{{$key+1}}">
+                                <tr>
                                     <td>
-                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" id="checkbox{{$key+1}}">
+                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" id="checkbox{{$key+1}}" {{!empty(old('urls'))&& in_array($url->id, old('urls')) ? 'checked' : false}}>
                                     </td>
                                     <td>{{getLimitText($url->title)}}</td>
                                     <td>
@@ -115,28 +115,12 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
-                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
+                <a href="{{ route('admin.tag.index') }}" class="btn btn-danger">Hủy</a>
             </div>
         </div>
     </form>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-
-{{--    DataTable Checkbox--}}
-    <script src="{{asset('admin/plugins/datatables-select/js/dataTables.select.js')}}"></script>
     <script>
         $(function () {
             $('#dataTable').DataTable({
@@ -151,16 +135,9 @@
                     // tắt tính năng sort
                     {
                         "orderable": false,
-                        'checkboxes': {
-                            'selectRow': true
-                        },
                         "targets": 0
                     }
                 ],
-                "select":{
-                    "style" : "multi",
-                    "selector": 'td:first-child input'
-                },
                 "order": [[5, 'asc']]
             });
         });
@@ -168,7 +145,7 @@
 
 @endsection
 @section('stylesheet')
-    <link rel="stylesheet" href="{{asset('admin/plugins/datatables-select/css/select.bootstrap4.min.css')}}">
+
     <style>
         #dataTable_wrapper .row:first-child {
             margin-bottom: 16px;

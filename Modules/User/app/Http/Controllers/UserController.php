@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Http\Requests\UserRequest;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\Tag\app\Http\Repositories\TagRepository;
 class UserController extends Controller
 {
     /**
@@ -14,15 +15,22 @@ class UserController extends Controller
      */
     protected $userRepo;
     protected $urlRepo;
-    public function __construct(UserRepository $userRepo, UrlRepository $urlRepo)
+    protected $tagRepo;
+    public function __construct
+    (
+        UserRepository $userRepo,
+        UrlRepository $urlRepo,
+        TagRepository $tagRepo
+    )
     {
         $this->userRepo = $userRepo;
         $this->urlRepo = $urlRepo;
+        $this->tagRepo = $tagRepo;
     }
 
     public function index()
     {
-        $title = 'Danh Sách Người Dùng';
+        $title = 'Danh Sách User';
         $users = $this->userRepo->getAllUsers()->get();
         $urls = $this->urlRepo->getAllUrls()->get();
         $countClicks = [];
@@ -48,20 +56,20 @@ class UserController extends Controller
     {
         $user = $this->userRepo->find($id);
         $urls = $this->urlRepo->getUserUrls($id)->get();
-        $user->count_urls = $urls->count();
+        $tags = $this->tagRepo->getUserTags($id)->get();
         $countClicks = 0;
         foreach ($urls as $url) {
             $countClicks += $url->clicks;
         }
         $user->count_clicks = $countClicks;
-        return view('url::show', compact('user', 'urls'));
+        return view('user::show', compact('user','tags', 'urls'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $title = 'Thêm Người Dùng';
+        $title = 'Create User';
         return view('user::create', compact('title'));
     }
 
@@ -80,8 +88,8 @@ class UserController extends Controller
             ->with('msg',
                 __('messages.success',
                     [
-                        'action' => 'Thêm',
-                        'attribute' => 'Người Dùng'
+                        'action' => 'Create',
+                        'attribute' => 'User'
                     ]
                 )
             )
@@ -97,7 +105,7 @@ class UserController extends Controller
         if(!$user) {
             abort(404);
         }
-        $title = 'Cập Nhật Người Dùng';
+        $title = 'Update User';
         return view('user::edit', compact('title', 'user'));
     }
 
@@ -112,7 +120,7 @@ class UserController extends Controller
         }
         $this->userRepo->update($id, $data);
         return back()
-            ->with('msg', __('messages.success', ['action' => 'Cập Nhật', 'attribute' => 'Người Dùng']))
+            ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'User']))
             ->with('type', 'success');
     }
 
@@ -122,7 +130,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userRepo->delete($id);
-        return back()->with('msg', __('messages.success', ['action' => 'Xóa', 'attribute' => 'Người Dùng']))
+        return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'User']))
             ->with('type', 'success');
     }
 }

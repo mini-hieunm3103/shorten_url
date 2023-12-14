@@ -45,15 +45,20 @@ class UrlController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userRepo->find($id);
-        $urls = $this->urlRepo->getUserUrls($id)->get();
-        $user->count_urls = $urls->count();
-        $countClicks = 0;
-        foreach ($urls as $url) {
-            $countClicks += $url->clicks;
+        $title = "Detail Shorten URL: ".$id;
+        $url = $this->urlRepo->find($id);
+        if (!$url) {
+            abort(404);
         }
-        $user->count_clicks = $countClicks;
-        return view('url::show', compact('user', 'urls'));
+        $tags = $this->tagRepo->getAllTags()->get();
+        $tagIds = $this->urlRepo->getRelatedTags($url);
+        $urlTags = [];
+        foreach ($tags as $tag) {
+            if(in_array($tag->id, $tagIds)){
+                $urlTags[] = $tag;
+            }
+        }
+        return view('url::show', compact( 'title', 'urlTags', 'url'));
     }
 
     /**
@@ -67,7 +72,6 @@ class UrlController extends Controller
         foreach ($tags as $tag) {
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
-            $tags[] = $tag;
         }
         return view('url::create', compact('title','users', 'tags'));
     }
@@ -77,6 +81,7 @@ class UrlController extends Controller
      */
     public function store(UrlRequest $request)
     {
+
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
@@ -86,6 +91,7 @@ class UrlController extends Controller
         if(empty($data['back_half'])){
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
+        dd($data);
         $url = $this->urlRepo->create($data);
         if (!empty($data['tags'])){
             $tags = $this->getTags($data);
@@ -109,7 +115,6 @@ class UrlController extends Controller
         foreach ($tags as $tag) {
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
-            $tags[] = $tag;
         }
         return view('url::edit', compact('tagIds','url', 'tags','title', 'users'));
     }
@@ -119,7 +124,6 @@ class UrlController extends Controller
      */
     public function update(UrlRequest $request, $id): RedirectResponse
     {
-
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token', '_method');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');

@@ -26,7 +26,8 @@
                             <th>Description</th>
                             <th>User</th>
                             <th>Created At</th>
-                            <th>Total Clicks </th>
+                            <th>Total Urls </th>
+                            <th width="5%">Watch</th>
                             <th width="5%">Edit</th>
                             <th width="5%">Delete</th>
                         </tr>
@@ -39,6 +40,7 @@
                             <th>User</th>
                             <th>Created At</th>
                             <th>Total Clicks </th>
+                            <th width="5%">Watch</th>
                             <th width="5%">Edit</th>
                             <th width="5%">Delete</th>
                         </tr>
@@ -54,6 +56,9 @@
                                 </td>
                                 <td>{{$tag->created_at}}</td>
                                 <td>{{$tag->total_urls}}</td>
+                                <td>
+                                    <a href="{{route('admin.tag.show', $tag)}}" class="btn btn-primary">Xem</a>
+                                </td>
                                 <td>
                                     <a href="{{route('admin.tag.edit', $tag)}}" class="btn btn-warning">Sửa</a>
                                 </td>
@@ -71,20 +76,6 @@
     </div>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-
     {{--    Sweet Alert--}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
