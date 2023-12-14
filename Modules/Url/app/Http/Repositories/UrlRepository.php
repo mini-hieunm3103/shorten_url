@@ -29,4 +29,18 @@ class UrlRepository extends BaseRepository implements UrlRepositoryInterface
     {
         return $this->getAllUrls()->where(['user_id' => $userId]);
     }
+
+    function createUrlTags($url, $data=[]) {
+        return $url->tags()->attach($data);
+    }
+    function updateUrlTags($url, $data=[]) {
+        return $url->tags()->sync($data);
+    }
+    function getRelatedTags($url) {
+         $tagIds = $url->tags()->allRelatedIds()->toArray();
+        return  $tagIds;
+    }
+    function deleteUrlTags($url) {
+        return $url->tags()->detach();
+    }
 }

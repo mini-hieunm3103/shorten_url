@@ -9,17 +9,25 @@ use Illuminate\Http\RedirectResponse;
 use Modules\Url\app\Http\Requests\UrlRequest;
 use Illuminate\Support\Facades\Redirect;
 use Modules\Url\app\Http\Repositories\UrlRepository;
+use Modules\Tag\app\Http\Repositories\TagRepository;
 use Modules\User\app\Repositories\UserRepository;
 
 class UrlController extends Controller
 {
     protected $urlRepo;
     protected $userRepo;
+    protected $tagRepo;
     protected $faker;
-    public function __construct(UrlRepository $urlRepo, UserRepository $userRepo)
+    public function __construct
+    (
+        UrlRepository $urlRepo,
+        UserRepository $userRepo,
+        TagRepository $tagRepo,
+    )
     {
         $this->urlRepo = $urlRepo;
         $this->userRepo = $userRepo;
+        $this->tagRepo = $tagRepo;
         $this->faker = Factory::create();
     }
 
@@ -53,9 +61,15 @@ class UrlController extends Controller
      */
     public function create()
     {
-        $title = 'Thêm Shorten URL';
+        $title = 'Create Shorten URL';
         $users = $this->userRepo->getAllUsers()->get();
-        return view('url::create', compact('users'));
+        $tags = $this->tagRepo->getAllTags()->get();
+        foreach ($tags as $tag) {
+            $urlIds = $this->tagRepo->getRelatedUrls($tag);
+            $tag->total_urls = count($urlIds);
+            $tags[] = $tag;
+        }
+        return view('url::create', compact('title','users', 'tags'));
     }
 
     /**
@@ -72,8 +86,11 @@ class UrlController extends Controller
         if(empty($data['back_half'])){
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
-//        dd($data);
-        $this->urlRepo->create($data);
+        $url = $this->urlRepo->create($data);
+        if (!empty($data['tags'])){
+            $tags = $this->getTags($data);
+            $this->urlRepo->createUrlTags($url, $tags);
+        }
         return redirect()->route('admin.url.index')
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
@@ -86,8 +103,15 @@ class UrlController extends Controller
     {
         $title = "Cập Nhật URL";
         $url = $this->urlRepo->getAllUrls()->find($id);
+        $tagIds = $this->urlRepo->getRelatedTags($url);
+        $tags = $this->tagRepo->getAllTags()->get();
         $users = $this->userRepo->getAllUsers()->get();
-        return view('url::edit', compact('url', 'title', 'users'));
+        foreach ($tags as $tag) {
+            $urlIds = $this->tagRepo->getRelatedUrls($tag);
+            $tag->total_urls = count($urlIds);
+            $tags[] = $tag;
+        }
+        return view('url::edit', compact('tagIds','url', 'tags','title', 'users'));
     }
 
     /**
@@ -95,6 +119,7 @@ class UrlController extends Controller
      */
     public function update(UrlRequest $request, $id): RedirectResponse
     {
+
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token', '_method');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
@@ -105,6 +130,11 @@ class UrlController extends Controller
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
         $this->urlRepo->update($id, $data);
+        if(!empty($data['tags'])){
+            $url = $this->urlRepo->find($id);
+            $tags = $this->getTags($data);
+            $this->urlRepo->updateUrlTags($url, $tags);
+        }
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
@@ -115,6 +145,8 @@ class UrlController extends Controller
      */
     public function destroy($id)
     {
+        $url = $this->urlRepo->find($id);
+        $this->urlRepo->deleteUrlTags($url);
         $this->urlRepo->delete($id);
         return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
@@ -129,5 +161,15 @@ class UrlController extends Controller
         } else {
             $this->getBackHalf($backHalfArr);
         }
+    }
+    public function getTags ($urlData){
+        $tags = [];
+        foreach ($urlData['tags'] as $tag) {
+            $tags[$tag] = [
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ];
+        }
+        return $tags;
     }
 }
