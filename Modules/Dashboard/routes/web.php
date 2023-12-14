@@ -15,7 +15,8 @@ use Modules\Dashboard\app\Http\Controllers\DashboardController;
 */
 Route::group([
     'prefix' => 'quan-tri-vien',
-    'as' => 'admin.dashboard.'
+    'as' => 'admin.',
+    'middleware' => 'web'
 ], function (){
-    Route::get('/', 'DashboardController@index')->name('index');
+    Route::get('/', 'DashboardController@index')->name('dashboard.index');
 });

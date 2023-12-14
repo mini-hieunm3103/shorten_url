@@ -47,8 +47,6 @@
                 <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-sm-right dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">Action</span>
-                <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
                     <i class="fas fa-tasks mr-2"></i> Activity Log
                 </a>
@@ -79,7 +77,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary logout-action" href="#">Logout</a>
+                <a class="btn btn-primary logout-action" href="{{route('logout')}}">Logout</a>
                 <form method="post" class="logout-form d-none">
                     @csrf
                 </form>

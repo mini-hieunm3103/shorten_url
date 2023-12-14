@@ -77,6 +77,9 @@ function getLimitText($content, $limit=20){
 // $moduleTitle = ['user'=> 'Người Dùng', 'dashboard' => quản trị...]
 function titleBlade($actionRouteName, $moduleTitle=[]){
     $nameArr = explode('.', $actionRouteName);
+    if ($nameArr[0] != 'admin'){
+        return false;
+    }
     $module = $nameArr[1];
     $action = $nameArr[2];
     $actionArr = [
