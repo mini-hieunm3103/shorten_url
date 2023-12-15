@@ -41,9 +41,9 @@
                     <label for="">Nhóm</label>
                     <select name="group_id" class="form-control @error('group_id') is-invalid @enderror">
                         <option value="0">Chọn Nhóm</option>
-                        <option value="1">Super Administrator</option>
-                        <option value="2">Administrator</option>
-                        <option value="3">Users</option>
+                        @foreach($groups as $group)
+                            <option value="{{$group->id}}" {{old('group_id') ?? $user->group->id == $group->id ? 'selected' : false}}>{{$group->name}}</option>
+                        @endforeach
                     </select>
                     @error('group_id')
                     <span class="invalid-feedback" role="alert">

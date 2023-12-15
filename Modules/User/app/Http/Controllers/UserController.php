@@ -4,6 +4,8 @@ namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Modules\Group\app\Http\Repositories\GroupRepository;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Http\Requests\UserRequest;
 use Modules\User\app\Repositories\UserRepository;
@@ -16,16 +18,19 @@ class UserController extends Controller
     protected $userRepo;
     protected $urlRepo;
     protected $tagRepo;
+    protected $groupRepo;
     public function __construct
     (
         UserRepository $userRepo,
         UrlRepository $urlRepo,
-        TagRepository $tagRepo
+        TagRepository $tagRepo,
+        GroupRepository $groupRepo
     )
     {
         $this->userRepo = $userRepo;
         $this->urlRepo = $urlRepo;
         $this->tagRepo = $tagRepo;
+        $this->groupRepo = $groupRepo;
     }
 
     public function index()
@@ -45,7 +50,6 @@ class UserController extends Controller
             }
             $user->total_urls = $countUrls;
             $user->total_clicks = $countClicks;
-            $users[$key] = $user;
         }
         return view('user::index', compact('users', 'title'));
     }
@@ -70,8 +74,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $groups = $this->groupRepo->getAllGroups()->get();
         $title = 'Create User';
-        return view('user::create', compact('title'));
+        return view('user::create', compact('title', 'groups'));
     }
 
     /**
@@ -84,6 +89,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'group_id' => $request->group_id,
+            'user_id' => Auth::user()->id
         ]);
         return redirect()->route('admin.user.index')
             ->with('msg',
@@ -106,8 +112,9 @@ class UserController extends Controller
         if(!$user) {
             abort(404);
         }
+        $groups = $this->groupRepo->getAllGroups()->get();
         $title = 'Update User';
-        return view('user::edit', compact('title', 'user'));
+        return view('user::edit', compact('title', 'user', 'groups'));
     }
 
     /**

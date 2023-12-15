@@ -41,9 +41,9 @@
                     <label for="">Nhóm</label>
                     <select name="group_id" class="form-control @error('group_id') is-invalid @enderror">
                         <option value="0">Chọn Nhóm</option>
-                        <option value="1">Super Administrators</option>
-                        <option value="2">Administrators</option>
-                        <option value="3">Users</option>
+                        @foreach($groups as $group)
+                            <option value="{{$group->id}}" {{old('group_id') == $group->id ? 'selected' : false}}>{{$group->name}}</option>
+                        @endforeach
                     </select>
                     @error('group_id')
                     <span class="invalid-feedback" role="alert">
@@ -65,7 +65,7 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
-                <a href="{{ url()->previous() }}" class="btn btn-primary">Quay Lại</a>
+                <a href="{{ route('admin.user.index') }}" class="btn btn-primary">Quay Lại</a>
             </div>
         </div>
 

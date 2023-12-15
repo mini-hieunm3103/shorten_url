@@ -24,6 +24,7 @@
                         <th>STT</th>
                         <th>Họ Và Tên</th>
                         <th>Email</th>
+                        <th>Nhóm</th>
                         <th>Thời Gian</th>
                         <th width="10%">Shorten URLs</th>
                         <th width="10%">Total Clicks</th>
@@ -37,6 +38,7 @@
                         <th>STT</th>
                         <th>Họ Và Tên</th>
                         <th>Email</th>
+                        <th>Nhóm</th>
                         <th>Thời Gian</th>
                         <th width="10%">Shorten URLs</th>
                         <th width="10%">Total Clicks</th>
@@ -51,6 +53,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{(!empty($user->group->name)) ? $user->group->name : 'Không có nhóm?'}}</td>
                             <td>{{$user->created_at}}</td>
                             <td>{{$user->total_urls}}</td>
                             <td>{{$user->total_clicks}}</td>
@@ -74,19 +77,6 @@
 </div>
 @endsection
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{asset('admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 
 {{--    Sweet Alert--}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -100,6 +90,14 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+                "columnDefs" : [
+                    // tắt tính năng sort
+                    {"orderable": false, "targets": 7},
+                    {"orderable": false, "targets": 8},
+                    {"orderable": false, "targets": 9},
+                ],
+                "order": [[0, 'asc']],
+
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
         });
