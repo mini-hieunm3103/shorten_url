@@ -14,6 +14,11 @@ use Modules\Group\app\Http\Controllers\GroupController;
 |
 */
 
-Route::group([], function () {
+Route::group(
+    [
+        'prefix' => 'quan-tri-vien',
+        'as' => 'admin.',
+    ],
+    function () {
     Route::resource('group', GroupController::class)->names('group');
 });

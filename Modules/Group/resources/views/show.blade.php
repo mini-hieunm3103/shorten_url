@@ -1,20 +1,23 @@
 @extends('admin.layouts.master')
 @section('content')
-    <div>
-        @if(session('msg'))
-            <div class="alert alert-{{session('type')}} text-center">
-                {{session('msg')}}
-            </div>
-        @endif
-    </div>
-    <div class="mb-3">
-        <a href="{{route('admin.group.create')}}" class="btn btn-primary">Thêm mới</a>
-    </div>
     <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="">Tên</label>
+                <input readonly id="name" name="name" type="text" class="form-control"
+                       value="{{ $group->name }}" autofocus placeholder="Tên Nhóm...">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="">Người Tạo</label>
+                <input class="form-control" type="text" readonly value="{{$group->user_id ? $group->userCreate->name : false}}">
+            </div>
+        </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                    <h3 class="card-title"><b>Danh Sách Thành Viên Nhóm:</b></h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -22,11 +25,10 @@
                         <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Tên Nhóm</th>
-                            <th>Người Tạo</th>
+                            <th>Họ Và Tên</th>
+                            <th>Email</th>
                             <th>Thời Gian</th>
                             <th width="5%">Xem</th>
-                            <th width="9%">Phân Quyền</th>
                             <th width="5%">Sửa</th>
                             <th width="5%">Xóa</th>
                         </tr>
@@ -34,33 +36,29 @@
                         <tfoot>
                         <tr>
                             <th>STT</th>
-                            <th>Tên Nhóm</th>
-                            <th>Người Tạo</th>
+                            <th>Họ Và Tên</th>
+                            <th>Email</th>
                             <th>Thời Gian</th>
                             <th width="5%">Xem</th>
-                            <th width="9%">Phân Quyền</th>
                             <th width="5%">Sửa</th>
                             <th width="5%">Xóa</th>
                         </tr>
                         </tfoot>
                         <tbody>
-                        @foreach($groups as $key => $group)
-                            <tr class="">
+                        @foreach($users as $key => $user)
+                            <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$group->name}}</td>
-                                <td>{{$group->user_id ? $group->userCreate->name : false}}</td>
-                                <td>{{$group->created_at}}</td>
+                                <td>{{$user['name']}}</td>
+                                <td>{{$user['email']}}</td>
+                                <td>{{$user['created_at']}}</td>
                                 <td>
-                                    <a href="{{route('admin.group.show', $group)}}" class="btn btn-primary">Xem</a>
+                                    <a href="{{route('admin.user.show', $user['id'])}}" class="btn btn-primary">Xem</a>
                                 </td>
                                 <td>
-                                    <a href="#" class=" btn btn-secondary">Phân Quyền</a>
+                                    <a href="{{route('admin.user.edit', $user['id'])}}" class="btn btn-warning">Sửa</a>
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.group.edit', $group)}}" class="btn btn-warning">Sửa</a>
-                                </td>
-                                <td>
-                                    <a href="{{route('admin.group.destroy', $group)}}" class="btn btn-danger delete-action">Xóa</a>
+                                    <a href="{{route('admin.user.destroy', $user['id'])}}" class="btn btn-danger delete-action">Xóa</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -69,6 +67,9 @@
                     @include('admin/parts/delete')
                 </div>
             </div>
+        </div>
+        <div class="col-12">
+            <a href="{{ route('admin.group.index') }}" class="btn btn-primary">Quay Lại</a>
         </div>
     </div>
 @endsection
@@ -91,7 +92,6 @@
                     {"orderable": false, "targets": 4},
                     {"orderable": false, "targets": 5},
                     {"orderable": false, "targets": 6},
-                    {"orderable": false, "targets": 7}
                 ],
                 "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
