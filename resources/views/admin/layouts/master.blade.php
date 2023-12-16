@@ -32,17 +32,21 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+    @php
+        $modules = [
+            'user' => ['title' => 'Người Dùng'],
+            'group' => ['title' => 'Nhóm','icon' => 'users'],
+            'url' => ['title'=>'URL Rút Gọn', 'icon'=>'link'],
+            'tag'=> ['title' => 'Nhãn Dán'],
+        ];
+    @endphp
     @include('admin/parts/header')
 
-    @include('admin/parts/sidebar')
+    @include('admin/parts/sidebar', compact('modules'))
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        @if(!empty($title))
-            @include('admin/parts/title', compact('title'))
-        @else
-            @include('admin/parts/title')
-        @endif
+            @include('admin/parts/title', compact('modules'))
         <!-- /.content-header -->
 
         <!-- Main content -->
