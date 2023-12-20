@@ -19,10 +19,7 @@
             <div class="mb-3">
                 <label for="">Nhóm</label>
                 <select disabled name="group_id" class="form-control @error('group_id') is-invalid @enderror">
-                    <option value="0">Chọn Nhóm</option>
-                    <option value="1" selected>Super Administrators</option>
-                    <option value="2">Administrators</option>
-                    <option value="3">Users</option>
+                    <option value="{{$user->group->id}}">{{$user->group->name}}</option>
                 </select>
             </div>
         </div>

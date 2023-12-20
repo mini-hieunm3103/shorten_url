@@ -74,36 +74,36 @@ function getLimitText($content, $limit=20){
 //}
 
 // $actionRouteName = request()->route()->getName()
-// $moduleTitle = ['user'=> 'Người Dùng', 'dashboard' => quản trị...]
-function titleBlade($actionRouteName, $moduleTitle=[]){
+function titleBlade($actionRouteName, $modules=[], $actionArr){
     $nameArr = explode('.', $actionRouteName);
     if ($nameArr[0] != 'admin'){
         return false;
     }
     $module = $nameArr[1];
     $action = $nameArr[2];
-    $actionArr = [
-        'index' => 'Danh Sách',
-        'create' => 'Thêm Mới',
-        'edit' => 'Cập Nhật',
-        'show' => 'Thông Tin Chi Tiết',
-    ];
+
     // trường hợp đặc biệt dashboard cho admin
     if ($module === 'dashboard'){
-        echo '<li class="breadcrumb-item active">Trang Chủ</li>';
+        return  [
+            'lists' => '<li class="breadcrumb-item active">Trang Chủ</li>',
+            'title' => 'Trang Chủ'
+        ];
     } else{
         if ($action === 'index'){
-            echo '
+            return  [
+                'lists' => '
             <li class="breadcrumb-item"><a href="'.route('admin.dashboard.index').'">Trang Chủ</a></li>
-            <li class="breadcrumb-item active">'.$actionArr[$action].' '.$moduleTitle[$module].'</li>
-        ';
+            <li class="breadcrumb-item active">'.$actionArr[$action].' '.$modules[$module]['title'].'</li>',
+                'title' => $actionArr[$action].' '.$modules[$module]['title']
+            ];
         }else {
-            echo '
-            <li class="breadcrumb-item"><a href="'.route('admin.dashboard.index').'">Trang Chủ</a></li>
-            <li class="breadcrumb-item"><a href="'.route('admin.'.$module.'.index').'">'.$moduleTitle[$module].'</a></li>
-            <li class="breadcrumb-item active">'.$actionArr[$action].' '.$moduleTitle[$module].'</li>
-        ';
+            return [
+                'lists' => '<li class="breadcrumb-item"><a href="'.route('admin.dashboard.index').'">Trang Chủ</a></li>
+                            <li class="breadcrumb-item"><a href="'.route('admin.'.$module.'.index').'">'.$modules[$module]['title'].'</a></li>
+                            <li class="breadcrumb-item active">'.$actionArr[$action].' '.$modules[$module]['title'].'</li>',
+                'title' => $actionArr[$action].' '.$modules[$module]['title']
+                ];
         }
     }
-
+    return false;
 }

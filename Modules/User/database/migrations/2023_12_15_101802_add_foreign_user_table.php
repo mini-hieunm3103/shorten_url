@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('users', 'group_id')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->integer('group_id')->after('email');
-            });
-        }
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('group_id')->references('id')->on('groups');
+        });
     }
 
     /**
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('group_id');
+            $table->dropForeign('users_group_id_foreign');
         });
     }
 };

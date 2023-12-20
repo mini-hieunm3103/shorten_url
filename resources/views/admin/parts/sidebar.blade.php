@@ -36,23 +36,15 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
 
-
-                <li class="nav-header">USERS</li>
-                @include('admin.parts.menu', [
-                    'name' => 'user',
-                    'title' => 'Người Dùng'
-                ])
-                <li class="nav-header">SHORTEN URLS</li>
-                @include('admin.parts.menu', [
-                    'name' => 'url',
-                    'title' => 'URL Rút Gọn',
-                    'icon' => 'link'
-                ])
-                <li class="nav-header">TAGS</li>
-                @include('admin.parts.menu', [
-                    'name' => 'tag',
-                    'title' => 'Nhãn Dán'
-                ])
+                @foreach($modules as $name => $data)
+                    <li class="nav-header">{{ strtoupper($name).'S' }}</li>
+{{--                @dd($data['title'], $name, !empty($data['icon']) ? $data['icon'] : $name)--}}
+                    @include('admin.parts.menu', [
+                        'name' => $name,
+                        'title' => $data['title'],
+                        'icon' => !empty($data['icon']) ? $data['icon'] : $name,
+                    ])
+                @endforeach
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
