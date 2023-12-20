@@ -18,7 +18,7 @@ class GroupRepository extends BaseRepository implements GroupRepositoryInterface
     public function getAllGroups(){
         return $this->model->select(['id','name','user_id', 'created_at']);
     }
-    public function getRelatedUsers($user){
-        return $user->group;
+    public function getRelatedUsers($group){
+        return $group->users;
     }
 }

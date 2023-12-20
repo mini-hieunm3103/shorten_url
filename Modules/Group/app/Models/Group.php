@@ -20,7 +20,7 @@ class Group extends Model
         'permission'
     ];
     function users(){
-        return $this->hasMany(User::class, 'user');
+        return $this->hasMany(User::class);
     }
     function userCreate()
     {
