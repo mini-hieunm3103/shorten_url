@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', "Admin\LoginController@showLoginForm")->name('login');
-Route::post('/login', "Admin\LoginController@login");
+Route::get('/login.php', "Admin\LoginController@showLoginForm")->name('login');
+Route::post('/login.php', "Admin\LoginController@login");
 
-Route::post('/logout', 'Admin\LoginController@logout')->name('logout');
+Route::post('/logout.php', 'Admin\LoginController@logout')->name('logout');
 
 // forgot password and reset password
-Route::get('password/reset', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset.php', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email.php', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 Route::get('password/reset/{token}', 'Admin\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Admin\ResetPasswordController@reset')->name('password.update');
+Route::post('password/reset.php', 'Admin\ResetPasswordController@reset')->name('password.update');

@@ -7,5 +7,6 @@
     "Dashboard": true,
     "Tag": true,
     "Auth": true,
-    "Group": true
+    "Group": true,
+    "Access": true
 }

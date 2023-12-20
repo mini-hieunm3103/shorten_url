@@ -86,7 +86,7 @@
                                     <td>{{getLimitText($tag->title)}}</td>
                                     <td>{{getLimitText($tag->description)}}</td>
                                     <td>
-                                        <a href="{{route('admin.user-urls.show', $tag->user->id)}}">{{$tag->user->name}}</a>
+                                        <a href="{{route('admin.user.show', $tag->user->id)}}">{{$tag->user->name}}</a>
                                     </td>
                                     <td>{{$tag->created_at}}</td>
                                 </tr>
@@ -98,7 +98,7 @@
             </div>
             <div class="mb-3 ml-2">
                 <a href="{{route('admin.url.edit', compact('url'))}}" class="btn btn-warning">Chỉnh sửa URL rút gọn</a>
-                <a href="{{route('admin.tag.create')}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
+                <a href="{{route('admin.tag.create', ['url_id' => $url->id])}}" class="btn btn-primary">Thêm Mới Nhãn Dán Cho URL</a>
                 <a href="{{route('admin.url.index')}}" class="btn btn-secondary">Quay về</a>
             </div>
         </div>

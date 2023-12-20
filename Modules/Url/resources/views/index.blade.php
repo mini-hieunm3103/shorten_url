@@ -61,7 +61,7 @@
                                 <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                             </td>
                             <td>
-                                <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
 
                             </td>
                             <td>{{$url->created_at}}</td>
@@ -99,6 +99,13 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+                "columnDefs" : [
+                    // tắt tính năng sort
+                    {"orderable": false, "targets": 8},
+                    {"orderable": false, "targets": 9},
+                    {"orderable": false, "targets": 10},
+                ],
+                "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
         });

@@ -14,7 +14,7 @@ class UrlRequest extends FormRequest
         $id = $this->route()->url;
         $rules = [
             'title' => 'max:255',
-            'back_half' => 'unique:urls,back_half',
+            'back_half' => 'unique:urls,back_half|regex:#^[a-zA-Z0-9]+$#',
             'long_url' => 'required|url|string|max:255|url',
             'user_id' => ['required','integer', function($attribute, $value, $fail){
                 if ($value == 0){
@@ -35,6 +35,7 @@ class UrlRequest extends FormRequest
             'max' => __('url::validation.max'),
             'integer' => __('url::validation.integer'),
             'url' => __('url::validation.url'),
+            'regex' => __('url::validation.regex')
         ];
     }
 

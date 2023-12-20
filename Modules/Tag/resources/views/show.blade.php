@@ -58,8 +58,6 @@
                             <th>Thời Gian</th>
                             <th>Hết Hạn</th>
                             <th width="5%">Clicks</th>
-                            <th width="5%">Sửa</th>
-                            <th width="5%">Xóa</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -72,8 +70,6 @@
                             <th>Thời Gian</th>
                             <th>Hết Hạn</th>
                             <th width="5%">Clicks</th>
-                            <th width="5%">Sửa</th>
-                            <th width="5%">Xóa</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -88,18 +84,12 @@
                                     <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                    <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
 
                                 </td>
                                 <td>{{$url->created_at}}</td>
                                 <td>{{$url->expired_at}}</td>
                                 <td>{{$url->clicks}}</td>
-                                <td>
-                                    <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
-                                </td>
-                                <td>
-                                    <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
-                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -110,7 +100,7 @@
         </div>
         <div class="mb-3 ml-2">
             <a href="{{route('admin.tag.edit', compact('tag'))}}" class="btn btn-warning">Chỉnh sửa nhãn dán</a>
-            <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm Mới URL rút gọn</a>
+            <a href="{{route('admin.url.create', ['tag_id' => $tag->id])}}" class="btn btn-primary">Thêm Mới URL rút gọn cho Tag</a>
             <a href="{{route('admin.tag.index')}}" class="btn btn-secondary">Quay về</a>
         </div>
     </div>

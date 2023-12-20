@@ -31,7 +31,7 @@
                         <option value="0">Select User</option>
                         @if($users->count())
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if(old('user_id') == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
+                                <option value="{{$user->id}}" @if(old('user_id') ?? request()->user_id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -91,7 +91,7 @@
                             @foreach($urls as $key => $url)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" id="checkbox{{$key+1}}" {{!empty(old('urls'))&& in_array($url->id, old('urls')) ? 'checked' : false}}>
+                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" id="checkbox{{$key+1}}" {{!empty(old('urls')) && in_array( $url->id , old('urls')) || request()->query('url_id') == $url->id ? 'checked' : false}}>
                                     </td>
                                     <td>{{getLimitText($url->title)}}</td>
                                     <td>
@@ -101,7 +101,7 @@
                                         <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                                     </td>
                                     <td>
-                                        <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                        <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
                                     </td>
                                     <td>{{$url->created_at}}</td>
                                     <td>{{$url->expired_at}}</td>

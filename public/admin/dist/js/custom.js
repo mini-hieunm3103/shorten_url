@@ -23,7 +23,6 @@ if (tableList){
 }
 const logoutAction = document.querySelector('.logout-action');
 const logoutForm = document.querySelector('.logout-form');
-console.log(logoutAction)
 if (logoutAction && logoutForm){
     logoutAction.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -31,4 +30,9 @@ if (logoutAction && logoutForm){
 
         logoutForm.submit();
     })
+}
+let linkList = document.querySelectorAll('.limited-url');
+
+for(var i in linkList){
+    linkList[i].setAttribute('target', '_blank');
 }

@@ -107,7 +107,7 @@
                                     <td>{{getLimitText($tag->title)}}</td>
                                     <td>{{getLimitText($tag->description)}}</td>
                                     <td>
-                                        <a href="{{route('admin.user-urls.show', $tag->user->id)}}">{{$tag->user->name}}</a>
+                                        <a href="{{route('admin.user.show', $tag->user->id)}}">{{$tag->user->name}}</a>
                                     </td>
                                     <td>{{$tag->created_at}}</td>
                                     <td>{{$tag->total_urls}}</td>

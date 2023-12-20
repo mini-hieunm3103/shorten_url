@@ -54,72 +54,70 @@
         <a href="{{route('admin.user.edit', compact('user'))}}" class="btn btn-warning" style="color: #ffffff">Chỉnh sửa người dùng</a>
         <a href="{{route('admin.user.index')}}" class="btn btn-secondary">Quay về</a>
     </div>
-
-
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Shorten URL  Created By {{$user->name}}</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="urlsTable" class="table table-bordered table-hover">
-                        <thead>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Shorten URL  Created By {{$user->name}}</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="urlsTable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Title</th>
+                        <th>Long URL</th>
+                        <th>Back-Half</th>
+                        <th>Created At</th>
+                        <th>Expired At</th>
+                        <th width="5%">Clicks</th>
+                        <th width="5%">Sửa</th>
+                        <th width="5%">Xóa</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>STT</th>
+                        <th>Title</th>
+                        <th>Long URL</th>
+                        <th>Back-Half</th>
+                        <th>Created At</th>
+                        <th>Expired At</th>
+                        <th width="5%">Clicks</th>
+                        <th width="5%">Sửa</th>
+                        <th width="5%">Xóa</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach($urls as $key => $url)
                         <tr>
-                            <th>STT</th>
-                            <th>Title</th>
-                            <th>Long URL</th>
-                            <th>Back-Half</th>
-                            <th>Thời Gian</th>
-                            <th>Hết Hạn</th>
-                            <th width="5%">Clicks</th>
-                            <th width="5%">Sửa</th>
-                            <th width="5%">Xóa</th>
+                            <td>{{$key+1}}</td>
+                            <td>{{getLimitText($url->title)}}</td>
+                            <td>
+                                <a class="limited-url" href="{{$url->long_url}}">{{getLimitUrl($url->long_url)}}</a>
+                            </td>
+                            <td>
+                                <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
+                            </td>
+                            <td>{{$url->created_at}}</td>
+                            <td>{{$url->expired_at}}</td>
+                            <td>{{$url->clicks}}</td>
+                            <td>
+                                <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
+                            </td>
+                            <td>
+                                <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
+                            </td>
                         </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>STT</th>
-                            <th>Title</th>
-                            <th>Long URL</th>
-                            <th>Back-Half</th>
-                            <th>Thời Gian</th>
-                            <th>Hết Hạn</th>
-                            <th width="5%">Clicks</th>
-                            <th width="5%">Sửa</th>
-                            <th width="5%">Xóa</th>
-                        </tr>
-                        </tfoot>
-                        <tbody>
-                        @foreach($urls as $key => $url)
-                            <tr>
-                                <td>{{$key+1}}</td>
-                                <td>{{getLimitText($url->title)}}</td>
-                                <td>
-                                    <a class="limited-url" href="{{$url->long_url}}">{{getLimitUrl($url->long_url)}}</a>
-                                </td>
-                                <td>
-                                    <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
-                                </td>
-                                <td>{{$url->created_at}}</td>
-                                <td>{{$url->expired_at}}</td>
-                                <td>{{$url->clicks}}</td>
-                                <td>
-                                    <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
-                                </td>
-                                <td>
-                                    <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    @include('admin/parts/delete')
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
+                @include('admin/parts/delete')
             </div>
         </div>
+    </div>
     <div class="mb-3 ml-2">
-        <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm Mới URL Rút Gọn</a>
+        <a href="{{route('admin.url.create', ['user_id' => $user->id])}}" class="btn btn-primary">Thêm Mới URL Rút Gọn</a>
     </div>
     <div class="col-12">
         <div class="card">
@@ -134,7 +132,6 @@
                         <th>STT</th>
                         <th>Title Tag</th>
                         <th>Description</th>
-                        <th>User</th>
                         <th>Created At</th>
                         <th width="5%">Edit</th>
                         <th width="5%">Delete</th>
@@ -145,7 +142,6 @@
                         <th>STT</th>
                         <th>Title Tag</th>
                         <th>Description</th>
-                        <th>User</th>
                         <th>Created At</th>
                         <th width="5%">Edit</th>
                         <th width="5%">Delete</th>
@@ -157,9 +153,6 @@
                             <td>{{$key+1}}</td>
                             <td>{{getLimitText($tag->title)}}</td>
                             <td>{{getLimitText($tag->description)}}</td>
-                            <td>
-                                <a href="{{route('admin.user-urls.show', $tag->user->id)}}">{{$tag->user->name}}</a>
-                            </td>
                             <td>{{$tag->created_at}}</td>
                             <td>
                                 <a href="{{route('admin.tag.edit', $tag)}}" class="btn btn-warning">Sửa</a>
@@ -174,7 +167,7 @@
             </div>
         </div>
         <div class="mb-3">
-            <a href="{{route('admin.tag.create')}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
+            <a href="{{route('admin.tag.create', ['user_id' => $user->id])}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
         </div>
     </div>
 @endsection
@@ -190,6 +183,11 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+                "columnDefs": [
+                    { orderable: false, targets: 7 },
+                    { orderable: false, targets: 8 },
+                ],
+                "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#urlsTable_wrapper .col-md-6:eq(0)');
             $('#tagsTable').DataTable({
@@ -200,6 +198,11 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+                "columnDefs": [
+                    { orderable: false, targets: 4 },
+                    { orderable: false, targets: 5 }
+                ],
+                "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#tagsTable_wrapper .col-md-6:eq(0)');
         });

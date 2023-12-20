@@ -7,6 +7,7 @@ return [
     'integer' => ':attribute must be a integer',
     'url' => ':attribute must be url',
     'select' => ':attribute must be chosen',
+    'regex' => 'Only letters (a-z), uppercase letter (A-Z) and numbers (0-9) are allowed',
     'attributes' => [
         'long_url' => 'Destination',
         'back_half' => 'Back-half',

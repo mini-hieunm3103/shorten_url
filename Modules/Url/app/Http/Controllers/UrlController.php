@@ -73,7 +73,7 @@ class UrlController extends Controller
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
         }
-        return view('url::create', compact('title','users', 'tags'));
+        return view('url::create', compact('title', 'users', 'tags'));
     }
 
     /**
@@ -91,7 +91,6 @@ class UrlController extends Controller
         if(empty($data['back_half'])){
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
-        dd($data);
         $url = $this->urlRepo->create($data);
         if (!empty($data['tags'])){
             $tags = $this->getTags($data);

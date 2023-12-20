@@ -107,7 +107,7 @@
                                         <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                                     </td>
                                     <td>
-                                        <a href="{{route('admin.user-urls.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                        <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
                                     </td>
                                     <td>{{$url->created_at}}</td>
                                     <td>{{$url->expired_at}}</td>

@@ -48,7 +48,13 @@
                             <tr class="">
                                 <td>{{$key+1}}</td>
                                 <td>{{$group->name}}</td>
-                                <td>{{$group->user_id ? $group->userCreate->name : false}}</td>
+                                @if($group->user_id)
+                                    <td>
+                                        <a href="{{route('admin.user.show', $group->userCreate->id)}}">{{$group->userCreate->name}}</a>
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
                                 <td>{{$group->created_at}}</td>
                                 <td>
                                     <a href="{{route('admin.group.show', $group)}}" class="btn btn-primary">Xem</a>

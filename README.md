@@ -1,4 +1,7 @@
 # Laravel - Shorten URL Project:
+## Note: Tôi lười và bạn cũng thế:
+- Tuy có file cho migration và seeder hẳn hoi, nhưng do dùng laravel module nên nếu muốn seed thì phải làm từng module   
+- Vì vậy hãy tìm file sql trong project rồi import thẳng cho nhanh ❤️
 ## Admin Page:
 - Manage: Users, Groups, Tags, Urls (Create, Read lists, Edit, Delete, Read Detail)
 - Relationship Database:
