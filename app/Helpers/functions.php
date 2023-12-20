@@ -74,19 +74,14 @@ function getLimitText($content, $limit=20){
 //}
 
 // $actionRouteName = request()->route()->getName()
-function titleBlade($actionRouteName, $modules=[]){
+function titleBlade($actionRouteName, $modules=[], $actionArr){
     $nameArr = explode('.', $actionRouteName);
     if ($nameArr[0] != 'admin'){
         return false;
     }
     $module = $nameArr[1];
     $action = $nameArr[2];
-    $actionArr = [
-        'index' => 'Danh Sách',
-        'create' => 'Thêm Mới',
-        'edit' => 'Cập Nhật',
-        'show' => 'Thông Tin Chi Tiết',
-    ];
+
     // trường hợp đặc biệt dashboard cho admin
     if ($module === 'dashboard'){
         return  [

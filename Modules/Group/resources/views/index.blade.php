@@ -54,7 +54,7 @@
                                     <a href="{{route('admin.group.show', $group)}}" class="btn btn-primary">Xem</a>
                                 </td>
                                 <td>
-                                    <a href="#" class=" btn btn-secondary">Phân Quyền</a>
+                                    <a href="{{route('admin.group.permission', $group)}}" class=" btn btn-secondary">Phân Quyền</a>
                                 </td>
                                 <td>
                                     <a href="{{route('admin.group.edit', $group)}}" class="btn btn-warning">Sửa</a>

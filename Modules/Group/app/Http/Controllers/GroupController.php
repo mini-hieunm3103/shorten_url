@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Modules\Group\app\Http\Requests\GroupRequest;
 use Illuminate\Support\Facades\Auth;
 use Modules\Group\app\Http\Repositories\GroupRepository;
+use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
     /**
@@ -100,5 +101,15 @@ class GroupController extends Controller
         return redirect()->route('admin.group.index')
             ->with('msg', 'Bạn Không Thể Xóa Nhóm Do Trong Nhóm Đang Có '.$usersCount.' Người Dùng!')
             ->with('type', 'danger');
+    }
+    public function getPermissionForm($id)
+    {
+        $group = $this->groupRepo->find($id);
+        $modules = DB::table('modules')->get();
+        return view('group::permission', compact('group', 'modules'));
+    }
+    public function permissionHandle($id)
+    {
+        echo $id;
     }
 }

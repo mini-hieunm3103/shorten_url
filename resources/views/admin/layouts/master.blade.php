@@ -33,11 +33,18 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     @php
-        $modules = [
-            'user' => ['title' => 'Người Dùng'],
-            'group' => ['title' => 'Nhóm','icon' => 'users'],
-            'url' => ['title'=>'URL Rút Gọn', 'icon'=>'link'],
-            'tag'=> ['title' => 'Nhãn Dán'],
+    $moduleArr = DB::table('modules')->get();
+    $modules = [];
+    foreach ($moduleArr as $module) {
+        $modules[$module->name]['title'] = $module->title;
+        $modules[$module->name]['icon'] = !empty($module->icon) ? $module->icon : $module->name;
+    }
+        $actionArr = [
+            'index' => 'Danh Sách',
+            'create' => 'Thêm Mới',
+            'edit' => 'Cập Nhật',
+            'show' => 'Thông Tin Chi Tiết',
+            'permission' => 'Phân Quyền'
         ];
     @endphp
     @include('admin/parts/header')
@@ -46,7 +53,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-            @include('admin/parts/title', compact('modules'))
+            @include('admin/parts/title', compact('modules', 'actionArr'))
         <!-- /.content-header -->
 
         <!-- Main content -->

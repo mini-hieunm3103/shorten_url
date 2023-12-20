@@ -21,4 +21,14 @@ Route::group(
     ],
     function () {
     Route::resource('group', GroupController::class)->names('group');
+    Route::group(
+        [
+            'as' => 'group.',
+            'prefix' => 'group'
+        ],
+        function (){
+            Route::get('/{id}/permission', [GroupController::class, 'getPermissionForm'])->name('permission');
+            Route::post('/{id}', [GroupController::class, 'permissionHandle'])->name('permission-handle');
+        }
+    );
 });
