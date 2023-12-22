@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('long_url');
             $table->string('back_half')->nullable(); //cái đằng sau domain
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->integer('clicks')->default(0);
             $table->timestamps();
             $table->timestamp('expired_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->nullable();
-            $table->text('permissions')->nullable(); // chuỗi json phân quyền
-            $table->integer('user_id')->unsigned(); // ai là người tạo ra
-            $table->timestamps();
-            // khóa ngoại
+        Schema::table('groups', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
@@ -27,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::table('groups', function (Blueprint $table) {
+            $table->dropForeign('groups_user_id_foreign');
+            $table->dropForeign('groups_role_id_foreign');
+        });
     }
 };

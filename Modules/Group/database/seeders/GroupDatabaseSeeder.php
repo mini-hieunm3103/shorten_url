@@ -7,6 +7,9 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Modules\User\app\Models\User;
 class GroupDatabaseSeeder extends Seeder
 {
     /**
@@ -14,12 +17,39 @@ class GroupDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('modules')->insert([
+            'name' => 'group',
+            'title' => 'Nhóm',
+            'icon' => 'users',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('modules')->insert([
+            'name' => 'user',
+            'title' => 'Người Dùng',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('modules')->insert([
+            'name' => 'tag',
+            'title' => 'Nhãn Dán',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('modules')->insert([
+            'name' => 'url',
+            'title' => 'URL Rút Gọn',
+            'icon' => 'link',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
         $faker = Factory::create();
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
         $groupId = DB::table('groups')->insertGetId(
             [
                 'name'=>'Super Administrator',
                 'user_id'=>0,
+                'role_id' =>0,
                 'created_at'=> date('Y-m-d H:i:s'),
                 'updated_at'=> date('Y-m-d H:i:s'),
             ]
@@ -29,7 +59,7 @@ class GroupDatabaseSeeder extends Seeder
             $userId = DB::table('users')->insertGetId([
                 'name'=>'Nguyễn Minh Hiếu',
                 'email'=>'hieunm3103@gmail.com',
-                'password'=>Hash::make('111111'),
+                'password'=>Hash::make('12345678'),
                 'group_id'=>$groupId,
                 'created_at'=> date('Y-m-d H:i:s'),
                 'updated_at'=> date('Y-m-d H:i:s'),
@@ -54,6 +84,53 @@ class GroupDatabaseSeeder extends Seeder
                         'expired_at' => Carbon::now()->addDays(30),
                     ]);
                 }
+                // Seeding Role => group
+                $group = DB::table('groups')->first();
+                // do ở route sẽ sử dụng middleware dạng role:role_name
+                Role::create(['name' => str_replace(' ', '_', strtolower(trim($group->name)))]);
+                // Sửa role_id của super admin:
+                DB::table('groups')->where('id', $groupId)->update(['role_id' => 1]);
+                // Seeding Permission => module
+                $superAdminRole = Role::first();
+                $modules = DB::table('modules')->get();
+                $actionArr = ['view', 'show', 'create', 'edit', 'delete'];
+
+                for ($i = 0; $i < count($actionArr); $i++) {
+                    foreach ($modules as $module) {
+                        if ($actionArr[$i] == 'view'){
+                            // chú ý: ở đây là `view users` not `view user`
+                            $permission = ['name' => $actionArr[$i].' '.$module->name.'s'];
+                        } else {
+                            $permission = ['name' => $actionArr[$i].' '.$module->name];
+                        }
+                        // tạo quyền cơ bản
+                        Permission::create($permission);
+                        // gán quyền cho role super admin
+                        $superAdminRole->givePermissionTo($permission);
+                    }
+                }
+                // tạo quyền phân quyền cho super admin
+                Permission::create(['name' => 'permission group']);
+                $superAdminRole->givePermissionTo(['name' => 'permission group']);
+                // gán vai trò cho user này
+                User::find($userId)->assignRole('super_administrator');
+                // tạo sẵn 2 group
+                $adminRole = Role::create(['name' => 'administrator']);
+                DB::table('groups')->insert([
+                    'name'=>'Administrator',
+                    'user_id'=> $userId,
+                    'role_id' => $adminRole->id,
+                    'created_at'=> date('Y-m-d H:i:s'),
+                    'updated_at'=> date('Y-m-d H:i:s'),
+                ]);
+                $userRole = Role::create(['name' => 'user']);
+                DB::table('groups')->insert([
+                    'name'=>'User',
+                    'user_id'=> $userId,
+                    'role_id' => $userRole->id,
+                    'created_at'=> date('Y-m-d H:i:s'),
+                    'updated_at'=> date('Y-m-d H:i:s'),
+                ]);
             }
         }
     }

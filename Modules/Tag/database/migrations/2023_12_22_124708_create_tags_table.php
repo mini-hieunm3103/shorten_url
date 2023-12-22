@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tags', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->change()->after('description');
+        Schema::create('tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->text('description');
+            $table->integer('user_id')->unsigned();
+            $table->timestamps();
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -22,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tags', function (Blueprint $table) {
-            $table->dropForeign('tags_user_id_foreign');
-        });
+        Schema::dropIfExists('tags');
     }
 };

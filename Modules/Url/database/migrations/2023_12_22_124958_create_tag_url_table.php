@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('url_tag', function (Blueprint $table) {
+        Schema::create('tag_url', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('url_id')->unsigned();
             $table->integer('tag_id')->unsigned();
@@ -22,12 +22,11 @@ return new class extends Migration
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('url_tag');
+        Schema::dropIfExists('tag_url');
     }
 };

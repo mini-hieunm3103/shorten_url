@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('urls', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->change();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->foreign('module_id')->references('id')->on('modules');
+
         });
     }
 
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('urls', function (Blueprint $table) {
-            $table->dropForeign('urls_user_id_foreign');
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->dropForeign('permissions_module_id_foreign');
         });
     }
 };
