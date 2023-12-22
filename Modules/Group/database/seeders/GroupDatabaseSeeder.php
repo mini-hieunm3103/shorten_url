@@ -2,14 +2,16 @@
 
 namespace Modules\Group\database\seeders;
 
+use App\Models\PermissionModel;
 use Carbon\Carbon;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Faker\Factory;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Modules\User\app\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 class GroupDatabaseSeeder extends Seeder
 {
     /**
@@ -95,22 +97,25 @@ class GroupDatabaseSeeder extends Seeder
                 $modules = DB::table('modules')->get();
                 $actionArr = ['view', 'show', 'create', 'edit', 'delete'];
 
-                for ($i = 0; $i < count($actionArr); $i++) {
-                    foreach ($modules as $module) {
+                foreach ($modules as $module) {
+                    for ($i = 0; $i < count($actionArr); $i++) {
                         if ($actionArr[$i] == 'view'){
                             // chú ý: ở đây là `view users` not `view user`
-                            $permission = ['name' => $actionArr[$i].' '.$module->name.'s'];
+                            $permission = ['name' => $actionArr[$i].' '.$module->name.'s', 'module_id' => $module->id];
                         } else {
-                            $permission = ['name' => $actionArr[$i].' '.$module->name];
+                            $permission = ['name' => $actionArr[$i].' '.$module->name, 'module_id' => $module->id];
                         }
                         // tạo quyền cơ bản
-                        Permission::create($permission);
+                        PermissionModel::createWithModuleId($permission);
                         // gán quyền cho role super admin
                         $superAdminRole->givePermissionTo($permission);
                     }
+                    if ($module->name == 'group'){
+                        Permission::create(['name' => 'permission group', 'module_id'=>$module->id]);
+                    }
                 }
                 // tạo quyền phân quyền cho super admin
-                Permission::create(['name' => 'permission group']);
+
                 $superAdminRole->givePermissionTo(['name' => 'permission group']);
                 // gán vai trò cho user này
                 User::find($userId)->assignRole('super_administrator');
