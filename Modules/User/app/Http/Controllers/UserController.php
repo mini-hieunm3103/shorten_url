@@ -10,6 +10,8 @@ use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Http\Requests\UserRequest;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\Tag\app\Http\Repositories\TagRepository;
+use Spatie\Permission\Models\Role;
+
 class UserController extends Controller
 {
     /**
@@ -84,13 +86,16 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): RedirectResponse
     {
-        $this->userRepo->create([
+        $group = $this->groupRepo->find($request->group_id);
+        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+        $user = $this->userRepo->create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'group_id' => $request->group_id,
             'user_id' => Auth::user()->id
         ]);
+        $user->assignRole($roleGroup->name);
         return redirect()->route('admin.user.index')
             ->with('msg',
                 __('messages.success',
@@ -126,7 +131,13 @@ class UserController extends Controller
         if($request->password){
             $data['password'] = bcrypt($request->password);
         }
+        // sync role
+        $user = $this->userRepo->find($id);
+        $group = $this->groupRepo->find($request->group_id);
+        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+
         $this->userRepo->update($id, $data);
+        $user->syncRoles($roleGroup->name);
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'User']))
             ->with('type', 'success');
@@ -137,7 +148,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $user = $this->userRepo->find($id);
+        $group = $this->groupRepo->find($user->group_id);
+        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+
         $this->userRepo->delete($id);
+        // remove role
+        $user->removeRole($roleGroup->name);
         return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'User']))
             ->with('type', 'success');
     }
