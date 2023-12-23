@@ -5,6 +5,7 @@ namespace Modules\Group\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Module;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Modules\Group\app\Http\Requests\GroupRequest;
 use Illuminate\Support\Facades\Auth;
 use Modules\Group\app\Http\Repositories\GroupRepository;
@@ -43,6 +44,8 @@ class GroupController extends Controller
     {
         $data = $request->except('_token');
         $data['user_id'] = Auth::user()->id;
+        $roleGroup = Role::create(['name' => Str::slug($data['name'], '_')]);
+        $data['role_id'] = $roleGroup->id;
         $this->groupRepo->create($data);
         return redirect()->route('admin.group.index')
             ->with('msg',
@@ -97,6 +100,7 @@ class GroupController extends Controller
         $usersCount = count($this->groupRepo->getRelatedUsers($group));
         if ($usersCount == 0) {
             $this->groupRepo->delete($id);
+            Role::findById($group->role_id)->delete();
             return redirect()->route('admin.group.index')
                 ->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Group']))
                 ->with('type', 'success');

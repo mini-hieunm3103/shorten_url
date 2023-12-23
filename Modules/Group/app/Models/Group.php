@@ -17,7 +17,8 @@ class Group extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'permission'
+        'permission',
+        'role_id'
     ];
     function users(){
         return $this->hasMany(User::class);
