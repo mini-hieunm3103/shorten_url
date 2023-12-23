@@ -89,11 +89,10 @@ class GroupDatabaseSeeder extends Seeder
                 // Seeding Role => group
                 $group = DB::table('groups')->first();
                 // do ở route sẽ sử dụng middleware dạng role:role_name
-                Role::create(['name' => str_replace(' ', '_', strtolower(trim($group->name)))]);
+                $superAdminRole = Role::create(['name' => str_replace(' ', '_', strtolower(trim($group->name)))]);
                 // Sửa role_id của super admin:
-                DB::table('groups')->where('id', $groupId)->update(['role_id' => 1]);
+                DB::table('groups')->where('id', $groupId)->update(['role_id' => $superAdminRole->id]);
                 // Seeding Permission => module
-                $superAdminRole = Role::first();
                 $modules = DB::table('modules')->get();
                 $actionArr = ['view', 'show', 'create', 'edit', 'delete'];
 

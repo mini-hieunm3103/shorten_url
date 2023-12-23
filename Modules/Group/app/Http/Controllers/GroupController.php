@@ -3,11 +3,14 @@
 namespace Modules\Group\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Module;
 use Illuminate\Http\RedirectResponse;
 use Modules\Group\app\Http\Requests\GroupRequest;
 use Illuminate\Support\Facades\Auth;
 use Modules\Group\app\Http\Repositories\GroupRepository;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 class GroupController extends Controller
 {
     /**
@@ -105,11 +108,33 @@ class GroupController extends Controller
     public function getPermissionForm($id)
     {
         $group = $this->groupRepo->find($id);
-        $modules = DB::table('modules')->get();
-        return view('group::permission', compact('group', 'modules'));
+        $permissionsGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first()->permissions;
+        $permissionIdsArr = [];
+        foreach ($permissionsGroup as $permission) {
+            $permissionIdsArr[] = $permission->id;
+        }
+        $modules = Module::all();
+        return view('group::permission', compact('group', 'modules', 'permissionIdsArr'));
     }
-    public function permissionHandle($id)
+
+    /**
+     * @param $id
+     * Note: syncPermissions(['name' => 'view users'])
+     */
+    public function permissionHandle(Request $request, $id)
     {
-        echo $id;
+        $group = $this->groupRepo->find($id);
+
+        $request->validate([
+            'permissions' => 'required'
+        ], [
+            'permissions.required' => 'Permissions Is Required!'
+        ]);
+        $permissionsSync = $request->permissions;
+        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+        $roleGroup->syncPermissions($permissionsSync);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Permissions', 'attribute' => 'Group']))
+            ->with('type', 'success');
     }
 }
