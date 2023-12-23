@@ -8,5 +8,6 @@
     "Tag": true,
     "Auth": true,
     "Group": true,
-    "Access": true
+    "Access": true,
+    "Test": true
 }

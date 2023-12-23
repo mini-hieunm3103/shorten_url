@@ -1,6 +1,18 @@
 @extends('admin.layouts.master')
 
 @section('content')
+    @if($errors->any())
+        {!! implode('', $errors->all('
+            <div class="alert-danger alert text-center font-weight-bold" style="color:#c4434f;background-color:#f8d7da;border-color:#f5c6cb">
+                :message
+            </div>
+        ')) !!}
+    @endif
+    @if(session('msg'))
+        <div class="alert alert-{{session('type')}} text-center">
+            {{session('msg')}}
+        </div>
+    @endif
     <div class="row">
         <div class="col-6">
             <div class="mb-3">
@@ -17,6 +29,8 @@
         </div>
         <div class="col-12">
             <form action="{{route('admin.group.permission-handle', ['id' => $group->id])}}" method="post">
+                @csrf
+                @method('PUT')
                 <div class="mb-3">
                     <div class="card">
                         <div class="card-header">
@@ -48,22 +62,16 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                @foreach($modules as $module)
-                                    <tr>
-                                        <td>{{$module->title}}</td>
-                                        <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        @if($module->name == 'group')
-                                            <td style="text-align: center"><input class="" type="checkbox" name="" id=""></td>
-                                        @else
-                                            <td style="text-align: center"><input disabled class="" type="checkbox" name="" id=""></td>
-                                        @endif
-
-                                    </tr>
-                                @endforeach
+                                    @foreach($modules as $module)
+                                        <tr>
+                                            <td>{{$module->title}}</td>
+                                            @foreach($module->permissions()->get() as $permission)
+                                                    <td style="text-align: center">
+                                                        <input class="" type="checkbox" name="permissions[]" value="{{$permission->name}}" {{!empty($permissionIdsArr) && in_array($permission->id, $permissionIdsArr) ? 'checked' : false}}>
+                                                    </td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

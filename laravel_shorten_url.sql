@@ -310,7 +310,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `group_id`, `email_verified_at`, `pa
 (77, 'Melody Graham', 'sgrimes@example.org', 3, NULL, '$2y$12$54GmeOdWIAlUUVwD9J3su.z6yNzvuaXZ1l85984HamdhsJfaem.e6', NULL, '1970-05-16 06:23:49', '1970-01-24 22:33:37'),
 (78, 'Mathilde Satterfield', 'sfranecki@example.net', 3, NULL, '$2y$12$xV0WzWnQxwyjlc6pCEofBe/0U2LchsajyWLKNYU3Aeqm/ULNyPSHC', NULL, '2022-04-28 12:00:21', '2002-11-11 08:17:53'),
 (79, 'Dr. Kevon Effertz', 'wallace.schneider@example.org', 3, NULL, '$2y$12$IlhW51Gp6L3i1J8bqPNNUO7ClMcyJHTSkuGBuNs9HWZ.m9h817o9e', NULL, '1979-11-13 18:36:49', '2022-09-29 00:21:14'),
-(80, 'Dr. Elmore D\'Amore', 'fannie64@example.com', 3, NULL, '$2y$12$w6TeFylYDbfWlh2RLSm4UemgLLNSSxh0Bk3xAVkkeIhWxinQlJTo2', NULL, '2008-08-02 20:44:37', '1977-01-17 19:17:26'),
+(80, 'Dr. Elmore DAmore', 'fannie64@example.com', 3, NULL, '$2y$12$w6TeFylYDbfWlh2RLSm4UemgLLNSSxh0Bk3xAVkkeIhWxinQlJTo2', NULL, '2008-08-02 20:44:37', '1977-01-17 19:17:26'),
 (81, 'Ward Gislason', 'qwitting@example.com', 3, NULL, '$2y$12$bsivtPISHBAXbiZx9eM2uOloEI95ZljM7TvU6GP4aUgiIvfTZTCWO', NULL, '2021-12-31 15:12:04', '1990-01-18 15:35:44'),
 (82, 'Dr. Gayle Haley II', 'altenwerth.nyasia@example.com', 3, NULL, '$2y$12$jYAu1vJSdtVAs1wq/Dq9FO/9KveTJMMTlraFn8doeG9znlfHwasMa', NULL, '1989-01-31 17:55:53', '2018-02-18 01:35:38'),
 (83, 'Isai Lubowitz', 'pouros.rosalinda@example.org', 3, NULL, '$2y$12$OhFkrmY1NvvjGiXgVShpX.OVeXzm5w9n527WVSg.z09JKG6D1HFh6', NULL, '1975-03-29 06:26:30', '2015-02-11 18:03:22'),

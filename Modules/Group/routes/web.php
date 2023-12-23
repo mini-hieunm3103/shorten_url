@@ -28,7 +28,7 @@ Route::group(
         ],
         function (){
             Route::get('/{id}/permission', [GroupController::class, 'getPermissionForm'])->name('permission');
-            Route::post('/{id}', [GroupController::class, 'permissionHandle'])->name('permission-handle');
+            Route::put('/{id}/permission', [GroupController::class, 'permissionHandle'])->name('permission-handle');
         }
     );
 });

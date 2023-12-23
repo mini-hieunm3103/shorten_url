@@ -3,11 +3,15 @@
 namespace Modules\Group\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Module;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Modules\Group\app\Http\Requests\GroupRequest;
 use Illuminate\Support\Facades\Auth;
 use Modules\Group\app\Http\Repositories\GroupRepository;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 class GroupController extends Controller
 {
     /**
@@ -40,6 +44,8 @@ class GroupController extends Controller
     {
         $data = $request->except('_token');
         $data['user_id'] = Auth::user()->id;
+        $roleGroup = Role::create(['name' => Str::slug($data['name'], '_')]);
+        $data['role_id'] = $roleGroup->id;
         $this->groupRepo->create($data);
         return redirect()->route('admin.group.index')
             ->with('msg',
@@ -94,6 +100,7 @@ class GroupController extends Controller
         $usersCount = count($this->groupRepo->getRelatedUsers($group));
         if ($usersCount == 0) {
             $this->groupRepo->delete($id);
+            Role::findById($group->role_id)->delete();
             return redirect()->route('admin.group.index')
                 ->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Group']))
                 ->with('type', 'success');
@@ -105,11 +112,33 @@ class GroupController extends Controller
     public function getPermissionForm($id)
     {
         $group = $this->groupRepo->find($id);
-        $modules = DB::table('modules')->get();
-        return view('group::permission', compact('group', 'modules'));
+        $permissionsGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first()->permissions;
+        $permissionIdsArr = [];
+        foreach ($permissionsGroup as $permission) {
+            $permissionIdsArr[] = $permission->id;
+        }
+        $modules = Module::all();
+        return view('group::permission', compact('group', 'modules', 'permissionIdsArr'));
     }
-    public function permissionHandle($id)
+
+    /**
+     * @param $id
+     * Note: syncPermissions(['name' => 'view users'])
+     */
+    public function permissionHandle(Request $request, $id)
     {
-        echo $id;
+        $group = $this->groupRepo->find($id);
+
+        $request->validate([
+            'permissions' => 'required'
+        ], [
+            'permissions.required' => 'Permissions Is Required!'
+        ]);
+        $permissionsSync = $request->permissions;
+        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+        $roleGroup->syncPermissions($permissionsSync);
+        return back()
+            ->with('msg', __('messages.success', ['action' => 'Permissions', 'attribute' => 'Group']))
+            ->with('type', 'success');
     }
 }
