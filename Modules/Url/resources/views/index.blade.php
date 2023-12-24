@@ -7,9 +7,11 @@
             </div>
         @endif
     </div>
-    <div class="mb-3">
-        <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm mới</a>
-    </div>
+    @can('create '.$module)
+        <div class="mb-3">
+            <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm mới</a>
+        </div>
+    @endcan
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -68,13 +70,19 @@
                             <td>{{$url->expired_at}}</td>
                             <td>{{$url->clicks}}</td>
                             <td>
-                                <a href="{{route('admin.url.show', $url)}}" class="btn btn-primary">Xem</a>
+                                @can('show '.$module)
+                                    <a href="{{route('admin.url.show', $url)}}" class="btn btn-primary">Xem</a>
+                                @endcan
                             </td>
                             <td>
-                                <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
+                                @can('edit '.$module)
+                                    <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
+                                @endcan
                             </td>
                             <td>
-                                <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
+                                @can('delete '.$module)
+                                    <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

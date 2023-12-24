@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Redirect;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\Tag\app\Http\Repositories\TagRepository;
 use Modules\User\app\Repositories\UserRepository;
-
+use Nwidart\Modules\Facades\Module;
 class UrlController extends Controller
 {
     protected $urlRepo;
     protected $userRepo;
     protected $tagRepo;
     protected $faker;
+    protected $module = 'url';
     public function __construct
     (
         UrlRepository $urlRepo,
@@ -36,16 +37,17 @@ class UrlController extends Controller
      */
     public function index()
     {
-        $title = 'Quản Lý Shorten URL';
+        $module = $this->module;
+        checkPermission($this->module);
         $urls = $this->urlRepo->getAllUrls()->get();
-        return view('url::index', compact('urls', 'title'));
+        return view('url::index', compact('urls', 'module'));
     }
     /**
      * Lấy ra thông tin của người dùng cùng với các shorten url của người đó
      */
     public function show($id)
     {
-        $title = "Detail Shorten URL: ".$id;
+        checkPermission($this->module, 'show');
         $url = $this->urlRepo->find($id);
         if (!$url) {
             abort(404);
@@ -58,7 +60,7 @@ class UrlController extends Controller
                 $urlTags[] = $tag;
             }
         }
-        return view('url::show', compact( 'title', 'urlTags', 'url'));
+        return view('url::show', compact( 'urlTags', 'url'));
     }
 
     /**
@@ -66,14 +68,14 @@ class UrlController extends Controller
      */
     public function create()
     {
-        $title = 'Create Shorten URL';
+        checkPermission($this->module, 'create');
         $users = $this->userRepo->getAllUsers()->get();
         $tags = $this->tagRepo->getAllTags()->get();
         foreach ($tags as $tag) {
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
         }
-        return view('url::create', compact('title', 'users', 'tags'));
+        return view('url::create', compact( 'users', 'tags'));
     }
 
     /**
@@ -81,6 +83,7 @@ class UrlController extends Controller
      */
     public function store(UrlRequest $request)
     {
+        checkPermission($this->module, 'create');
 
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token');
@@ -106,7 +109,7 @@ class UrlController extends Controller
      */
     public function edit($id)
     {
-        $title = "Cập Nhật URL";
+        checkPermission($this->module, 'edit');
         $url = $this->urlRepo->getAllUrls()->find($id);
         $tagIds = $this->urlRepo->getRelatedTags($url);
         $tags = $this->tagRepo->getAllTags()->get();
@@ -115,7 +118,7 @@ class UrlController extends Controller
             $urlIds = $this->tagRepo->getRelatedUrls($tag);
             $tag->total_urls = count($urlIds);
         }
-        return view('url::edit', compact('tagIds','url', 'tags','title', 'users'));
+        return view('url::edit', compact('tagIds','url', 'tags', 'users'));
     }
 
     /**
@@ -123,6 +126,8 @@ class UrlController extends Controller
      */
     public function update(UrlRequest $request, $id): RedirectResponse
     {
+        checkPermission($this->module, 'edit');
+
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token', '_method');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
@@ -148,6 +153,8 @@ class UrlController extends Controller
      */
     public function destroy($id)
     {
+        checkPermission($this->module, 'delete');
+
         $url = $this->urlRepo->find($id);
         $this->urlRepo->deleteUrlTags($url);
         $this->urlRepo->delete($id);

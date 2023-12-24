@@ -3,6 +3,7 @@
 namespace Modules\Url\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UrlRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class UrlRequest extends FormRequest
         $id = $this->route()->url;
         $rules = [
             'title' => 'max:255',
-            'back_half' => 'unique:urls,back_half|regex:#^[a-zA-Z0-9]+$#',
+            'back_half' => 'unique:urls,back_half'.(!empty($id) ? ','.$id : false).'|nullable|regex:#^[a-zA-Z0-9]+$#|',
             'long_url' => 'required|url|string|max:255|url',
             'user_id' => ['required','integer', function($attribute, $value, $fail){
                 if ($value == 0){
@@ -22,9 +23,6 @@ class UrlRequest extends FormRequest
                 }
             }]
         ];
-        if (!empty($id)){
-            $rules['back_half'] = 'unique:urls,back_half,'.$id;
-        }
         return $rules;
     }
     public function messages(): array

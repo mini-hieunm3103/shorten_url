@@ -107,3 +107,11 @@ function titleBlade($actionRouteName, $modules=[], $actionArr){
     }
     return false;
 }
+
+function checkPermission($module, $action = 'view')
+{
+    $permissionName =($action == 'view') ? $action.' '.$module.'s' : $action.' '.$module;
+    if (!auth()->user()->hasPermissionTo($permissionName)){
+        abort(403);
+    }
+}

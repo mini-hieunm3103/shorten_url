@@ -60,8 +60,10 @@ class TagController extends Controller
     {
         $tagData = $request->except('_token');
         $tag = $this->tagRepo->create($tagData);
-        $urls = $this->getUrls($tagData);
-        $this->tagRepo->createTagUrls($tag, $urls);
+        if (!empty($tagData['urls'])){
+            $urls = $this->getUrls($tagData);
+            $this->tagRepo->createTagUrls($tag, $urls);
+        }
         return redirect()->route('admin.tag.index')
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Tag']))
             ->with('type', 'success');
@@ -118,9 +120,11 @@ class TagController extends Controller
     {
         $tagData = $request->except(['_token', '_method']);
         $this->tagRepo->update($id, $tagData);
-        $tag = $this->tagRepo->find($id);
-        $urls = $this->getUrls($tagData);
-        $this->tagRepo->updateTagUrls($tag, $urls);
+        if (!empty($tagData['urls'])){
+            $tag = $this->tagRepo->find($id);
+            $urls = $this->getUrls($tagData);
+            $this->tagRepo->updateTagUrls($tag, $urls);
+        }
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Tag']))
             ->with('type', 'success');

@@ -56,7 +56,7 @@
                         <option value="0">Select User</option>
                         @if($users->count())
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if(old('user_id') ?? request()->user_id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
+                                <option value="{{$user->id}}" @if(old('user_id') ?? request()->user_id ?? auth()->user()->id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
                             @endforeach
                         @endif
                     </select>

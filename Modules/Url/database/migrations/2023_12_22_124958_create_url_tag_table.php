@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tag_url', function (Blueprint $table) {
+        Schema::create('url_tag', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('url_id')->unsigned();
             $table->integer('tag_id')->unsigned();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tag_url');
+        Schema::dropIfExists('url_tag');
     }
 };

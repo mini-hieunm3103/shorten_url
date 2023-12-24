@@ -59,6 +59,7 @@
             <div class="card-header">
                 <h3 class="card-title">Shorten URL  Created By {{$user->name}}</h3>
             </div>
+            @can('view urls')
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="urlsTable" class="table table-bordered table-hover">
@@ -114,17 +115,22 @@
                 </table>
                 @include('admin/parts/delete')
             </div>
+            @endcan
+            <x-cannot permission="view urls"/>
         </div>
     </div>
+    @can('create url')
     <div class="mb-3 ml-2">
         <a href="{{route('admin.url.create', ['user_id' => $user->id])}}" class="btn btn-primary">Thêm Mới URL Rút Gọn</a>
     </div>
+    @endcan
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Tags Created By {{$user->name}} </h3>
             </div>
             <!-- /.card-header -->
+            @can('view tags')
             <div class="card-body">
                 <table id="tagsTable" class="table table-bordered table-hover">
                     <thead>
@@ -165,11 +171,15 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="mb-3">
-            <a href="{{route('admin.tag.create', ['user_id' => $user->id])}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
+            @endcan
+            <x-cannot permission="view tags"/>
         </div>
     </div>
+    @can('create tag')
+        <div class="mb-3 ml-2">
+            <a href="{{route('admin.tag.create', ['user_id' => $user->id])}}" class="btn btn-primary">Thêm Mới Nhãn Dán</a>
+        </div>
+    @endcan
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -14,8 +14,6 @@ class TagRequest extends FormRequest
         $id = $this->route()->url;
         $rules = [
             'title' => 'required|max:255',
-            'description' => '',
-            'urls' => 'required',
             'user_id' => ['integer', function($attribute, $value, $fail){
                 if ($value == 0){
                     $fail(__('tag::validation.select'));

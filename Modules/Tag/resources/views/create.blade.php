@@ -31,7 +31,7 @@
                         <option value="0">Select User</option>
                         @if($users->count())
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if(old('user_id') ?? request()->user_id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
+                                <option value="{{$user->id}}" @if(old('user_id') ?? request()->user_id ?? auth()->user()->id == $user->id) {{'selected'}} @endif>{{$user->name}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -60,6 +60,7 @@
                     <div class="card-header">
                         <h3 class="card-title"><strong>Select the url(s) you want to add</strong></h3>
                     </div>
+                    @can('view urls')
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="dataTable" class="table table-bordered table-hover">
@@ -111,6 +112,8 @@
                             </tbody>
                         </table>
                     </div>
+                    @endcan
+                    <x-cannot permission="view urls" />
                 </div>
             </div>
             <div class="col-12">

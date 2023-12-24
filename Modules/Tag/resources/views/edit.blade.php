@@ -67,6 +67,7 @@
                         <h3 class="card-title"><strong>Select the url(s) you want to add</strong></h3>
                     </div>
                     <!-- /.card-header -->
+                    @can('view urls')
                     <div class="card-body">
                         <table id="dataTable" class="table table-bordered table-hover">
                             <thead>
@@ -116,13 +117,11 @@
                             @endforeach
                             </tbody>
                         </table>
+
                     </div>
+                    @endcan
+                    <x-cannot permission="view urls" />
                 </div>
-                @error('urls')
-                <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                @enderror
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Lưu lại</button>
