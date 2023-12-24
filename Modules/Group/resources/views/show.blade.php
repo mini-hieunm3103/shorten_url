@@ -20,6 +20,7 @@
                     <h3 class="card-title"><b>Danh Sách Thành Viên Nhóm:</b></h3>
                 </div>
                 <!-- /.card-header -->
+                @can('view users')
                 <div class="card-body">
                     <table id="dataTable" class="table table-bordered table-hover">
                         <thead>
@@ -52,13 +53,13 @@
                                 <td>{{$user['email']}}</td>
                                 <td>{{$user['created_at']}}</td>
                                 <td>
-                                    <a href="{{route('admin.user.show', $user['id'])}}" class="btn btn-primary">Xem</a>
+                                    <x-admin-btn module="user" type="primary" action="show" :data="$user['id']"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.user.edit', $user['id'])}}" class="btn btn-warning">Sửa</a>
+                                    <x-admin-btn module="user" type="warning" action="edit" :data="$user['id']"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.user.destroy', $user['id'])}}" class="btn btn-danger delete-action">Xóa</a>
+                                    <x-admin-btn module="user" type="danger" action="delete" :data="$user['id']"   />
                                 </td>
                             </tr>
                         @endforeach
@@ -66,6 +67,8 @@
                     </table>
                     @include('admin/parts/delete')
                 </div>
+                @endcan
+                <x-cannot permission="view users"/>
             </div>
         </div>
         <div class="col-12">

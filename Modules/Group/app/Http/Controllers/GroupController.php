@@ -18,6 +18,8 @@ class GroupController extends Controller
      * Display a listing of the resource.
      */
     protected $groupRepo;
+    protected $module = 'group';
+
     public function __construct(GroupRepository $groupRepo)
     {
         $this->groupRepo = $groupRepo;
@@ -25,6 +27,7 @@ class GroupController extends Controller
 
     public function index()
     {
+        checkPermission($this->module);
         $groups = $this->groupRepo->getAllGroups()->get();
         return view('group::index', compact('groups'));
     }
@@ -34,6 +37,7 @@ class GroupController extends Controller
      */
     public function create()
     {
+        checkPermission($this->module, 'create');
         return view('group::create');
     }
 
@@ -42,6 +46,7 @@ class GroupController extends Controller
      */
     public function store(GroupRequest $request): RedirectResponse
     {
+        checkPermission($this->module, 'create');
         $data = $request->except('_token');
         $data['user_id'] = Auth::user()->id;
         $roleGroup = Role::create(['name' => Str::slug($data['name'], '_')]);
@@ -64,7 +69,9 @@ class GroupController extends Controller
      */
     public function show($id)
     {
+        checkPermission($this->module, 'show');
         $group = $this->groupRepo->find($id);
+        check404($group);
         $users = $this->groupRepo->getRelatedUsers($group);
 //        dd($users);
         return view('group::show', compact('users', 'group'));
@@ -75,7 +82,9 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
+        checkPermission($this->module, 'edit');
         $group = $this->groupRepo->find($id);
+        check404($group);
         return view('group::edit', compact('group'));
     }
 
@@ -84,6 +93,7 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, $id): RedirectResponse
     {
+        checkPermission($this->module, 'edit');
         $data = $request->except(['_token', '_method']);
         $this->groupRepo->update($id, $data);
         return back()
@@ -96,7 +106,9 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
+        checkPermission($this->module, 'delete');
         $group = $this->groupRepo->find($id);
+        check404($group);
         $usersCount = count($this->groupRepo->getRelatedUsers($group));
         if ($usersCount == 0) {
             $this->groupRepo->delete($id);
@@ -111,7 +123,9 @@ class GroupController extends Controller
     }
     public function getPermissionForm($id)
     {
+        checkPermission($this->module, 'permission');
         $group = $this->groupRepo->find($id);
+        check404($group);
         $permissionsGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first()->permissions;
         $permissionIdsArr = [];
         foreach ($permissionsGroup as $permission) {
@@ -127,8 +141,10 @@ class GroupController extends Controller
      */
     public function permissionHandle(Request $request, $id)
     {
-        $group = $this->groupRepo->find($id);
+        checkPermission($this->module, 'permission');
 
+        $group = $this->groupRepo->find($id);
+        check404($group);
         $request->validate([
             'permissions' => 'required'
         ], [

@@ -8,7 +8,7 @@
         @endif
     </div>
     <div class="mb-3">
-        <a href="{{route('admin.group.create')}}" class="btn btn-primary">Thêm mới</a>
+        <x-admin-btn module="group" type="primary" action="create" :data="null"  />
     </div>
     <div class="row">
         <div class="col-12">
@@ -50,23 +50,23 @@
                                 <td>{{$group->name}}</td>
                                 @if($group->user_id)
                                     <td>
-                                        <a href="{{route('admin.user.show', $group->userCreate->id)}}">{{$group->userCreate->name}}</a>
+                                        <a @can('show user') href="{{route('admin.user.show', $group->userCreate->id)}}" @endcan>{{$group->userCreate->name}}</a>
                                     </td>
                                 @else
                                     <td></td>
                                 @endif
                                 <td>{{$group->created_at}}</td>
                                 <td>
-                                    <a href="{{route('admin.group.show', $group)}}" class="btn btn-primary">Xem</a>
+                                    <x-admin-btn module="group" type="success" action="show" :data="$group['id']"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.group.permission', $group)}}" class=" btn btn-secondary">Phân Quyền</a>
+                                    <x-admin-btn module="group" type="secondary" action="permission" :data="$group['id']"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.group.edit', $group)}}" class="btn btn-warning">Sửa</a>
+                                    <x-admin-btn module="group" type="warning" action="edit" :data="$group['id']"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.group.destroy', $group)}}" class="btn btn-danger delete-action">Xóa</a>
+                                    <x-admin-btn module="group" type="danger" action="delete" :data="$group['id']"  />
                                 </td>
                             </tr>
                         @endforeach
@@ -77,6 +77,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 @section('scripts')
 

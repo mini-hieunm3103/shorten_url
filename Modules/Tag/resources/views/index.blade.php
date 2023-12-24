@@ -8,13 +8,13 @@
         @endif
     </div>
     <div class="mb-3">
-        <a href="{{route('admin.tag.create')}}" class="btn btn-primary">Thêm mới</a>
+        <x-admin-btn module="tag" type="primary" action="create" :data="null"  />
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                    <h3 class="card-title">Danh Sách Tags:</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -52,18 +52,18 @@
                                 <td>{{getLimitText($tag->title)}}</td>
                                 <td>{{getLimitText($tag->description)}}</td>
                                 <td>
-                                    <a href="{{route('admin.user.show', $tag->user->id)}}">{{$tag->user->name}}</a>
+                                    <a @can('show user') href="{{route('admin.user.show', $tag->user->id)}}" @endcan>{{$tag->user->name}}</a>
                                 </td>
                                 <td>{{$tag->created_at}}</td>
                                 <td>{{$tag->total_urls}}</td>
                                 <td>
-                                    <a href="{{route('admin.tag.show', $tag)}}" class="btn btn-primary">Xem</a>
+                                    <x-admin-btn module="tag" type="success" action="show" :data="$tag->id"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.tag.edit', $tag)}}" class="btn btn-warning">Sửa</a>
+                                    <x-admin-btn module="tag" type="warning" action="edit" :data="$tag->id"  />
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.tag.destroy', $tag)}}" class="btn btn-danger delete-action">Xóa</a>
+                                    <x-admin-btn module="tag" type="danger" action="delete" :data="$tag->id"  />
                                 </td>
                             </tr>
                         @endforeach

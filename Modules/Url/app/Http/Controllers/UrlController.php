@@ -49,9 +49,7 @@ class UrlController extends Controller
     {
         checkPermission($this->module, 'show');
         $url = $this->urlRepo->find($id);
-        if (!$url) {
-            abort(404);
-        }
+        check404($url);
         $tags = $this->tagRepo->getAllTags()->get();
         $tagIds = $this->urlRepo->getRelatedTags($url);
         $urlTags = [];
@@ -111,6 +109,7 @@ class UrlController extends Controller
     {
         checkPermission($this->module, 'edit');
         $url = $this->urlRepo->getAllUrls()->find($id);
+        check404($url);
         $tagIds = $this->urlRepo->getRelatedTags($url);
         $tags = $this->tagRepo->getAllTags()->get();
         $users = $this->userRepo->getAllUsers()->get();
@@ -156,6 +155,7 @@ class UrlController extends Controller
         checkPermission($this->module, 'delete');
 
         $url = $this->urlRepo->find($id);
+        check404($url);
         $this->urlRepo->deleteUrlTags($url);
         $this->urlRepo->delete($id);
         return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Shorten URL']))

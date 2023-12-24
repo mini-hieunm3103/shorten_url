@@ -7,9 +7,6 @@
             </div>
         @endif
     </div>
-    <div class="mb-3">
-        <a href="{{route('admin.tag.create')}}" class="btn btn-primary">Thêm mới</a>
-    </div>
     <div class="row">
         <div class="col-6">
             <div class="mb-3">
@@ -43,8 +40,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                    <h3 class="card-title">Danh Sách Url(s) Rút Gọn Của Tag:</h3>
                 </div>
+                @can('view urls')
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="dataTable" class="table table-bordered table-hover">
@@ -84,7 +82,7 @@
                                     <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
+                                    <a @can('show user') href="{{route('admin.user.show', $url->user->id)}}" @endcan>{{$url->user->name}}</a>
 
                                 </td>
                                 <td>{{$url->created_at}}</td>
@@ -96,11 +94,13 @@
                     </table>
                     @include('admin/parts/delete')
                 </div>
+                @endcan
+                <x-cannot permission="view urls"/>
             </div>
         </div>
         <div class="mb-3 ml-2">
-            <a href="{{route('admin.tag.edit', compact('tag'))}}" class="btn btn-warning">Chỉnh sửa nhãn dán</a>
-            <a href="{{route('admin.url.create', ['tag_id' => $tag->id])}}" class="btn btn-primary">Thêm Mới URL rút gọn cho Tag</a>
+            <x-admin-btn module="tag" type="warning" action="edit" :data="$tag->id"  />
+            <x-admin-btn module="url" type="primary" action="create" :data="['tag_id' => $tag->id]" />
             <a href="{{route('admin.tag.index')}}" class="btn btn-secondary">Quay về</a>
         </div>
     </div>

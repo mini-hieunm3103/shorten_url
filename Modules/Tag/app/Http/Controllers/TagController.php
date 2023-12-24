@@ -19,6 +19,7 @@ class TagController extends Controller
     protected $tagRepo;
     protected $userRepo;
     protected $urlRepo;
+    protected $module = 'tag';
     public function __construct(
         TagRepository $tagRepo,
         UserRepository $userRepo,
@@ -31,7 +32,7 @@ class TagController extends Controller
     }
     public function index()
     {
-        $title = 'Danh Sách Nhãn Dán';
+        checkPermission($this->module);
         $tags = $this->tagRepo->getAllTags()->get();
 
         foreach ($tags as $tag) {
@@ -39,7 +40,7 @@ class TagController extends Controller
             $tag->total_urls = count($urlIds);
         }
 //        dd($tags);
-        return view('tag::index', compact('title', 'tags'));
+        return view('tag::index', compact('tags'));
     }
 
     /**
@@ -47,10 +48,10 @@ class TagController extends Controller
      */
     public function create()
     {
-        $title = 'Thêm Nhãn Dán';
+        checkPermission($this->module, 'create');
         $users = $this->userRepo->getAllUsers()->get();
         $urls = $this->urlRepo->getAllUrls()->get();
-        return view('tag::create', compact('title', 'users', 'urls'));
+        return view('tag::create', compact( 'users', 'urls'));
     }
 
     /**
@@ -58,6 +59,7 @@ class TagController extends Controller
      */
     public function store(TagRequest $request): RedirectResponse
     {
+        checkPermission($this->module, 'create');
         $tagData = $request->except('_token');
         $tag = $this->tagRepo->create($tagData);
         if (!empty($tagData['urls'])){
@@ -83,11 +85,9 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        $title = 'Tag Detail: '.$id;
+        checkPermission($this->module, 'show');
         $tag = $this->tagRepo->find($id);
-        if (!$tag) {
-            abort(404);
-        }
+        check404($tag);
         $urls = $this->urlRepo->getAllUrls()->get();
         $urlIds = $this->tagRepo->getRelatedUrls($tag);
         $tagUrls = [];
@@ -97,7 +97,7 @@ class TagController extends Controller
                 $tagUrls[] = $url;
             }
         }
-        return view('tag::show', compact('title', 'tag', 'tagUrls'));
+        return view('tag::show', compact( 'tag', 'tagUrls'));
     }
 
     /**
@@ -105,12 +105,13 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Cập Nhật Nhãn Dán';
+        checkPermission($this->module, 'edit');
         $tag = $this->tagRepo->find($id);
+        check404($tag);
         $urlIds = $this->tagRepo->getRelatedUrls($tag);
         $urls = $this->urlRepo->getAllUrls()->get();
         $users = $this->userRepo->getAllUsers()->get();
-        return view('tag::edit', compact('title', 'urls', 'tag', 'urlIds', 'users' ));
+        return view('tag::edit', compact('urls', 'tag', 'urlIds', 'users' ));
     }
 
     /**
@@ -118,6 +119,7 @@ class TagController extends Controller
      */
     public function update(TagRequest $request, $id): RedirectResponse
     {
+        checkPermission($this->module, 'edit');
         $tagData = $request->except(['_token', '_method']);
         $this->tagRepo->update($id, $tagData);
         if (!empty($tagData['urls'])){
@@ -135,7 +137,9 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+        checkPermission($this->module, 'delete');
         $tag = $this->tagRepo->find($id);
+        check404($tag);
         $this->tagRepo->deleteTagUrls($tag);
         $this->tagRepo->delete($id);
         return back()

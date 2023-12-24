@@ -7,11 +7,9 @@
             </div>
         @endif
     </div>
-    @can('create '.$module)
         <div class="mb-3">
-            <a href="{{route('admin.url.create')}}" class="btn btn-primary">Thêm mới</a>
+            <x-admin-btn module="url" type="primary" action="create" :data="null"  />
         </div>
-    @endcan
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -63,26 +61,19 @@
                                 <a class="limited-url" href="{{request()->root().'/'.$url->back_half}}">{{$url->back_half}}</a>
                             </td>
                             <td>
-                                <a href="{{route('admin.user.show', $url->user->id)}}">{{$url->user->name}}</a>
-
+                                <a @can('show user') href="{{route('admin.user.show', $url->user->id)}}" @endcan>{{$url->user->name}}</a>
                             </td>
                             <td>{{$url->created_at}}</td>
                             <td>{{$url->expired_at}}</td>
                             <td>{{$url->clicks}}</td>
                             <td>
-                                @can('show '.$module)
-                                    <a href="{{route('admin.url.show', $url)}}" class="btn btn-primary">Xem</a>
-                                @endcan
+                                <x-admin-btn module="url" type="success" action="show" :data="$url->id"  />
                             </td>
                             <td>
-                                @can('edit '.$module)
-                                    <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
-                                @endcan
+                                <x-admin-btn module="url" type="warning" action="edit" :data="$url->id"  />
                             </td>
                             <td>
-                                @can('delete '.$module)
-                                    <a href="{{route('admin.url.destroy', $url)}}" class="btn btn-danger delete-action">Xóa</a>
-                                @endcan
+                                <x-admin-btn module="url" type="danger" action="delete" :data="$url->id"  />
                             </td>
                         </tr>
                     @endforeach

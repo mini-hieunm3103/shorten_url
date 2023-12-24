@@ -115,3 +115,10 @@ function checkPermission($module, $action = 'view')
         abort(403);
     }
 }
+
+function check404($value)
+{
+    if (!$value){
+        abort('404');
+    }
+}

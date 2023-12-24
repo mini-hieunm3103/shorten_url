@@ -21,6 +21,7 @@ class UserController extends Controller
     protected $urlRepo;
     protected $tagRepo;
     protected $groupRepo;
+    protected $module = 'user';
     public function __construct
     (
         UserRepository $userRepo,
@@ -37,11 +38,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $title = 'Danh Sách User';
+        checkPermission($this->module);
         $users = $this->userRepo->getAllUsers()->get();
-        $urls = $this->urlRepo->getAllUrls()->get();
-        $countClicks = [];
-        foreach ($users as $key =>$user) {
+        foreach ($users as $user) {
             $userUrls = $this->urlRepo->getUserUrls($user->id)->get();
             $countUrls = $userUrls->count();
             $countClicks = 0;
@@ -53,15 +52,16 @@ class UserController extends Controller
             $user->total_urls = $countUrls;
             $user->total_clicks = $countClicks;
         }
-        return view('user::index', compact('users', 'title'));
+        return view('user::index', compact('users'));
     }
     /**
      * Lấy ra thông tin của người dùng cùng với các shorten url của người đó
      */
     public function show($id)
     {
+        checkPermission($this->module, 'show');
         $user = $this->userRepo->find($id);
-        $title = $user->name;
+        check404($user);
         $urls = $this->urlRepo->getUserUrls($id)->get();
         $tags = $this->tagRepo->getUserTags($id)->get();
         $countClicks = 0;
@@ -69,16 +69,16 @@ class UserController extends Controller
             $countClicks += $url->clicks;
         }
         $user->count_clicks = $countClicks;
-        return view('user::show', compact('title','user','tags', 'urls'));
+        return view('user::show', compact('user','tags', 'urls'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        checkPermission($this->module, 'create');
         $groups = $this->groupRepo->getAllGroups()->get();
-        $title = 'Create User';
-        return view('user::create', compact('title', 'groups'));
+        return view('user::create', compact( 'groups'));
     }
 
     /**
@@ -86,7 +86,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): RedirectResponse
     {
+        checkPermission($this->module, 'create');
         $group = $this->groupRepo->find($request->group_id);
+        check404($group);
         $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
         $user = $this->userRepo->create([
             'name' => $request->name,
@@ -113,13 +115,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        checkPermission($this->module, 'edit');
         $user = $this->userRepo->find($id);
-        if(!$user) {
-            abort(404);
-        }
+        check404($user);
         $groups = $this->groupRepo->getAllGroups()->get();
-        $title = 'Update User';
-        return view('user::edit', compact('title', 'user', 'groups'));
+        return view('user::edit', compact( 'user', 'groups'));
     }
 
     /**
@@ -127,15 +127,17 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id): RedirectResponse
     {
+        checkPermission($this->module, 'edit');
         $data = $request->except('_token', 'password'); // bỏ password bên trong data chứ bên request vẫn còn
         if($request->password){
             $data['password'] = bcrypt($request->password);
         }
         // sync role
         $user = $this->userRepo->find($id);
+        check404($user);
         $group = $this->groupRepo->find($request->group_id);
+        check404($group);
         $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
-
         $this->userRepo->update($id, $data);
         $user->syncRoles($roleGroup->name);
         return back()
@@ -148,10 +150,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        checkPermission($this->module, 'delete');
         $user = $this->userRepo->find($id);
+        check404($user);
         $group = $this->groupRepo->find($user->group_id);
         $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
-
         $this->userRepo->delete($id);
         // remove role
         $user->removeRole($roleGroup->name);

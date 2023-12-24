@@ -38,7 +38,7 @@
             </div>
             <div class="col-4">
                 <div class="mb-3">
-                    <label for="">Custom back-half <small style="font-size: 16px"> (optional)</small></label>
+                    <label for="">Back-half <small style="font-size: 16px"> (optional) (You can customize it) (a-z, A-Z, 0-9)</small></label>
                     <input id="back_half" name="back_half" type="text" class="form-control
                     @error('back_half') is-invalid @enderror"
                            value="{{ old('back_half') }}" autofocus placeholder="">
@@ -72,6 +72,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Select the tags you want to add<small style="font-size: 16px"> (optional)</small></h3>
                     </div>
+                    @can('view tags')
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="dataTable" class="table table-bordered table-hover">
@@ -116,6 +117,8 @@
                             </tbody>
                         </table>
                     </div>
+                    @endcan
+                    <x-cannot permission="view tags"/>
                 </div>
             </div>
             <div class="col-12">
