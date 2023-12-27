@@ -37,7 +37,7 @@ class ClientController extends Controller
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
         $domain = ($matches[1][0]);
         $title = 'Links';
-        $urls = $this->urlRepo->getUserUrls(auth()->user()->id)->get();
+        $urls = $this->urlRepo->getUserUrls(auth()->user()->id)->orderBy('created_at', 'desc')->get();
         $tags = $this->tagRepo->getUserTags(auth()->user()->id)->get();
         foreach ($urls as $url) {
             $tagIds = $this->urlRepo->getRelatedTags($url);
@@ -52,5 +52,12 @@ class ClientController extends Controller
             }
         }
         return view('client::links', compact('title', 'urls', 'tags', 'domain'));
+    }
+
+    function create()
+    {
+        preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
+        $domain = ($matches[1][0]);
+        return view('client::create', compact('domain'));
     }
 }

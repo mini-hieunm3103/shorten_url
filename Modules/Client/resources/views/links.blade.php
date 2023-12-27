@@ -7,11 +7,11 @@
                 <h1 class="m-0 font-weight-bold" style="font-size: 36px; color: #3b3b3d">Links:</h1>
             </div>
             <div class="col-12 pl-0 pb-3 d-flex flex-wrap" style="border-bottom: 2px solid #f1e8e8">
-                <div class="d-flex mr-3 mb-2 max-w-56 p-1" style="border: 1px solid #cbcfd3; border-radius: 5px; background-color: #fffffc" id="reportrange">
+                <div class="d-flex mr-3 mb-2 max-w-56 p-1 pl-2 pr-2" style="border: 1px solid #cbcfd3; border-radius: 5px; background-color: #fffffc" id="reportrange">
                     <span class="material-symbols-outlined pt-1 pb-1 mr-2">calendar_today</span>
                     <span class="" style="align-items: center; margin: auto; font-size: large" id="insertDate">Filter by created date</span>
                 </div>
-                <div class="d-flex mr-3 mb-2 max-w-56 p-1" style="border: 1px solid #cbcfd3; border-radius: 5px; background-color: #fffffc">
+                <div class="d-flex mr-3 mb-2 max-w-56 p-1 pl-2 pr-2" style="border: 1px solid #cbcfd3; border-radius: 5px; background-color: #fffffc">
                     <span class="material-symbols-outlined pt-1 pb-1 mr-2">tune</span>
                     <span class="" style="align-items: center; margin: auto; font-size: large" >Add Filters</span>
                 </div>

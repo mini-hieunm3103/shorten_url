@@ -97,6 +97,15 @@ class UrlController extends Controller
             $tags = $this->getTags($data);
             $this->urlRepo->createUrlTags($url, $tags);
         }
+        // check client or admin create shorten url
+        $url = url()->previous();
+        $route = app('router')->getRoutes($url)->match(app('request')->create($url))->getName();
+        $routeArr = explode('.', $route);
+        if ($routeArr[0] == 'client'){
+            return redirect()->route('client.links.index')
+                ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
+                ->with('type', 'success');
+        }
         return redirect()->route('admin.url.index')
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
