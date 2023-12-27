@@ -39,6 +39,8 @@ php artisan module:seed Group
 - [Laravel DebugBar](https://github.com/barryvdh/laravel-debugbar) 
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v6/installation-laravel)
 - [Laravel DataTables](https://yajrabox.com/docs/laravel-datatables/10.0)
+- [Jquery Multiple-select](https://codepen.io/chakachuk/pen/NWWyJVV)
+- [Date Range Picker](https://www.npmjs.com/package/daterangepicker)
 ## UI
 - [AdminLTE 3](https://adminlte.io/themes/v3/)
 - [Bitly](https://app.bitly.com/)
@@ -81,35 +83,5 @@ php artisan module:seed Group
   - View all user's url | tag
   - Delete url | tag
 
-
-
-I)
-- Cũng là gán quyền cho super admin nhưng là của package **[Click here](https://spatie.be/docs/laravel-permission/v6/basic-usage/super-admin#content-gatebefore)**
-- Tối ưu: do roles.name (cột name bảng roles) trùng với groups.name thì có thể thay roles.name thành roles.group_id và liên kết 1-1 với groups.id
-- Đăng kí: Đăng kí phía người dùng thì phải thêm group_id là của nhóm User
-- Đăng nhập: Khi đăng nhập check role, nếu role là user (tức là nhóm User) thì sẽ redirect đến trang client; các role còn lại sẽ redirect đến trang admin
-
-- ở trong project này thay vì sử dụng [Teams Permissions](https://spatie.be/docs/laravel-permission/v6/basic-usage/teams-permissions) do đọc không hiểu gì
-- vậy nên sẽ sử dụng cách thiểu năng hơn:
-  - trong roles.name (cột name bảng roles) sẽ được đặt tương tự với groups.name do phân quyền theo nhóm
-  - Sẽ phải set up lại all user đã tồn tại (xóa nó đi trừ user của super admin 💔 vì lười)
-  - Khi tạo user thì sẽ thông qua group_id 
-    - (=> groups.name => 7749 bước: str_replace(strtolower(trim())) => roles.name => roles.id) : nếu chưa tối ưu
-    - (=> roles.id) : nếu đã tối ưu: liên kết roles.group_id với groups.id 
-  - => phân quyền user vào bảng model_has_roles
-- Fix:
-  - Khi tạo user thì từ group sẽ set up luôn quyền cho user đó
-  - khi tạo group thì sẽ không có quyền gì cả
-  - khi show quyền group (trang permission) thì sẽ lấy ra 1 user trong group rồi lấy ra các quyền của user đó
-  - khi sửa quyền của group thì 
-    - Chỉ người tạo cùng với super admin (admin không được) mới có quyền tác động đến group đó
-    - lấy ra tất cả users của group đó rồi dùng lặp để sync quyền
-  - muốn: $group->role()->... => tạo role_id ở group => khi tạo group thì phải tạo role trước rồi mới tạo được group
-  - tạo nhóm thành công hãy phân quyền cho nhóm
-III. 
-Xóa người dùng: nếu chỉ tạo url và tag thì có xác nhận là được
-nhưng nếu user đó tạo group thì phải xóa group trước (hoặc trao quyền tạo group cho user khác?)
- 
-Thêm nhóm => thêm quyền trước
-thêm người dùng => thêm luôn vai trò cho người dùng dựa theo nhóm
-xóa group trước, xóa role sau
+I) Trang Client:
+- Học về API để lấy dữ liệu rồi gửi vào form chỉnh sửa [Tham khảo chỉnh sửa](https://chat.openai.com/c/8a835bbe-7a4a-41a9-9376-1589cfece54f)

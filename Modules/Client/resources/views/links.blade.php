@@ -63,7 +63,7 @@
                                     <i class="far fa-copy"></i>
                                     <span class="ml-1 mr-1 p-1" >Copy</span>
                                 </div>
-                                <a title="Edit This Link"  href="" class="mb-1 mr-2" style="color: #838282 ;align-items: center; border: 2px solid #838282; border-radius: 8px; padding:5px 8px 5px 10px ">
+                                <a title="Edit This Link" data-id="{{$url->id}}" href="#" class="mb-1 mr-2 edit-btn" style="color: #838282 ;align-items: center; border: 2px solid #838282; border-radius: 8px; padding:5px 8px 5px 10px " data-toggle="modal" data-target="#exampleModalCenter">
                                     <i class="far fa-edit"></i>
                                     <span class="ml-1 media-8">Edit Link</span>
                                 </a>
@@ -85,9 +85,96 @@
             ------------    You've reached the end of your links   ------------
         </div>
     </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form action="{{route('admin.url.store')}}" method="post" class="mt-3">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="m-0 font-weight-bold" style=" color: #3b3b3d">Edit Link</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 pb-3" style="border-bottom: 2px solid #f1e8e8;">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3 shorted_url">
+                                            <label for="">Title <small style="font-size: 16px">
+                                                    (optional)</small></label>
+                                            <input value="" name="title" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="mb-3 shorted_url">
+                                            <label for="">Domain</label>
+                                            <select name="domain" disabled class="form-control form-select">
+                                                <option selected value="{{$domain}}">{{$domain}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-1 d-flex justify-content-center">
+                                        <div class="mb-3 font-weight-bold" style="; margin-top: 35px;">
+                                            <span style="align-items: center; font-size: 20px">/</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="mb-3 shorted_url">
+                                            <label for="">Back-half </label>
+                                            <input value="" name="back_half" type="text"
+                                                   class="form-control @error('back_half') is-invalid @enderror"
+                                                   placeholder="yourBackHalf">
+                                            @error('back_half')
+                                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="col-6 mt-3 mb-4 pl-0">
+                                    <h4 class="m-0 font-weight-bold" style=" color: #3b3b3d">Option details</h4>
+                                </div>
+                                <div class=" p-0">
+                                    <div class="mb-3" style="width: 100%; background-color: #fffffc">
+                                        <div class="multiSelect">
+                                            <select name="tags[]" multiple class="multiSelect_field" data-placeholder="Add Tags">
+                                                @foreach($tags as $tag)
+                                                    <option value="{{$tag->id}}">{{$tag->title}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                            <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="iconX">
+                                                <g stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </g>
+                                            </symbol>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @section('scripts')
-
     <script type="text/javascript">
 
         var start = moment();
@@ -109,10 +196,94 @@
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         }, cb);
+
+        // Multiple select
+        jQuery(function() {
+            jQuery('.multiSelect').each(function(e) {
+                var self = jQuery(this);
+                var field = self.find('.multiSelect_field');
+                var fieldOption = field.find('option');
+                var placeholder = field.attr('data-placeholder');
+
+                field.hide().after(`<div class="multiSelect_dropdown"></div>
+                        <span class="multiSelect_placeholder">` + placeholder + `</span>
+                        <ul class="multiSelect_list"></ul>
+                        <span class="multiSelect_arrow"></span>`);
+
+                fieldOption.each(function(e) {
+                    jQuery('.multiSelect_list').append(`<li class="multiSelect_option" data-value="`+jQuery(this).val()+`">
+                                            <a class="multiSelect_text">`+jQuery(this).text()+`</a>
+                                          </li>`);
+                });
+
+                var dropdown = self.find('.multiSelect_dropdown');
+                var list = self.find('.multiSelect_list');
+                var option = self.find('.multiSelect_option');
+                var optionText = self.find('.multiSelect_text');
+
+                dropdown.attr('data-multiple', 'true');
+                list.css('top', dropdown.height() + 5);
+
+                option.click(function(e) {
+                    var self = jQuery(this);
+                    e.stopPropagation();
+                    self.addClass('-selected');
+                    field.find('option:contains(' + self.children().text() + ')').prop('selected', true);
+                    dropdown.append(function(e) {
+                        return jQuery('<span class="multiSelect_choice">'+ self.children().text() +'<svg class="multiSelect_deselect -iconX"><use href="#iconX"></use></svg></span>').click(function(e) {
+                            var self = jQuery(this);
+                            e.stopPropagation();
+                            self.remove();
+                            list.find('.multiSelect_option:contains(' + self.text() + ')').removeClass('-selected');
+                            list.css('top', dropdown.height() + 5).find('.multiSelect_noselections').remove();
+                            field.find('option:contains(' + self.text() + ')').prop('selected', false);
+                            if (dropdown.children(':visible').length === 0) {
+                                dropdown.removeClass('-hasValue');
+                            }
+                        });
+                    }).addClass('-hasValue');
+                    list.css('top', dropdown.height() + 5);
+                    if (!option.not('.-selected').length) {
+                        list.append('<h5 class="multiSelect_noselections">That\'s all tags you ever created</h5>');
+                    }
+                });
+
+                dropdown.click(function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    dropdown.toggleClass('-open');
+                    list.toggleClass('-open').scrollTop(0).css('top', dropdown.height() + 5);
+                });
+
+                jQuery(document).on('click touch', function(e) {
+                    if (dropdown.hasClass('-open')) {
+                        dropdown.toggleClass('-open');
+                        list.removeClass('-open');
+                    }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function (){
+            var editBtns = document.querySelectorAll('.edit-btn')
+            var titleModal = document.querySelector("input[name='title']")
+            var backHalfModal = document.querySelector("input[name='back_half']")
+            editBtns.forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    var urlId = btn.getAttribute('data-id')
+                })
+            })
+        })
+        function getUrlInfoById(){
+            return fetch('{{route('admin.url.data')}}')
+                .then(function (response) {
+                    return response.json();
+                });
+        }
+        console.log(getUrlInfoById())
+
     </script>
 @endsection
 @section('stylesheet')
-
     <style>
         @media screen and (max-width: 560px) {
             .max-w-56{
