@@ -13,11 +13,13 @@
                 <p>Danh Sách</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{{route('admin.'.$name.'.create')}}" class="nav-link {{request()->is(trim(route('admin.'.$name.'.create', [], false), '/*')) || request()->is(trim(route('admin.'.$name.'.create', [], false))) ? 'active': false}}">
-                <i class="nav-icon far fa-circle text-warning"></i>
-                <p>Thêm Mới</p>
-            </a>
-        </li>
+        @if(checkPermission($name, 'create', true))
+            <li class="nav-item">
+                <a href="{{route('admin.'.$name.'.create')}}" class="nav-link {{request()->is(trim(route('admin.'.$name.'.create', [], false), '/*')) || request()->is(trim(route('admin.'.$name.'.create', [], false))) ? 'active': false}}">
+                    <i class="nav-icon far fa-circle text-warning"></i>
+                    <p>Thêm Mới</p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>

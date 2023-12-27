@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('admin/dist/css/errors/404.css')}}">
+    <link rel="stylesheet" href="{{asset('front-end/dist/css/errors/404.css')}}">
 
     <title>Document</title>
 </head>
@@ -218,6 +218,6 @@
     <p>We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a bad <span>link</span> dream?</p>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
-<script src="{{asset('admin/dist/js/errors/404.js')}}"></script>
+<script src="{{asset('front-end/dist/js/errors/404.js')}}"></script>
 </body>
 </html>

@@ -18,17 +18,6 @@
             </div>
         </div>
 
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input readonly class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -37,13 +26,15 @@
                      with font-awesome or any other icon font library -->
 
                 @foreach($modules as $name => $data)
-                    <li class="nav-header">{{ strtoupper($name).'S' }}</li>
-{{--                @dd($data['title'], $name, !empty($data['icon']) ? $data['icon'] : $name)--}}
-                    @include('admin.parts.menu', [
-                        'name' => $name,
-                        'title' => $data['title'],
-                        'icon' => !empty($data['icon']) ? $data['icon'] : $name,
-                    ])
+                    @if(checkPermission($name, 'view', true))
+                        <li class="nav-header">{{ strtoupper($name).'S' }}</li>
+                        {{--                @dd($data['title'], $name, !empty($data['icon']) ? $data['icon'] : $name)--}}
+                        @include('admin.parts.menu', [
+                            'name' => $name,
+                            'title' => $data['title'],
+                            'icon' => !empty($data['icon']) ? $data['icon'] : $name,
+                        ])
+                    @endif
                 @endforeach
             </ul>
         </nav>

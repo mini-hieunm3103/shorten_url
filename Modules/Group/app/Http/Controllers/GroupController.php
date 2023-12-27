@@ -28,8 +28,9 @@ class GroupController extends Controller
     public function index()
     {
         checkPermission($this->module);
+        $user = Auth::user();
         $groups = $this->groupRepo->getAllGroups()->get();
-        return view('group::index', compact('groups'));
+        return view('group::index', compact('groups', 'user'));
     }
 
     /**

@@ -66,7 +66,9 @@
                                     <x-admin-btn module="group" type="warning" action="edit" :data="$group['id']"  />
                                 </td>
                                 <td>
-                                    <x-admin-btn module="group" type="danger" action="delete" :data="$group['id']"  />
+                                    @if($user->group_id != $group->id)
+                                        <x-admin-btn module="group" type="danger" action="delete" :data="$group['id']"  />
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
