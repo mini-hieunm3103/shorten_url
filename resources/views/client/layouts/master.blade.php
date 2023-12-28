@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="{{asset('client/plugins/chosen/css/chosen.min.css')}}">
     @yield('stylesheet')
     <link rel="stylesheet" href="{{asset('client/dist/css/style.css')}}">
 </head>
@@ -81,9 +82,10 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('front-end/dist/js/demo.js')}}"></script>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.proto.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.jquery.min.js')}}"></script>
 @yield('scripts')
 <script src="{{asset('client/dist/js/custom.js')}}"></script>
 </body>

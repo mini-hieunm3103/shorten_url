@@ -5,6 +5,7 @@ namespace Modules\Url\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Faker\Factory;
+use http\Env\Request;
 use Illuminate\Http\RedirectResponse;
 use Modules\Url\app\Http\Requests\UrlRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -41,6 +42,27 @@ class UrlController extends Controller
         checkPermission($this->module);
         $urls = $this->urlRepo->getAllUrls()->get();
         return view('url::index', compact('urls', 'module'));
+    }
+    public function data($id)
+    {
+        $url = $this->urlRepo->find($id);
+        if (!$url){
+            return "Error";
+        }
+        $tags = $this->tagRepo->getAllTags()->get();
+        $tagIds = $this->urlRepo->getRelatedTags($url);
+        $relatedTags = [];
+        $otherTags = [];
+        foreach ($tags as $tag) {
+            if (in_array($tag->id, $tagIds)) {
+                $relatedTags[] = $tag;
+            } else {
+                $otherTags[] = $tag;
+            }
+        }
+        $url->tags = $relatedTags;
+        $url->other_tags = $otherTags;
+        return $url;
     }
     /**
      * Lấy ra thông tin của người dùng cùng với các shorten url của người đó
@@ -82,7 +104,7 @@ class UrlController extends Controller
     public function store(UrlRequest $request)
     {
         checkPermission($this->module, 'create');
-
+        dd($request->all());
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
@@ -146,10 +168,12 @@ class UrlController extends Controller
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
         $this->urlRepo->update($id, $data);
+        $url = $this->urlRepo->find($id);
         if(!empty($data['tags'])){
-            $url = $this->urlRepo->find($id);
             $tags = $this->getTags($data);
             $this->urlRepo->updateUrlTags($url, $tags);
+        } else {
+            $this->urlRepo->deleteUrlTags($url);
         }
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))

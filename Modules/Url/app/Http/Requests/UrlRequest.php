@@ -13,10 +13,13 @@ class UrlRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route()->url;
+        if (!empty($id)){
+            // check create
+            $rules['long_url'] = 'required|url|string|max:255|url';
+        }
         $rules = [
             'title' => 'max:255',
             'back_half' => 'unique:urls,back_half'.(!empty($id) ? ','.$id : false).'|nullable|regex:#^[a-zA-Z0-9]+$#|',
-            'long_url' => 'required|url|string|max:255|url',
             'user_id' => ['required','integer', function($attribute, $value, $fail){
                 if ($value == 0){
                     $fail(__('url::validation.select'));

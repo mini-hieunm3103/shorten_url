@@ -17,4 +17,5 @@ Route::group([
     'as' => 'admin.',
 ], function () {
     Route::resource('url', UrlController::class)->names('url');
+    Route::get('url/data/{id?}', 'UrlController@data')->name('url.data');
 });

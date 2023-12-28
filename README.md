@@ -39,7 +39,7 @@ php artisan module:seed Group
 - [Laravel DebugBar](https://github.com/barryvdh/laravel-debugbar) 
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v6/installation-laravel)
 - [Laravel DataTables](https://yajrabox.com/docs/laravel-datatables/10.0)
-- [Jquery Multiple-select](https://codepen.io/chakachuk/pen/NWWyJVV)
+- [Jquery Multiple-select](https://harvesthq.github.io/chosen/)
 - [Date Range Picker](https://www.npmjs.com/package/daterangepicker)
 ## UI
 - [AdminLTE 3](https://adminlte.io/themes/v3/)

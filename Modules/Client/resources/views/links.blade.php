@@ -89,7 +89,9 @@
     <!-- Edit Modal-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <form action="{{route('admin.url.store')}}" method="post" class="mt-3">
+            <form action="{{route('admin.url.index')}}" method="post" class="mt-3 edit-form">
+                @csrf
+                @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="m-0 font-weight-bold" style=" color: #3b3b3d">Edit Link</h3>
@@ -100,7 +102,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12 pb-3" style="border-bottom: 2px solid #f1e8e8;">
-                                @csrf
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3 shorted_url">
@@ -145,10 +146,8 @@
                                 <div class=" p-0">
                                     <div class="mb-3" style="width: 100%; background-color: #fffffc">
                                         <div class="multiSelect">
-                                            <select name="tags[]" multiple class="multiSelect_field" data-placeholder="Add Tags">
-                                                @foreach($tags as $tag)
-                                                    <option value="{{$tag->id}}">{{$tag->title}}</option>
-                                                @endforeach
+                                            <select name="tags[]" multiple class="multiSelect_field" data-placeholder="Add Tags" style="width: 100%">
+
                                             </select>
                                         </div>
 
@@ -167,7 +166,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </form>
@@ -176,7 +175,6 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-
         var start = moment();
         var end = moment();
         function cb(start, end) {
@@ -197,90 +195,50 @@
             }
         }, cb);
 
-        // Multiple select
-        jQuery(function() {
-            jQuery('.multiSelect').each(function(e) {
-                var self = jQuery(this);
-                var field = self.find('.multiSelect_field');
-                var fieldOption = field.find('option');
-                var placeholder = field.attr('data-placeholder');
+        // Gửi dâta url vào edit form
 
-                field.hide().after(`<div class="multiSelect_dropdown"></div>
-                        <span class="multiSelect_placeholder">` + placeholder + `</span>
-                        <ul class="multiSelect_list"></ul>
-                        <span class="multiSelect_arrow"></span>`);
-
-                fieldOption.each(function(e) {
-                    jQuery('.multiSelect_list').append(`<li class="multiSelect_option" data-value="`+jQuery(this).val()+`">
-                                            <a class="multiSelect_text">`+jQuery(this).text()+`</a>
-                                          </li>`);
-                });
-
-                var dropdown = self.find('.multiSelect_dropdown');
-                var list = self.find('.multiSelect_list');
-                var option = self.find('.multiSelect_option');
-                var optionText = self.find('.multiSelect_text');
-
-                dropdown.attr('data-multiple', 'true');
-                list.css('top', dropdown.height() + 5);
-
-                option.click(function(e) {
-                    var self = jQuery(this);
-                    e.stopPropagation();
-                    self.addClass('-selected');
-                    field.find('option:contains(' + self.children().text() + ')').prop('selected', true);
-                    dropdown.append(function(e) {
-                        return jQuery('<span class="multiSelect_choice">'+ self.children().text() +'<svg class="multiSelect_deselect -iconX"><use href="#iconX"></use></svg></span>').click(function(e) {
-                            var self = jQuery(this);
-                            e.stopPropagation();
-                            self.remove();
-                            list.find('.multiSelect_option:contains(' + self.text() + ')').removeClass('-selected');
-                            list.css('top', dropdown.height() + 5).find('.multiSelect_noselections').remove();
-                            field.find('option:contains(' + self.text() + ')').prop('selected', false);
-                            if (dropdown.children(':visible').length === 0) {
-                                dropdown.removeClass('-hasValue');
-                            }
-                        });
-                    }).addClass('-hasValue');
-                    list.css('top', dropdown.height() + 5);
-                    if (!option.not('.-selected').length) {
-                        list.append('<h5 class="multiSelect_noselections">That\'s all tags you ever created</h5>');
-                    }
-                });
-
-                dropdown.click(function(e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    dropdown.toggleClass('-open');
-                    list.toggleClass('-open').scrollTop(0).css('top', dropdown.height() + 5);
-                });
-
-                jQuery(document).on('click touch', function(e) {
-                    if (dropdown.hasClass('-open')) {
-                        dropdown.toggleClass('-open');
-                        list.removeClass('-open');
-                    }
-                });
-            });
-        });
         document.addEventListener('DOMContentLoaded', function (){
             var editBtns = document.querySelectorAll('.edit-btn')
             var titleModal = document.querySelector("input[name='title']")
             var backHalfModal = document.querySelector("input[name='back_half']")
+            var editForm = document.querySelector(".edit-form")
+            var selectField = document.querySelector('.multiSelect_field')
             editBtns.forEach((btn) => {
                 btn.addEventListener('click', (e) => {
                     var urlId = btn.getAttribute('data-id')
+                    getUrlInfoById(urlId)
+                        .then((urlData) => {
+                            // clear data
+                            selectField.innerHTML = '';
+                            $(".multiSelect_field").chosen("destroy");
+                            editForm.action = '{!! route('admin.url.index') !!}'; // reset action form
+
+                            titleModal.value = urlData.title;
+                            backHalfModal.value = urlData.back_half;
+                            editForm.action = editForm.action + '/' + urlId;
+
+                            var optionFields = '';
+                            urlData.tags.forEach((e) => {
+                                optionFields += '<option selected value ="' + e.id + '" >'+ e.title +'</option>'
+                            })
+                            urlData.other_tags.forEach((e)=>{
+                                optionFields += '<option value ="' + e.id + '" >'+ e.title +'</option>'
+                            })
+                            selectField.innerHTML = optionFields;
+                            // urlData.other_tags
+                            // lỗi mỗi làn click vào edit btn thì sẽ lưu dữ liệu của select btn làm thêm 1 input ở dưới
+                            $(".multiSelect_field").chosen({width: "100%"})
+                        })
                 })
             })
         })
-        function getUrlInfoById(){
-            return fetch('{{route('admin.url.data')}}')
+        function getUrlInfoById(urlId){
+            var urlData = '{!! route('admin.url.data') !!}';
+            return fetch(urlData + '/' + urlId)
                 .then(function (response) {
                     return response.json();
                 });
         }
-        console.log(getUrlInfoById())
-
     </script>
 @endsection
 @section('stylesheet')

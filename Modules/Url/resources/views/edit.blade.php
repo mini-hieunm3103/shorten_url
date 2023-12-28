@@ -13,14 +13,8 @@
             <div class="col-12">
                 <div class="mb-3">
                     <label for="">Destination</label>
-                    <input id="long_url" name="long_url" type="text" class="form-control
-                    @error('long_url') is-invalid @enderror"
-                           value="{{ old('long_url') ?? $url->long_url }}" autofocus placeholder="https://example.com/my-long-url">
-                    @error('long_url')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                    <input disabled id="long_url" name="long_url" type="text" class="form-control"
+                           value="{{ $url->long_url }}" autofocus placeholder="https://example.com/my-long-url">
                 </div>
             </div>
             <div class="col-4">
