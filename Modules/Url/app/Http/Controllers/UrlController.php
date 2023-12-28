@@ -104,7 +104,6 @@ class UrlController extends Controller
     public function store(UrlRequest $request)
     {
         checkPermission($this->module, 'create');
-        dd($request->all());
         $backHalfArr = $this->urlRepo->getBackHalf();
         $data = $request->except('_token');
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
@@ -191,6 +190,14 @@ class UrlController extends Controller
         check404($url);
         $this->urlRepo->deleteUrlTags($url);
         $this->urlRepo->delete($id);
+
+        // check client or admin create shorten url
+        $url = url()->previous();
+        $route = app('router')->getRoutes($url)->match(app('request')->create($url))->getName();
+        $routeArr = explode('.', $route);
+        if ($routeArr[0] == 'client'){
+            return \redirect()->back();
+        }
         return back()->with('msg', __('messages.success', ['action' => 'Delete', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
     }

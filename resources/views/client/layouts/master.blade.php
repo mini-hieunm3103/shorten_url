@@ -58,7 +58,7 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
+@include('client/parts/delete')
 <!-- jQuery -->
 <script src="{{asset('front-end/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -81,7 +81,7 @@
 <script src="{{asset('front-end/dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('front-end/dist/js/demo.js')}}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.proto.min.js')}}"></script>
