@@ -8,7 +8,7 @@
         @endif
     </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-10">
                 <div class="mb-3">
                     <label for="">Destination</label>
                     <input readonly id="long_url" name="long_url" type="text" class="form-control"
@@ -17,16 +17,11 @@
             </div>
             <div class="col-2">
                 <div class="mb-3">
-                    <label for="">Clicks</label>
-                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
-                           value="{{ ($url->clicks)}}" autofocus placeholder="">
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="mb-3">
-                    <label for="">Total Tags</label>
-                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
-                           value="{{ count($urlTags) }}" autofocus placeholder="">
+                    <label for="">Archived</label>
+                    <select disabled class="form-control" name="archived">
+                        <option value="1"  {{old('archived')??$url->archived == 1 ? 'selected' : false}} >Active</option>
+                        <option value="0"  {{old('archived')??$url->archived == 0 ? 'selected' : false}} >Hidden</option>
+                    </select>
                 </div>
             </div>
             <div class="col-4">
@@ -38,13 +33,6 @@
             </div>
             <div class="col-4">
                 <div class="mb-3">
-                    <label for="">Back-half</label>
-                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
-                           value="{{$url->back_half }}" autofocus placeholder="">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="mb-3">
                     <label for="">User</label>
                     <select disabled name="user_id" id=""
                             class="form-control form-select {{ $errors->has('user_id') ? 'is-invalid' : '' }}">
@@ -52,6 +40,28 @@
                     </select>
                 </div>
             </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="">Back-half</label>
+                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
+                           value="{{$url->back_half }}" autofocus placeholder="">
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="mb-3">
+                    <label for="">Clicks</label>
+                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
+                           value="{{ ($url->clicks)}}" autofocus placeholder="">
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="mb-3">
+                    <label for="">Total Tags</label>
+                    <input readonly id="back_half" name="back_half" type="text" class="form-control"
+                           value="{{ count($urlTags) }}" autofocus placeholder="">
+                </div>
+            </div>
+
 
             <div class="col-12">
                 <div class="card">
@@ -65,7 +75,6 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Title Tag</th>
-                                <th>Description</th>
                                 <th>User</th>
                                 <th>Created At</th>
                             </tr>
@@ -74,7 +83,6 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Title Tag</th>
-                                <th>Description</th>
                                 <th>User</th>
                                 <th>Created At</th>
                             </tr>
@@ -84,7 +92,6 @@
                                 <tr >
                                     <td>{{$key+1}}</td>
                                     <td>{{getLimitText($tag->title)}}</td>
-                                    <td>{{getLimitText($tag->description)}}</td>
                                     <td>
                                         <a href="{{route('admin.user.show', $tag->user->id)}}">{{$tag->user->name}}</a>
                                     </td>

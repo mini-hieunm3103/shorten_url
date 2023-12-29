@@ -24,7 +24,8 @@ class UrlRequest extends FormRequest
                 if ($value == 0){
                     $fail(__('url::validation.select'));
                 }
-            }]
+            }],
+            'archived' => 'required|integer'
         ];
         return $rules;
     }

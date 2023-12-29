@@ -71,6 +71,7 @@
                         <th>Back-Half</th>
                         <th>Created At</th>
                         <th>Expired At</th>
+                        <th width="5%">Archived</th>
                         <th width="5%">Clicks</th>
                         <th width="5%">Sửa</th>
                         <th width="5%">Xóa</th>
@@ -84,6 +85,7 @@
                         <th>Back-Half</th>
                         <th>Created At</th>
                         <th>Expired At</th>
+                        <th width="5%">Archived</th>
                         <th width="5%">Clicks</th>
                         <th width="5%">Sửa</th>
                         <th width="5%">Xóa</th>
@@ -102,6 +104,9 @@
                             </td>
                             <td>{{$url->created_at}}</td>
                             <td>{{$url->expired_at}}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-{{($url->archived) ? "info" : "secondary"}}" style="width: 100%;">{{($url->archived) ? "Active" : "Hidden"}}</button>
+                            </td>
                             <td>{{$url->clicks}}</td>
                             <td>
                                 <a href="{{route('admin.url.edit', $url)}}" class="btn btn-warning">Sửa</a>
@@ -137,7 +142,6 @@
                     <tr>
                         <th>STT</th>
                         <th>Title Tag</th>
-                        <th>Description</th>
                         <th>Created At</th>
                         <th width="5%">Edit</th>
                         <th width="5%">Delete</th>
@@ -147,7 +151,6 @@
                     <tr>
                         <th>STT</th>
                         <th>Title Tag</th>
-                        <th>Description</th>
                         <th>Created At</th>
                         <th width="5%">Edit</th>
                         <th width="5%">Delete</th>
@@ -158,7 +161,6 @@
                         <tr >
                             <td>{{$key+1}}</td>
                             <td>{{getLimitText($tag->title)}}</td>
-                            <td>{{getLimitText($tag->description)}}</td>
                             <td>{{$tag->created_at}}</td>
                             <td>
                                 <a href="{{route('admin.tag.edit', $tag)}}" class="btn btn-warning">Sửa</a>
@@ -194,8 +196,8 @@
                 "autoWidth": false,
                 "responsive": true,
                 "columnDefs": [
-                    { orderable: false, targets: 7 },
                     { orderable: false, targets: 8 },
+                    { orderable: false, targets: 9 },
                 ],
                 "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
@@ -209,8 +211,8 @@
                 "autoWidth": false,
                 "responsive": true,
                 "columnDefs": [
-                    { orderable: false, targets: 4 },
-                    { orderable: false, targets: 5 }
+                    { orderable: false, targets: 3 },
+                    { orderable: false, targets: 4 }
                 ],
                 "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]

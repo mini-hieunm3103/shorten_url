@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('description');
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 

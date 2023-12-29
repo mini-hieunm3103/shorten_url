@@ -19,6 +19,7 @@ class Url extends Model
         'back_half',
         'user_id',
         'clicks',
+        'archived',
         'expired_at',
         'title'
     ];

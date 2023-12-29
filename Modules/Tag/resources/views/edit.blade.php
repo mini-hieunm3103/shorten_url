@@ -49,19 +49,6 @@
                 </div>
             </div>
             <div class="col-12">
-                <div class="mb-3">
-                    <label for="">Description <small style="font-size: 16px"> (optional)</small></label>
-                    <textarea id="description" name="description" type="text" class="form-control
-                    @error('description') is-invalid @enderror"
-                              value="{{ old('description') ?? $tag->description }}" autofocus placeholder=""></textarea>
-                    @error('description')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><strong>Select the url(s) you want to add</strong></h3>
@@ -79,6 +66,7 @@
                                 <th>Người Đăng</th>
                                 <th>Thời Gian</th>
                                 <th>Hết Hạn</th>
+                                <th width="5%">Archived</th>
                                 <th width="5%">Clicks</th>
                             </tr>
                             </thead>
@@ -91,6 +79,7 @@
                                 <th>Người Đăng</th>
                                 <th>Thời Gian</th>
                                 <th>Hết Hạn</th>
+                                <th width="5%">Archived</th>
                                 <th width="5%">Clicks</th>
                             </tr>
                             </tfoot>
@@ -112,6 +101,9 @@
                                     </td>
                                     <td>{{$url->created_at}}</td>
                                     <td>{{$url->expired_at}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-{{($url->archived) ? "info" : "secondary"}}" style="width: 100%;">{{($url->archived) ? "Active" : "Hidden"}}</button>
+                                    </td>
                                     <td>{{$url->clicks}}</td>
                                 </tr>
                             @endforeach

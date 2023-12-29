@@ -166,6 +166,9 @@ class UrlController extends Controller
         if(empty($data['back_half'])){
             $data['back_half'] = $this->getBackHalf($backHalfArr);
         }
+        if(empty($data['archived'])){
+            $data['archived'] = 1;
+        }
         $this->urlRepo->update($id, $data);
         $url = $this->urlRepo->find($id);
         if(!empty($data['tags'])){

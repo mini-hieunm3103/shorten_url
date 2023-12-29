@@ -70,7 +70,6 @@ class GroupDatabaseSeeder extends Seeder
                 for ($i = 0; $i < 5; $i++) {
                     DB::table('tags')->insert([
                         'title' => $faker->text(30),
-                        'description' => $faker->sentence(),
                         'user_id' =>  $userId,
                         'created_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),
                         'updated_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),
@@ -80,6 +79,7 @@ class GroupDatabaseSeeder extends Seeder
                         'long_url' => $faker->url(),
                         'back_half' => $faker->regexify('[a-zA-Z0-9]{3,5}'),
                         'clicks' => 0,
+                        'archived' => 1,
                         'user_id' => $userId,
                         'created_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),
                         'updated_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),

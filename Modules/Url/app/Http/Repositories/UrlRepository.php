@@ -14,7 +14,7 @@ class UrlRepository extends BaseRepository implements UrlRepositoryInterface
 
     function getAllUrls()
     {
-        return $this->model->select(['id','title', 'long_url','back_half','clicks', 'user_id', 'expired_at', 'created_at']);
+        return $this->model->select(['id','title', 'long_url','back_half','clicks','archived', 'user_id', 'expired_at', 'created_at']);
     }
     function getBackHalf(){
         $arr = [];

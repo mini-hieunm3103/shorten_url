@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('back_half')->nullable(); //cái đằng sau domain
             $table->integer('user_id')->unsigned();
             $table->integer('clicks')->default(0);
+            $table->boolean('archived')->default(1); // 1: active ; 0: hidden => khi gửi bên client thì sẽ hiện là active: on (1) và off (0)
             $table->timestamps();
             $table->timestamp('expired_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 

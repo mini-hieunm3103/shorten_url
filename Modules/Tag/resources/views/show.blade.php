@@ -30,14 +30,6 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="mb-3">
-                <label for="">Description <small style="font-size: 16px"> (optional)</small></label>
-                <textarea readonly id="description" name="description" type="text" class="form-control
-                          value="{{$tag->description }}" autofocus placeholder="" ></textarea>
-            </div>
-        </div>
-
-        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Danh Sách Url(s) Rút Gọn Của Tag:</h3>
@@ -55,6 +47,7 @@
                             <th>Người Đăng</th>
                             <th>Thời Gian</th>
                             <th>Hết Hạn</th>
+                            <th width="5%">Archived</th>
                             <th width="5%">Clicks</th>
                         </tr>
                         </thead>
@@ -67,6 +60,7 @@
                             <th>Người Đăng</th>
                             <th>Thời Gian</th>
                             <th>Hết Hạn</th>
+                            <th width="5%">Archived</th>
                             <th width="5%">Clicks</th>
                         </tr>
                         </tfoot>
@@ -87,6 +81,9 @@
                                 </td>
                                 <td>{{$url->created_at}}</td>
                                 <td>{{$url->expired_at}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-{{($url->archived) ? "info" : "secondary"}}" style="width: 100%;">{{($url->archived) ? "Active" : "Hidden"}}</button>
+                                </td>
                                 <td>{{$url->clicks}}</td>
                             </tr>
                         @endforeach

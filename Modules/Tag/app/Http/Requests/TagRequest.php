@@ -35,7 +35,6 @@ class TagRequest extends FormRequest
     {
         return [
             'title' => __('url::validation.attributes.title'),
-            'description' => __('url::validation.attributes.description'),
             'urls' => __('url::validation.attributes.urls'),
             'user_id' => __('url::validation.attributes.user_id'),
         ];

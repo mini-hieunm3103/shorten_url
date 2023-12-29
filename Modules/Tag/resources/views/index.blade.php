@@ -23,7 +23,6 @@
                         <tr>
                             <th>STT</th>
                             <th>Title</th>
-                            <th>Description</th>
                             <th>User</th>
                             <th>Created At</th>
                             <th>Total Urls </th>
@@ -36,7 +35,6 @@
                         <tr>
                             <th>STT</th>
                             <th>Title</th>
-                            <th>Description</th>
                             <th>User</th>
                             <th>Created At</th>
                             <th>Total Clicks </th>
@@ -50,7 +48,6 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{getLimitText($tag->title)}}</td>
-                                <td>{{getLimitText($tag->description)}}</td>
                                 <td>
                                     <a @can('show user') href="{{route('admin.user.show', $tag->user->id)}}" @endcan>{{$tag->user->name}}</a>
                                 </td>
@@ -89,9 +86,9 @@
                 "autoWidth": false,
                 "responsive": true,
                 "columnDefs": [
+                    { orderable: false, targets: 5 },
                     { orderable: false, targets: 6 },
-                    { orderable: false, targets: 7 },
-                    { orderable: false, targets: 8 }
+                    { orderable: false, targets: 7 }
                 ],
                 "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]

@@ -28,6 +28,7 @@
                         <th>User</th>
                         <th>Created At</th>
                         <th>Expired At</th>
+                        <th width="5%">Archived</th>
                         <th width="5%">Clicks</th>
                         <th width="5%">Watch</th>
                         <th width="5%">Edit</th>
@@ -43,6 +44,7 @@
                         <th>User</th>
                         <th>Created At</th>
                         <th>Expired At</th>
+                        <th width="5%">Archived</th>
                         <th width="5%">Clicks</th>
                         <th width="5%">Watch</th>
                         <th width="5%">Edit</th>
@@ -65,6 +67,9 @@
                             </td>
                             <td>{{$url->created_at}}</td>
                             <td>{{$url->expired_at}}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-{{($url->archived) ? "info" : "secondary"}}" style="width: 100%;">{{($url->archived) ? "Active" : "Hidden"}}</button>
+                            </td>
                             <td>{{$url->clicks}}</td>
                             <td>
                                 <x-admin-btn module="url" type="success" action="show" :data="$url->id"  />
@@ -100,9 +105,9 @@
                 "responsive": true,
                 "columnDefs" : [
                     // tắt tính năng sort
-                    {"orderable": false, "targets": 8},
                     {"orderable": false, "targets": 9},
                     {"orderable": false, "targets": 10},
+                    {"orderable": false, "targets": 11},
                 ],
                 "order": [[0, 'asc']],
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]

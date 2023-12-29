@@ -10,7 +10,7 @@
     <form action="{{route('admin.url.store')}}" method="post">
         @csrf
         <div class="row">
-            <div class="col-12">
+            <div class="col-10">
                 <div class="mb-3">
                     <label for="">Destination</label>
                     <input id="long_url" name="long_url" type="text" class="form-control
@@ -21,6 +21,15 @@
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="">Archived</label>
+                    <select class="form-control" name="archived">
+                        <option value="1"  {{old('archived') == 1 || empty(old()) ? 'selected' : false}} >Active</option>
+                        <option value="0"  {{!empty(old()) && old('archived') == 0 ? 'selected' : false}} >Hidden</option>
+                    </select>
                 </div>
             </div>
             <div class="col-4">
@@ -81,7 +90,6 @@
                                 <th></th>
                                 <th>STT</th>
                                 <th>Title Tag</th>
-                                <th>Description</th>
                                 <th>User</th>
                                 <th>Created At</th>
                                 <th>Total Urls </th>
@@ -92,7 +100,6 @@
                                 <th></th>
                                 <th>STT</th>
                                 <th>Title Tag</th>
-                                <th>Description</th>
                                 <th>User</th>
                                 <th>Created At</th>
                                 <th>Total Urls </th>
@@ -106,7 +113,6 @@
                                     </td>
                                     <td>{{$key+1}}</td>
                                     <td>{{getLimitText($tag->title)}}</td>
-                                    <td>{{getLimitText($tag->description)}}</td>
                                     <td>
                                         <a href="{{route('admin.user.show', $tag->user->id)}}">{{$tag->user->name}}</a>
                                     </td>
