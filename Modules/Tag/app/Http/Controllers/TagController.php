@@ -66,6 +66,14 @@ class TagController extends Controller
             $urls = $this->getUrls($tagData);
             $this->tagRepo->createTagUrls($tag, $urls);
         }
+        $url = url()->previous();
+        $route = app('router')->getRoutes($url)->match(app('request')->create($url))->getName();
+        $routeArr = explode('.', $route);
+        if ($routeArr[0] == 'client'){
+            return redirect()->route('client.links.index')
+                ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
+                ->with('type', 'success');
+        }
         return redirect()->route('admin.tag.index')
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Tag']))
             ->with('type', 'success');

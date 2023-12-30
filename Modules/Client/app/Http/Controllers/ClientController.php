@@ -51,13 +51,23 @@ class ClientController extends Controller
                 $url->tags = $relatedTags;
             }
         }
-        return view('client::links', compact('title', 'urls', 'domain'));
+        return view('client::links', compact('title', 'urls', 'domain', 'tags'));
     }
-
-    function create()
+    // render form create url
+    function createUrl()
     {
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
         $domain = ($matches[1][0]);
         return view('client::create', compact('domain'));
+    }
+    // handle store new url
+    function storeUrl()
+    {
+
+    }
+
+    function storeTag()
+    {
+        // xử lý các kiểu rồi ném dữ liệu và redirect đến store tag của admin
     }
 }
