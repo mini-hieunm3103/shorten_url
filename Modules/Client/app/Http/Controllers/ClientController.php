@@ -107,9 +107,13 @@ class ClientController extends Controller
         return view('client::create', compact('domain'));
     }
     // handle store new url
-    function storeUrl()
+    function showUrl($shortLink)
     {
-
+        preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
+        $domain = ($matches[1][0]);
+        $url = $this->urlRepo->getAllUrls()->where('back_half', $shortLink)->first();
+        check404($url);
+        return view('client::show', compact('url', 'domain'));
     }
 
     function storeTag()

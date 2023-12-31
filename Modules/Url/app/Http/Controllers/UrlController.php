@@ -180,6 +180,15 @@ class UrlController extends Controller
         } else {
             $this->urlRepo->deleteUrlTags($url);
         }
+        // check client or admin create shorten url
+        $previousUrl = url()->previous();
+        $route = app('router')->getRoutes($previousUrl)->match(app('request')->create($previousUrl))->getName();
+        $routeArr = explode('.', $route);
+        if ($routeArr[0] == 'client'){
+            return redirect()->route('client.links.show', $url->back_half)
+                ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
+                ->with('type', 'success');
+        }
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{asset('front-end/plugins/summernote/summernote-bs4.min.css')}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{asset('front-end/plugins/datatables-select/css/select.bootstrap4.min.css')}}">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -58,7 +59,6 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-@include('client/parts/delete')
 <!-- jQuery -->
 <script src="{{asset('front-end/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -82,6 +82,24 @@
 <!-- AdminLTE App -->
 <script src="{{asset('front-end/dist/js/adminlte.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="{{asset('front-end/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/jszip/jszip.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/pdfmake/vfs_fonts.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('front-end/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+
+{{--    DataTable Checkbox--}}
+<script src="{{asset('front-end/plugins/datatables-select/js/dataTables.select.js')}}"></script>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.proto.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.jquery.min.js')}}"></script>

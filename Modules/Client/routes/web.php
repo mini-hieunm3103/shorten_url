@@ -23,6 +23,7 @@ Route::group(
         Route::get('home', [ClientController::class, 'home'])->name('home');
         Route::get('links', [ClientController::class, 'links'])->name('links.index');
         Route::get('links/create', [ClientController::class, 'createUrl'])->name('links.create');
+        Route::get('links/{shortLink}/detail', [ClientController::class, 'showUrl'])->name('links.show');
     }
 );
 // thay vì gửi id lên thẳng url thì có thể lấy ra bằng auth()->user() sau khi đăng nhập
