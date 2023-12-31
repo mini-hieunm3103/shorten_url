@@ -69,7 +69,7 @@ class GroupDatabaseSeeder extends Seeder
             if ($userId>0){
                 for ($i = 0; $i < 5; $i++) {
                     DB::table('tags')->insert([
-                        'title' => $faker->text(30),
+                        'title' => $faker->name(),
                         'user_id' =>  $userId,
                         'created_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),
                         'updated_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),

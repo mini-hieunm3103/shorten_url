@@ -70,6 +70,8 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset('front-end/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!--  Bootstrap 4 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
 <script src="{{asset('front-end/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('front-end/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
@@ -79,10 +81,7 @@
 <script src="{{asset('front-end/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('front-end/dist/js/adminlte.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('front-end/dist/js/demo.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.proto.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('client/plugins/chosen/js/chosen.jquery.min.js')}}"></script>

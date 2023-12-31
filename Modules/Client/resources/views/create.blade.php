@@ -49,6 +49,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+                <input type="hidden" name="archived" value="1">
                 <div class="col-12 right">
                     <button type="submit" class="btn btn-primary mr-2">Create</button>
                     <a href="{{ route('client.links.index') }}" class="btn btn-danger">Cancel</a>

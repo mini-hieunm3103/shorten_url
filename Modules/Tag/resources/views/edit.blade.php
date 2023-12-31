@@ -87,7 +87,7 @@
                             @foreach($urls as $key => $url)
                                 <tr id="row{{$key+1}}">
                                     <td>
-                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" {{(in_array($url->id, $urlIds)) ? 'checked' : false}} id="checkbox{{$key+1}}">
+                                        <input type="checkbox" name="urls[]" value="{{$url->id}}" {{(in_array($url->id, old('urls') ??$urlIds)) ? 'checked' : false}} id="checkbox{{$key+1}}">
                                     </td>
                                     <td>{{getLimitText($url->title)}}</td>
                                     <td>

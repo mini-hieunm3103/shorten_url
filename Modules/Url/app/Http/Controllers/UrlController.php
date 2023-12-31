@@ -5,7 +5,7 @@ namespace Modules\Url\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Faker\Factory;
-use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Modules\Url\app\Http\Requests\UrlRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -111,7 +111,10 @@ class UrlController extends Controller
             $data['title'] = 'Untitled '.Carbon::now('UTC')->format('Y-m-d H:i:s');
         }
         if(empty($data['back_half'])){
+            $data['is_custom'] = 0;
             $data['back_half'] = $this->getBackHalf($backHalfArr);
+        } else{
+            $data['is_custom'] = 1;
         }
         $url = $this->urlRepo->create($data);
         if (!empty($data['tags'])){
@@ -164,10 +167,10 @@ class UrlController extends Controller
             $data['title'] = 'Untitled '.Carbon::now('UTC')->format('Y-m-d H:i:s');
         }
         if(empty($data['back_half'])){
+            $data['is_custom'] = 0;
             $data['back_half'] = $this->getBackHalf($backHalfArr);
-        }
-        if(empty($data['archived'])){
-            $data['archived'] = 1;
+        } else{
+            $data['is_custom'] = 1;
         }
         $this->urlRepo->update($id, $data);
         $url = $this->urlRepo->find($id);
@@ -181,7 +184,22 @@ class UrlController extends Controller
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
             ->with('type', 'success');
     }
-
+    function hideListUrl(Request $request)
+    {
+        $urlIds = $request->urls;
+        foreach ($urlIds as $urlId) {
+            $this->urlRepo->update($urlId, ['archived' => 0]);
+        }
+        return back();
+    }
+    function activeListUrl(Request $request)
+    {
+        $urlIds = $request->urls;
+        foreach ($urlIds as $urlId) {
+            $this->urlRepo->update($urlId, ['archived' => 1]);
+        }
+        return back();
+    }
     /**
      * Remove the specified resource from storage.
      */

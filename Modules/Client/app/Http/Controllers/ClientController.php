@@ -31,19 +31,64 @@ class ClientController extends Controller
     {
         return view('client::home');
     }
-    function links()
+    function links(Request $request)
     {
-//        $id = $this->user->id;
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
         $domain = ($matches[1][0]);
         $title = 'Links';
-        $urls = $this->urlRepo->getUserUrls(auth()->user()->id)->orderBy('updated_at', 'desc')->get();
-        $tags = $this->tagRepo->getUserTags(auth()->user()->id)->get();
+        $filterApplied = 0;
+
+        // filter by tags
+        $relatedUrlIds = [];
+        $tagsFilterArr = [];
+        if (!empty($request->input('tags'))){
+            $filterApplied += 1;
+            $tagsFilterName = $request->input('tags');
+            foreach ($tagsFilterName as $name) {
+                $tagsFilter = $this->tagRepo->getUserTags(auth()->user()->id)->where('title', $name)->first();
+                $tagsFilterArr[] = $tagsFilter;
+                $relatedUrlIds[] = $this->tagRepo->getRelatedUrls($tagsFilter);
+            }
+            $mergedArray = call_user_func_array('array_merge', $relatedUrlIds);
+            $relatedUrlIds = array_unique($mergedArray);
+            $relatedUrlIds = array_values($relatedUrlIds);
+        }
+
+        $urls = $this->urlRepo->getUserUrls(auth()->user()->id)->orderBy('updated_at', 'desc')
+            ->when(true, function ($query) use ($request, $relatedUrlIds, &$filterApplied) {
+                if (!empty($relatedUrlIds)) {
+                    $query->whereIn('id', $relatedUrlIds);
+                }
+                // check link custom
+                if (!empty($request->input('custom_link')) && $request->input('custom_link') == "on"){
+                    $filterApplied+=1;
+                    $query->where('is_custom', 1);
+                } elseif (!empty($request->input('custom_link')) && $request->input('custom_link') == "off"){
+                    $filterApplied+=1;
+                    $query->where('is_custom', 0);
+                }
+                // check created date
+                if (!empty($request->input('created_after')) && !empty($request->input('created_before'))) {
+                    $filterApplied+=1;
+                    $createdAfter = Carbon::createFromTimestamp($request->input('created_after'))->format('Y-m-d H:i:s');
+                    $createdBefore = Carbon::createFromTimestamp($request->input('created_before'))->format('Y-m-d H:i:s');
+//                    \dd($createdBefore, $createdAfter);
+                    $query->where('created_at', '>', $createdAfter)->where('created_at', '<', $createdBefore);
+                }
+                if (request()->input('archived') == 'off'){
+                    $filterApplied+=1;
+                    $query->where('archived', '0');
+                } else{
+                    $query->where('archived', '1');
+                }
+            })
+            ->get();
+        $allTags = $this->tagRepo->getUserTags(auth()->user()->id)->get();
         foreach ($urls as $url) {
             $tagIds = $this->urlRepo->getRelatedTags($url);
             if (!empty($tagIds)) {
                 $relatedTags = [];
-                foreach ($tags as $tag) {
+                foreach ($allTags as $tag) {
                     if (in_array($tag->id, $tagIds)) {
                         $relatedTags[] = $tag;
                     }
@@ -51,7 +96,8 @@ class ClientController extends Controller
                 $url->tags = $relatedTags;
             }
         }
-        return view('client::links', compact('title', 'urls', 'domain', 'tags'));
+//        \dd($tagsFilterArr);
+        return view('client::links', compact('title', 'urls', 'domain', 'allTags', 'filterApplied', 'tagsFilterArr'));
     }
     // render form create url
     function createUrl()

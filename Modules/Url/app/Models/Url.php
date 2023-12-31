@@ -20,6 +20,7 @@ class Url extends Model
         'user_id',
         'clicks',
         'archived',
+        'is_custom',
         'expired_at',
         'title'
     ];

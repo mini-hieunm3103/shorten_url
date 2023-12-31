@@ -18,4 +18,6 @@ Route::group([
 ], function () {
     Route::resource('url', UrlController::class)->names('url');
     Route::get('url/data/{id?}', 'UrlController@data')->name('url.data');
+    Route::post('url/hidden', 'UrlController@hideListUrl')->name('url.hidden');
+    Route::post('url/active', 'UrlController@activeListUrl')->name('url.active');
 });
