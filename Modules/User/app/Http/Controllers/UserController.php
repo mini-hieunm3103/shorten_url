@@ -5,6 +5,8 @@ namespace Modules\User\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Modules\Group\app\Http\Repositories\GroupRepository;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Http\Requests\UserRequest;
@@ -127,22 +129,64 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id): RedirectResponse
     {
-        checkPermission($this->module, 'edit');
-        $data = $request->except('_token', 'password'); // bỏ password bên trong data chứ bên request vẫn còn
-        if($request->password){
-            $data['password'] = bcrypt($request->password);
+        if($request->_method=='PUT'){
+            checkPermission($this->module, 'edit');
+            $data = $request->except('_token', 'password'); // bỏ password bên trong data chứ bên request vẫn còn
+            if($request->password){
+                $data['password'] = bcrypt($request->password);
+            }
+            // sync role
+            $user = $this->userRepo->find($id);
+            check404($user);
+            $group = $this->groupRepo->find($request->group_id);
+            check404($group);
+            $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
+            $this->userRepo->update($id, $data);
+            $user->syncRoles($roleGroup->name);
+
         }
-        // sync role
-        $user = $this->userRepo->find($id);
-        check404($user);
-        $group = $this->groupRepo->find($request->group_id);
-        check404($group);
-        $roleGroup = Role::where('roles.id', $group->role_id)->with('permissions')->first();
-        $this->userRepo->update($id, $data);
-        $user->syncRoles($roleGroup->name);
+        if ($request->_method == 'PATCH') {
+            $data = $request->except('_token', '_method');
+            $user = Auth::user();
+            if (!empty($data['name'])){
+                $request->validate([
+                   'name' => 'required|string|max:255'
+                ]);
+                $this->userRepo->update($user->id, $data);
+            }
+            if (!empty($data['email'])){
+                $request->validate([
+                    'email' => 'required|email|string|max:255|unique:users,email',
+                ], [
+                    'required' => __('user::validation.required'),
+                    'email' => __('user::validation.email'),
+                    'unique' => __('user::validation.unique'),
+                ], [
+                    'email' => 'Email address'
+                ]);
+                $this->userRepo->update($user->id, $data);
+            }
+            if (!empty($data['confirm_pass']) && $data['confirm_pass']){
+                $request->validate([
+                    'password' =>
+                        [
+                            'required',
+                            function ($attribute, $value, $fail) use($user) {
+                                if (!Hash::check($value, $user->password)) {
+                                    return $fail(__('The current password is incorrect.'));
+                                }
+                            }
+                        ],
+                    'new_password' => 'required|min:6|confirmed',
+                ]);
+                $update['password'] = Hash::make($data['new_password']);
+                $this->userRepo->update($user->id, $update);
+            }
+        }
         return back()
             ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'User']))
-            ->with('type', 'success');
+            ->with('type', 'success')
+            ->with('showSweetAlert', true); // Thêm biến này để xác định cần hiển thị SweetAlert
     }
 
     /**

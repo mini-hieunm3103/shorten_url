@@ -12,27 +12,32 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route()->user;
-        // check xem có phải là update dữ liệu hay là thêm
-        // nếu update thì phải tránh báo lỗi khi trùng với chính nó:  `unique:users,email,'.$user->id`
-        $rules = [
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:1',
-            'group_id' => ['required','integer', function($attribute, $value, $fail){
-                if ($value == 0){
-                    $fail(__('user::validation.select'));
+        $routeName = (app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName());
+        $route = explode('.', $routeName)[0];
+        $rules = [];
+        if ($route == 'admin'){
+            // check xem có phải là update dữ liệu hay là thêm
+            // nếu update thì phải tránh báo lỗi khi trùng với chính nó:  `unique:users,email,'.$user->id`
+            $rules = [
+                'name' => 'required|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'group_id' => ['required','integer', function($attribute, $value, $fail){
+                    if ($value == 0){
+                        $fail(__('user::validation.select'));
+                    }
+                }]
+            ];
+            if (!empty($id)){
+                $rules['email'] = 'required|email|unique:users,email,'.$id;
+                if (!empty($this->password)){
+                    $rules['password'] = 'min:1';
+                } else{
+                    unset($rules['password']);
                 }
-            }]
-        ];
-        if (!empty($id)){
-            $rules['email'] = 'required|email|unique:users,email,'.$id;
-            if (!empty($this->password)){
-                $rules['password'] = 'min:1';
-            } else{
-                unset($rules['password']);
             }
         }
-        return $rules;
+            return $rules;
     }
     public function messages(): array
     {

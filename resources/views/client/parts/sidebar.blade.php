@@ -22,7 +22,7 @@
         <nav class="mt-3 pb-1"  style="border-bottom: 2px solid #f1e8e8">
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent " data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item mb-2" style="margin-left: 4px; ">
-                    <a href="#" class="nav-link active" style="width: auto; padding: 6px 0; margin: 8px 16px; border: 1px; border-radius: 5px">
+                    <a href="{{route('client.links.create')}}" class="nav-link active" style="width: auto; padding: 6px 0; margin: 8px 16px; border: 1px; border-radius: 5px">
                         <i class="nav-icon fas fa-plus"></i>
                         <p>
                             Create Shorten URL
@@ -38,7 +38,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item mb-3" style="margin: 4px;">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('client.home')}}" class="nav-link {{request()->is('trang-ca-nhan/home*') ? 'active' : ''}}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Home
@@ -46,15 +46,15 @@
                     </a>
                 </li>
                 <li class="nav-item mb-3" style="margin: 4px;border-bottom: 2px solid #f1e8e8">
-                    <a href="#" class="nav-link active mb-3" >
+                    <a href="{{route('client.links.index')}}" class="nav-link mb-3 {{ request()->is('trang-ca-nhan/links*') ? 'active' : false }}" >
                         <i class="nav-icon fas fa-link "></i>
                         <p>
                             Links
                         </p>
                     </a>
                 </li>
-                <li class="nav-item mb-3" style="margin-left: 4px; ">
-                    <a href="#" class="nav-link">
+                <li class="nav-item mb-3 " style="margin-left: 4px; ">
+                    <a href="{{route('client.setting')}}" class="nav-link {{request()->is('trang-ca-nhan/setting*') ? 'active' : ''}}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Settings

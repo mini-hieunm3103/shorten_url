@@ -122,13 +122,15 @@ class UrlController extends Controller
             $this->urlRepo->createUrlTags($url, $tags);
         }
         // check client or admin create shorten url
-        $url = url()->previous();
-        $route = app('router')->getRoutes($url)->match(app('request')->create($url))->getName();
+        $previousUrl = url()->previous();
+        $route = app('router')->getRoutes($previousUrl)->match(app('request')->create($previousUrl))->getName();
         $routeArr = explode('.', $route);
         if ($routeArr[0] == 'client'){
             return redirect()->route('client.links.index')
                 ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))
-                ->with('type', 'success');
+                ->with('type', 'success')
+                ->with('active', $url->id)
+                ->with('showSweetAlert', true); // Thêm biến này để xác định cần hiển thị SweetAlert
         }
         return redirect()->route('admin.url.index')
             ->with('msg', __('messages.success', ['action' => 'Create', 'attribute' => 'Shorten URL']))

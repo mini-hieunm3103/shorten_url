@@ -116,8 +116,8 @@ class ClientController extends Controller
         return view('client::show', compact('url', 'domain'));
     }
 
-    function storeTag()
+    function setting()
     {
-        // xử lý các kiểu rồi ném dữ liệu và redirect đến store tag của admin
+        return view('client::setting');
     }
 }

@@ -2,7 +2,11 @@
 @section('content')
     <div class="row">
         <div class="col-1"></div>
-        <div class="col-10 mt-5">
+        <div class="col-10 ">
+            <a class="btn mt-5 mb-4 btn-link" href="{{route('client.links.index')}}">
+                <i class="fa fa-chevron-left mr-2"></i>
+                <span style="font-size: 20px">Back to list</span>
+            </a>
             <div class="link-detail card card-primary mb-4" data-id="{{$url->id}}">
                 <div class="card-body row d-flex flex-wrap">
                     <div class="col-11">

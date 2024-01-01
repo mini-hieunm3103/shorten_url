@@ -50,7 +50,7 @@
 {{--            Select and show active or hidden link | check Tồn tại $urls--}}
             <div class="col-12 d-flex flex-wrap mt-3 ">
                 <div class="col-5 mb-0 d-flex align-items-center" style="">
-                    <div style="margin-left: 21px;" class="mr-2 @if(!empty($urls)) d-none @endif">
+                    <div style="margin-left: 21px;" class="mr-2 @if(empty($urls)) d-none @endif">
                         <input type="checkbox" style="" name="" id="checkboxAll">
                         <span class = "ml-2" style="font-size: large"> <span class="count-select">0</span> selected</span>
                     </div>
@@ -71,8 +71,6 @@
                                 Hidden
                                 <i class="fa fa-check archived-check-icon"></i>
                             </button>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Expired link</a>
                         </div>
                     </div>
                 </div>
@@ -284,6 +282,17 @@
                 }
             })
 
+
+            @if(session('showSweetAlert'))
+                Swal.fire({
+                    position: "top-end",
+                    icon: "{{session('type')}}",
+                    title: "{{session('msg')}}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            @endif
+
             var isArchived = {!! empty(request()->input('archived')) || request()->input('archived') == 'on' ? 'true' : 'false' !!};
             $('.archived-on-btn').toggleClass('active', isArchived);
             $('.archived-off-btn').toggleClass('active', !isArchived);
@@ -358,6 +367,14 @@
                 var totalClicks = e.querySelector('.total-clicks')
                 var checkboxLink = e.querySelector('.linkCheckbox')
                 var editBtn = e.querySelector('.edit-btn')
+                @if(session('active'))
+                    if ({{session('active')}} == urlId){
+                        e.classList.add('create-solid')
+                        setTimeout(function() {
+                            e.classList.remove('create-solid');
+                        }, 3000);
+                    }
+                @endif
                 shortUrl.addEventListener('click', () => {
                     getUrlInfoById(urlId)
                         .then((urlData) => {
@@ -557,6 +574,10 @@
 @endsection
 @section('stylesheet')
     <style>
+        .create-solid {
+            border: 2px solid #ffa600;
+            background-color: rgba(230, 236, 167, 0.58);
+        }
         @media screen and (max-width: 560px) {
             .max-w-56{
                 width: 100%;
