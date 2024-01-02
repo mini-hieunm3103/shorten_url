@@ -63,6 +63,21 @@
                 </li>
             </ul>
         </nav>
+{{--        Những người trong nhóm User sẽ không có quyền vào trang admin --}}
+        @if(!auth()->user()->hasRole('user'))
+        <nav class="mt-3 pt-4"  style="border-top: 2px solid #f1e8e8">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent " data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item mb-2" style="margin-left: 4px; ">
+                    <a href="{{route('admin.dashboard.index')}}" class="nav-link active" style="width: auto; padding: 6px 0; margin: 8px 16px; border: 1px; border-radius: 5px; background-color: #212529">
+                        <i class="nav-icon fas fa-arrow-alt-circle-left"></i>
+                        <p>
+                            Redirect to admin page
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        @endif
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

@@ -31,8 +31,9 @@ if (logoutAction && logoutForm){
         logoutForm.submit();
     })
 }
-let linkList = document.querySelectorAll('.limited-url');
-
-for(var i in linkList){
-    linkList[i].setAttribute('target', '_blank');
+var linkList = document.querySelectorAll('.limited-url');
+if (linkList){
+    for(var i in linkList){
+        linkList[i].setAttribute('target', '_blank');
+    }
 }

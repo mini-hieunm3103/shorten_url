@@ -27,6 +27,13 @@ class ClientController extends Controller
         $this->urlRepo = $urlRepo;
         $this->tagRepo = $tagRepo;
     }
+
+    function welcome()
+    {
+        preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
+        $domain = ($matches[1][0]);
+        return view('client::welcome2', compact('domain'));
+    }
     function home()
     {
         return view('client::home');
@@ -97,14 +104,14 @@ class ClientController extends Controller
             }
         }
 //        \dd($tagsFilterArr);
-        return view('client::links', compact('title', 'urls', 'domain', 'allTags', 'filterApplied', 'tagsFilterArr'));
+        return view('client::links.lists', compact('title', 'urls', 'domain', 'allTags', 'filterApplied', 'tagsFilterArr'));
     }
     // render form create url
     function createUrl()
     {
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
         $domain = ($matches[1][0]);
-        return view('client::create', compact('domain'));
+        return view('client::links.create', compact('domain'));
     }
     // handle store new url
     function showUrl($shortLink)
@@ -113,7 +120,7 @@ class ClientController extends Controller
         $domain = ($matches[1][0]);
         $url = $this->urlRepo->getAllUrls()->where('back_half', $shortLink)->first();
         check404($url);
-        return view('client::show', compact('url', 'domain'));
+        return view('client::links.show', compact('url', 'domain'));
     }
 
     function setting()

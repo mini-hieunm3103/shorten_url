@@ -27,6 +27,7 @@ php artisan module:seed Group
   - Edit
   - Delete
   - Permission
+- Except who is in User Group redirect admin page
 ## Client Page:
 - Manage: Tags, Urls, User Information
 - User Permissions:
@@ -44,6 +45,7 @@ php artisan module:seed Group
 ## UI
 - [AdminLTE 3](https://adminlte.io/themes/v3/)
 - [Bitly](https://app.bitly.com/)
+- [Landing page](https://codepen.io/FedLover/pen/NWXPeae)
 ## Roles and Permission
 ### Roles: (theo group)
 * roles.name: slug(group->name, '_').'_'.group->id
@@ -83,5 +85,3 @@ php artisan module:seed Group
   - View all user's url | tag
   - Delete url | tag
 
-I) Trang Client:
-- Học về API để lấy dữ liệu rồi gửi vào form chỉnh sửa [Tham khảo chỉnh sửa](https://chat.openai.com/c/8a835bbe-7a4a-41a9-9376-1589cfece54f)

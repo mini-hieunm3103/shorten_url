@@ -2,7 +2,7 @@
 
 return [
     'required' => ':attribute is required',
-    'unique' => ':attribute has been taken!',
+    'unique' => ':attribute has been taken! :( You can try something else or leave it blank.',
     'max' => ':attribute to long!',
     'integer' => ':attribute must be a integer',
     'url' => ':attribute must be url',
