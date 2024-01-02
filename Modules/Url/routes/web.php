@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => 'quan-tri-vien',
     'as' => 'admin.',
+    'middleware' => ['web', 'check.role:user']
 ], function () {
     Route::resource('url', UrlController::class)->names('url');
     Route::get('url/data/{id?}', 'UrlController@data')->name('url.data');

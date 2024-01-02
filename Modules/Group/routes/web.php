@@ -18,13 +18,14 @@ Route::group(
     [
         'prefix' => 'quan-tri-vien',
         'as' => 'admin.',
+        'middleware' => ['web', 'check.role:user']
     ],
     function () {
     Route::resource('group', GroupController::class)->names('group');
     Route::group(
         [
             'as' => 'group.',
-            'prefix' => 'group'
+            'prefix' => 'group',
         ],
         function (){
             Route::get('/{id}/permission', [GroupController::class, 'getPermissionForm'])->name('permission');

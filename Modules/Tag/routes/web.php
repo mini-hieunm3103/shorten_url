@@ -16,7 +16,8 @@ use Modules\Tag\app\Http\Controllers\TagController;
 
 Route::group([
     'prefix' => 'quan-tri-vien',
-    'as' => 'admin.'
+    'as' => 'admin.',
+    'middleware' => ['web', 'check.role:user']
 ], function () {
     Route::resource('tag', TagController::class)->names('tag');
 });

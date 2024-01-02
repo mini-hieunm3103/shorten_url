@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Client\app\Http\Controllers\ClientController;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,13 +13,18 @@ use Modules\Client\app\Http\Controllers\ClientController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [ClientController::class, 'welcome'])->middleware(['check.authenticated'])->name('welcome');
 
 Route::group(
     [
         'prefix' => 'trang-ca-nhan',
-        'as' => 'client.'
+        'as' => 'client.',
+        'middleware' => 'web'
     ],
     function () {
+        Route::get('/', function (){
+            return redirect()->route('client.home');
+        });
         Route::get('home', [ClientController::class, 'home'])->name('home');
         Route::get('links', [ClientController::class, 'links'])->name('links.index');
         Route::get('links/create', [ClientController::class, 'createUrl'])->name('links.create');
@@ -27,4 +32,3 @@ Route::group(
         Route::get('setting', [ClientController::class, 'setting'])->name('setting');
     }
 );
-// thay vì gửi id lên thẳng url thì có thể lấy ra bằng auth()->user() sau khi đăng nhập

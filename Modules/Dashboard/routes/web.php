@@ -16,7 +16,7 @@ use Modules\Dashboard\app\Http\Controllers\DashboardController;
 Route::group([
     'prefix' => 'quan-tri-vien',
     'as' => 'admin.',
-    'middleware' => 'web'
+    'middleware' => ['web', 'check.role:user']
 ], function (){
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
 });

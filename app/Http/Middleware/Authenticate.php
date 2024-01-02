@@ -13,7 +13,7 @@ class Authenticate extends Middleware
      */
     protected function unauthenticated($request, array $guards)
     {
-        if ($request->is('quan-tri-vien')|| $request->is('quan-tri-vien/*')){
+        if ($request->is('quan-tri-vien')|| $request->is('quan-tri-vien/*') || $request->is('trang-ca-nhan')|| $request->is('trang-ca-nhan/*')){
             throw new AuthenticationException(
                 'Unauthenticated.', $guards, $this->redirectTo($request)
             );
