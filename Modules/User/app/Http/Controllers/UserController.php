@@ -96,8 +96,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'group_id' => $request->group_id,
-            'user_id' => Auth::user()->id
+            'group_id' => $request->group_id
         ]);
         $user->assignRole($roleGroup->name);
         return redirect()->route('admin.user.index')

@@ -48,10 +48,13 @@
                 </div>
             </form>
             <hr>
-
+            <!-- /.social-auth-links -->
             <p class="mb-1">
                 Forgotten Password?
                 <a href="{{route('password.request')}}">Click Here!</a>
+            </p>
+            <p class="mb-0">
+                <a href="{{route('register')}}" class="text-center">Register a new membership</a>
             </p>
         </div>
         <!-- /.card-body -->

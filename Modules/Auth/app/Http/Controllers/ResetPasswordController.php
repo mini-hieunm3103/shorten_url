@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Auth\app\Http\Controllers\Admin;
+namespace Modules\Auth\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -33,7 +33,7 @@ class ResetPasswordController extends Controller
     {
         $token = $request->route()->parameter('token');
 
-        return view('auth::admin.passwords.reset')->with(
+        return view('auth::passwords.reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

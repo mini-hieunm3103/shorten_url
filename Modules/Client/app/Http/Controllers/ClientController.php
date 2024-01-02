@@ -32,7 +32,7 @@ class ClientController extends Controller
     {
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
         $domain = ($matches[1][0]);
-        return view('client::welcome2', compact('domain'));
+        return view('client::welcome', compact('domain'));
     }
     function home()
     {

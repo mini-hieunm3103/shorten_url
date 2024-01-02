@@ -949,7 +949,7 @@
                 </div>
                 <div class="nav-buttons">
                     <a href="{{route('login')}}" class="log-in">Login</a>
-                    <a href="#" class="sign-up btn btn-sm">Sign Up</a>
+                    <a href="{{route('register')}}" class="sign-up btn btn-sm">Sign Up</a>
                 </div>
             </nav>
             <div class="burger-menu">
@@ -968,7 +968,7 @@
             <a href="#url-shorten-form" class="btn btn-lg width-992">Get Started</a>
             <div class="nav-buttons width-992 mt-3">
                 <a href="{{route('login')}}" class="log-in" style="margin-right: 10px;">Login</a>
-                <a href="#" class="sign-up btn btn-sm">Sign Up</a>
+                <a href="{{route('register')}}" class="sign-up btn btn-sm">Sign Up</a>
             </div>
         </div>
         <div class="landing-image">
