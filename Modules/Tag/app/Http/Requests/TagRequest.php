@@ -3,6 +3,7 @@
 namespace Modules\Tag\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TagRequest extends FormRequest
 {
@@ -12,8 +13,9 @@ class TagRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route()->tag;
+        $userId = $this->input('user_id');
         $rules = [
-            'title' => 'unique:tags,title'.(!empty($id) ? ','.$id : false).'|required|max:255|regex:#^[a-zA-Z0-9\s]+$#',
+            'title' => 'unique:tags,title,'.(!empty($id) ? $id : 'NULL').',id,user_id,'.$userId.'|string|max:255',
             'user_id' => ['integer', function($attribute, $value, $fail){
                 if ($value == 0){
                     $fail(__('tag::validation.select'));

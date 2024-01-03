@@ -21,7 +21,12 @@
                 <div class="col-12">
                     <div class="mb-3 shorted_url">
                         <label for="">Title <small style="font-size: 16px"> (optional)</small></label>
-                        <input name="title" type="text" class="form-control" >
+                        <input name="title" type="text" class="form-control @error('title') is-invalid @enderror" value="{{old('title')}}">
+                        @error('title')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-4">

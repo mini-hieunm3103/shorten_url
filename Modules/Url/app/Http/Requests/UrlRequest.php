@@ -2,6 +2,7 @@
 
 namespace Modules\Url\app\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -13,19 +14,18 @@ class UrlRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route()->url;
-        if (!empty($id)){
-            // check create
-            $rules['long_url'] = 'required|url|string|max:255|url';
-        }
+        $userId = $this->input('user_id');
         $rules = [
-            'title' => 'max:255',
             'back_half' => 'unique:urls,back_half'.(!empty($id) ? ','.$id : false).'|nullable|regex:#^[a-zA-Z0-9]+$#|',
             'user_id' => ['required','integer', function($attribute, $value, $fail){
                 if ($value == 0){
                     $fail(__('url::validation.select'));
                 }
             }],
-            'archived' => 'required|integer'
+            'archived' => 'required|integer',
+            // Được phép trùng title với 2 user_id khác nhau nhưng khi 1 user_id đặt title giống nhau sẽ báo lỗi
+            'title' => 'unique:urls,title,'.(!empty($id) ? $id : 'NULL').',id,user_id,'.$userId.'|nullable|string|max:255',
+            'long_url' => 'unique:urls,long_url,'.(!empty($id) ? $id : 'NULL').',id,user_id,'.$userId.'|url|max:255'
         ];
         return $rules;
     }

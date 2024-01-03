@@ -38,13 +38,8 @@
                                     <div class="mb-3 shorted_url">
                                         <label for="">Back-half </label>
                                         <input value="" name="back_half" type="text"
-                                               class="form-control @error('back_half') is-invalid @enderror"
+                                               class="form-control"
                                                placeholder="yourBackHalf">
-                                        @error('back_half')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
                                     </div>
                                 </div>
                                 <input type="hidden" name="user_id" value="{{auth()->user()->id}}">

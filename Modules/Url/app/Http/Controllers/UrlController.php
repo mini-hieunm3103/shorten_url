@@ -101,11 +101,15 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UrlRequest $request)
+    public function store(UrlRequest $request, $isRegister = false)
     {
         checkPermission($this->module, 'create');
         $backHalfArr = $this->urlRepo->getBackHalf();
-        $data = $request->except('_token');
+        if ($isRegister){
+            $data = $request;
+        } else {
+            $data = $request->except('_token');
+        }
         $data['expired_at'] = Carbon::now()->addDays(30)->format('Y-m-d H:i:s');
         if(empty($data['title'])){
             $data['title'] = 'Untitled '.Carbon::now('UTC')->format('Y-m-d H:i:s');

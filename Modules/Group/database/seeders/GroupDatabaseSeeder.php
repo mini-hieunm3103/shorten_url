@@ -90,6 +90,8 @@ class GroupDatabaseSeeder extends Seeder
                 $group = DB::table('groups')->first();
                 // do ở route sẽ sử dụng middleware dạng role:role_name
                 $superAdminRole = Role::create(['name' => str_replace(' ', '_', strtolower(trim($group->name)))]);
+                $adminRole = Role::create(['name' => 'administrator']);
+                $userRole = Role::create(['name' => 'user']);
                 // Sửa role_id của super admin:
                 DB::table('groups')->where('id', $groupId)->update(['role_id' => $superAdminRole->id]);
                 // Seeding Permission => module
@@ -108,18 +110,25 @@ class GroupDatabaseSeeder extends Seeder
                         PermissionModel::createWithModuleId($permission);
                         // gán quyền cho role super admin
                         $superAdminRole->givePermissionTo($permission);
+                        // gán quyền cho role user
+                        if ($module->name == 'url'){
+                            $userRole->givePermissionTo($permission);
+                        }
                     }
                     if ($module->name == 'group'){
                         Permission::create(['name' => 'permission group', 'module_id'=>$module->id]);
                     }
                 }
+                // gán quyền cho role user
+                $userRole->givePermissionTo('create tag');
+                $userRole->givePermissionTo('edit user');
+                $userRole->givePermissionTo('delete user');
                 // tạo quyền phân quyền cho super admin
 
                 $superAdminRole->givePermissionTo(['name' => 'permission group']);
                 // gán vai trò cho user này
                 User::find($userId)->assignRole('super_administrator');
                 // tạo sẵn 2 group
-                $adminRole = Role::create(['name' => 'administrator']);
                 DB::table('groups')->insert([
                     'name'=>'Administrator',
                     'user_id'=> $userId,
@@ -127,7 +136,6 @@ class GroupDatabaseSeeder extends Seeder
                     'created_at'=> date('Y-m-d H:i:s'),
                     'updated_at'=> date('Y-m-d H:i:s'),
                 ]);
-                $userRole = Role::create(['name' => 'user']);
                 DB::table('groups')->insert([
                     'name'=>'User',
                     'user_id'=> $userId,

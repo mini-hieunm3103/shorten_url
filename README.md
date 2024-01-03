@@ -1,9 +1,10 @@
 # Laravel - Shorten URL Project:
-## Note: Tôi lười và bạn cũng thế:
-- Tuy có file cho migration và seeder hẳn hoi, nhưng do dùng laravel module nên nếu muốn seed thì phải làm từng module   
-- Vì vậy hãy tìm file sql trong project rồi import thẳng cho nhanh ❤️ 
-- Nếu vẫn cố chấp thì:
-1. Tạo bảng
+## +1 knowledge
+1. Multiple unique: 'name' => 'unique:table,field,NULL,id,field1,value1,field2,value2,field3,value3'
+
+
+## Note: DATABASE
+1. Tạo DATABASE
 ```text
 laravel_shorten_url
 ```
@@ -27,13 +28,21 @@ php artisan module:seed Group
   - Edit
   - Delete
   - Permission
-- Except who is in User Group redirect admin page
+- User Group can't access admin page
 ## Client Page:
 - Manage: Tags, Urls, User Information
 - User Permissions:
   - CRUD: tags and urls created by this user
   - Edit user information
 - Shorten URL
+- All user check login can access this page 
+## Features
+1. Destination(long_url): Với cùng 1 user thì chỉ có thể tạo khác nhau, nhưng các users với nhau có thể giống nhau 
+   - ví dụ: abc.com thì có thể bị trùng với nhiều users : anh A, b, c 
+   - Nhưng với tài khoản anh A thì chỉ được phép tạo 1 shorten url của abc.com
+2. urls.title, tags.title cũng như trên
+3. back_half thì lại chỉ được 1 cái (unique với tất cả trong bảng urls)
+4. Lọc dữ liệu của url theo: thời gian tạo (Lọc theo khoảng thời gian), có tự custom back_half hay không, lọc theo multiple select tags, lọc theo active hoặc hidden
 ## Package used in this project
 - [Laravel Module](https://laravelmodules.com/docs/v10/introduction)
 - [Laravel UI](https://github.com/laravel/ui)

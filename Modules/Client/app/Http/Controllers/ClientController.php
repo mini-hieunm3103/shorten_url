@@ -85,6 +85,10 @@ class ClientController extends Controller
                     $createdBefore = Carbon::createFromTimestamp($request->input('created_before'))->format('Y-m-d H:i:s');
 //                    \dd($createdBefore, $createdAfter);
                     $query->where('created_at', '>', $createdAfter)->where('created_at', '<', $createdBefore);
+                } elseif (!empty($request->input('created_after'))) {
+                    $filterApplied+=1;
+                    $createdAfter = Carbon::createFromTimestamp($request->input('created_after'))->format('Y-m-d H:i:s');
+                    $query->where('created_at', '>', $createdAfter);
                 }
                 if (request()->input('archived') == 'off'){
                     $filterApplied+=1;
