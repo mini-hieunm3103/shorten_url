@@ -21,4 +21,3 @@ Route::group([
 ], function () {
     Route::resource('user', UserController::class)->names('user');
 });
-

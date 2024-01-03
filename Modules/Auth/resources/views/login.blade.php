@@ -7,12 +7,12 @@
             <a href="" class="h1">Shorten <b>URL</b></a>
         </div>
         <div class="card-body">
-            <p class="login-box-msg">Welcome back! Administrator</p>
+            <p class="login-box-msg h4">Welcome back!</p>
 
-            <form action="{{ route('login') }}" method="post">
+            <form action="{{ route('login') }}" method="post" id="login-form">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="email" name="email" value="{{ old('email') }}"
+                    <input type="email" name="email" value="{{ old('email') }}" id="email"
                            class="form-control @error('email') is-invalid @enderror" placeholder="Email">
                     <div class="input-group-append">
                         <div class="input-group-text">
@@ -26,7 +26,7 @@
                     @enderror
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password"
+                    <input type="password" name="password" id="password"
                            class="form-control @error('password') is-invalid @enderror" placeholder="Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
@@ -48,6 +48,7 @@
                 </div>
             </form>
             <hr>
+
             <!-- /.social-auth-links -->
             <p class="mb-1">
                 Forgotten Password?
@@ -56,9 +57,30 @@
             <p class="mb-0">
                 <a href="{{route('register')}}" class="text-center">Register a new membership</a>
             </p>
+            <hr>
+            <div class="social-auth-links text-center mt-2 mb-3">
+                <a href="#" class="btn btn-block btn-danger" id="admin-btn">
+                    <i class="fas fa-user-cog mr-2"></i> Click Here To Login As Administrator
+                </a>
+            </div>
         </div>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
 @endsection
 
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('login-form')
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const adminBtn = document.getElementById('admin-btn')
+            adminBtn.addEventListener('click', (e) => {
+                emailInput.value = 'admin@gmail.com'
+                passwordInput.value = '12345678'
+                loginForm.submit()
+            })
+        })
+    </script>
+@endsection

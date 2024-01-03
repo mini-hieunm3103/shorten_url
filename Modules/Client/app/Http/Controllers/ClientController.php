@@ -3,16 +3,15 @@
 namespace Modules\Client\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Modules\Tag\app\Http\Repositories\TagRepository;
 use Modules\Url\app\Http\Repositories\UrlRepository;
 use Modules\User\app\Repositories\UserRepository;
-use Termwind\Components\Dd;
-
+use Illuminate\Http\Request;
+use Modules\Tag\app\Http\Requests\TagRequest;
+use Modules\Url\app\Http\Requests\UrlRequest;
+use Modules\User\app\Http\Requests\UserRequest;
 class ClientController extends Controller
 {
     /**
@@ -21,7 +20,12 @@ class ClientController extends Controller
     protected $userRepo;
     protected $urlRepo;
     protected $tagRepo;
-    public function __construct( UserRepository $userRepo, UrlRepository $urlRepo, TagRepository $tagRepo)
+    public function __construct
+    (
+        UserRepository $userRepo,
+        UrlRepository $urlRepo,
+        TagRepository $tagRepo,
+    )
     {
         $this->userRepo = $userRepo;
         $this->urlRepo = $urlRepo;
@@ -103,7 +107,6 @@ class ClientController extends Controller
                 $url->tags = $relatedTags;
             }
         }
-//        \dd($tagsFilterArr);
         return view('client::links.lists', compact('title', 'urls', 'domain', 'allTags', 'filterApplied', 'tagsFilterArr'));
     }
     // render form create url
@@ -113,7 +116,40 @@ class ClientController extends Controller
         $domain = ($matches[1][0]);
         return view('client::links.create', compact('domain'));
     }
-    // handle store new url
+
+    function storeUrl(UrlRequest $request)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('store', [$request]);
+        return $response;
+    }
+    function updateUrl(UrlRequest $request, $id)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('update', [$request, $id]);
+        return $response;
+    }
+
+    function hideUrls(Request $request)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('hideListUrl', [$request]);
+        return $response;
+    }
+
+    function activeUrls(Request $request)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('activeListUrl', [$request]);
+        return $response;
+    }
+
+    function deleteUrl($id)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('destroy', [$id]);
+        return $response;
+    }
+    function dataUrl($id)
+    {
+        $response = App::make('Modules\Url\app\Http\Controllers\UrlController')->callAction('data', [$id]);
+        return $response;
+    }
     function showUrl($shortLink)
     {
         preg_match_all('/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im', request()->root(), $matches);
@@ -123,8 +159,26 @@ class ClientController extends Controller
         return view('client::links.show', compact('url', 'domain'));
     }
 
+    function storeTag(TagRequest $request)
+    {
+        $response = App::make('Modules\Tag\app\Http\Controllers\TagController')->callAction('store', [$request]);
+        return $response;
+    }
+
     function setting()
     {
         return view('client::setting');
+    }
+
+    function updateUser(UserRequest $request, $id)
+    {
+        $response = App::make('Modules\User\app\Http\Controllers\UserController')->callAction('update', [$request, $id]);
+        return $response;
+    }
+
+    function deleteUser($id)
+    {
+        $response = App::make('Modules\User\app\Http\Controllers\UserController')->callAction('destroy', [$id]);
+        return $response;
     }
 }

@@ -26,9 +26,30 @@ Route::group(
             return redirect()->route('client.home');
         });
         Route::get('home', [ClientController::class, 'home'])->name('home');
-        Route::get('links', [ClientController::class, 'links'])->name('links.index');
-        Route::get('links/create', [ClientController::class, 'createUrl'])->name('links.create');
-        Route::get('links/{shortLink}/detail', [ClientController::class, 'showUrl'])->name('links.show');
         Route::get('setting', [ClientController::class, 'setting'])->name('setting');
+        Route::group(['as' => 'links.', 'prefix' => 'links'], function (){
+            Route::get('/', [ClientController::class, 'links'])->name('index');
+
+            Route::get('/create', [ClientController::class, 'createUrl'])->name('create');
+            Route::post('/', [ClientController::class, 'storeUrl'])->name('store');
+
+            Route::get('/data/{id?}',[ClientController::class, 'dataUrl'])->name('data');
+            Route::post('/hidden', [ClientController::class, 'hideUrls'])->name('hidden');
+            Route::post('/active', [ClientController::class, 'activeUrls'])->name('active');
+
+            Route::patch('/{url}',[ClientController::class, 'updateUrl'])->name('update');
+            Route::put('/{url}',[ClientController::class, 'updateUrl'])->name('update');
+            Route::delete('/{url}', [ClientController::class, 'deleteUrl'])->name('delete');
+
+            Route::get('/{shortLink}/detail', [ClientController::class, 'showUrl'])->name('show');
+        });
+        Route::group(['as' => 'tags.', 'prefix'=> 'tags'], function (){
+            Route::post('/', [ClientController::class, 'storeTag'])->name('store');
+        });
+        Route::group(['as' =>'user.', 'prefix' => 'user'], function (){
+            Route::put('/{user}', [ClientController::class, 'updateUser'])->name('update');
+            Route::patch('/{user}', [ClientController::class, 'updateUser'])->name('update');
+            Route::delete('/{user}', [ClientController::class, 'deleteUser'])->name('destroy');
+        });
     }
 );

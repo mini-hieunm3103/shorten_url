@@ -8,7 +8,7 @@
                 <h2 class="font-weight-bold mb-4 ml-4">Profile</h2>
                 <div class="ml-5 mt-2 mb-5">
                     <h4 class="font-weight-bold mb-3 ml-1">Preferences</h4>
-                    <form action="{{route('admin.user.update', auth()->user()->id)}}" method="post" id="form-name">
+                    <form action="{{route('client.user.update', auth()->user()->id)}}" method="post" id="form-name">
                         @csrf
                         @method('PATCH')
                         <div class="setting_section mb-3 ml-2">
@@ -28,7 +28,7 @@
                     </form>
                 </div>
                 <div class="ml-5 mt-2 " >
-                    <form action="{{route('admin.user.update', auth()->user()->id)}}" method="post">
+                    <form action="{{route('client.user.update', auth()->user()->id)}}" method="post">
                         @csrf
                         @method('PATCH')
                         <div class="setting_section mb-3 ml-2">
@@ -52,7 +52,7 @@
                 <h2 class="font-weight-bold mb-3 ml-4">Security</h2>
                 <div class="ml-5 mt-2 mb-5">
                     <h4 class="font-weight-bold mb-3 ml-1">Change password</h4>
-                    <form action="{{route('admin.user.update', auth()->user()->id)}}" method="post">
+                    <form action="{{route('client.user.update', auth()->user()->id)}}" method="post">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="confirm_pass" value="true">
@@ -92,7 +92,7 @@
             <div class="mb-4 pb-3">
                 <div class="ml-5 mt-2 mb-5">
                     <div class="setting_section mb-3 ml-2">
-                        <a href="{{route('admin.user.destroy', auth()->user()->id)}}" class="delete-action btn btn-danger font-weight-bold">Delete account</a>
+                        <a href="{{route('client.user.destroy', auth()->user()->id)}}" class="delete-action btn btn-danger font-weight-bold">Delete account</a>
                     </div>
                 </div>
             </div>

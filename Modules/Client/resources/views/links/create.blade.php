@@ -6,7 +6,7 @@
         <div class="col-sm-6 mt-5 mb-3 pl-0">
             <h1 class="m-0 font-weight-bold" style="font-size: 36px; color: #3b3b3d">Create New</h1>
         </div>
-        <form action="{{route('admin.url.store')}}" method="post" class="mt-3">
+        <form action="{{route('client.links.store')}}" method="post" class="mt-3">
             @csrf
             <div class="row">
                 <div class="mb-3 col-12">

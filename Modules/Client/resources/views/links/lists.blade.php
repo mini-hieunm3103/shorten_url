@@ -128,7 +128,7 @@
                                         <i class="far fa-edit"></i>
                                         <span class="ml-1 media-8">Edit Link</span>
                                     </a>
-                                    <a title="Delete This Link" href="{{route('admin.url.destroy', compact('url'))}}"
+                                    <a title="Delete This Link" href="{{route('client.links.delete', compact('url'))}}"
                                        class="mb-1 mr-2 delete-action"
                                        style="color: #838282 ;align-items: center; border: 2px solid #838282; border-radius: 8px; padding:6px 10px 4px 10px ">
                                         <i class="fas fa-trash"></i>
@@ -216,7 +216,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('admin.tag.store')}}" method="post" class="mt-3">
+                <form action="{{route('client.tags.store')}}" method="post" class="mt-3">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -242,7 +242,7 @@
     </div>
     {{--    Active list link form--}}
     <div style="display: none">
-        <form action="{{route('admin.url.active')}}" method="POST" id="archived-links-form">
+        <form action="{{route('client.links.active')}}" method="POST" id="archived-links-form">
             @csrf
             @foreach($urls as $url)
                 <input type="checkbox" name="urls[]" value="{{$url->id}}" id="">
@@ -320,9 +320,9 @@
             archiveHandleBtn.addEventListener('click', (e)=> {
                 if (archiveHandleBtn.getAttribute('data-archived') == "on"){
                     // on => active (hidden links)
-                    archiveLinksForm.action = '{{route('admin.url.active')}}'
+                    archiveLinksForm.action = '{{route('client.links.active')}}'
                 } else{
-                    archiveLinksForm.action = '{{route('admin.url.hidden')}}'
+                    archiveLinksForm.action = '{{route('client.links.hidden')}}'
                     // off => hidden (active links)
                 }
                 archiveLinksForm.submit()
@@ -387,7 +387,7 @@
                             // clear data
                             editTagsSelect.innerHTML = '';
                             $(".edit-tags-field").chosen("destroy");
-                            editForm.action = '{!! route('admin.url.index') !!}'; // reset action form
+                            editForm.action = '{!! route('client.links.index') !!}'; // reset action form
 
                             titleModal.value = urlData.title;
                             backHalfModal.value = urlData.back_half;
@@ -498,7 +498,7 @@
             })
         })
         function getUrlInfoById(urlId){
-            var urlData = '{!! route('admin.url.data') !!}';
+            var urlData = '{!! route('client.links.data') !!}';
             return fetch(urlData + '/' + urlId)
                 .then(function (response) {
                     return response.json();

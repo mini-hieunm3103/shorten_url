@@ -134,7 +134,7 @@
                     })
             })
             function getUrlInfoById(urlId){
-                var urlData = '{!! route('admin.url.data') !!}';
+                var urlData = '{!! route('client.links.data') !!}';
                 return fetch(urlData + '/' + urlId)
                     .then(function (response) {
                         return response.json();
@@ -147,7 +147,7 @@
                         // clear data
                         editTagsSelect.innerHTML = '';
                         $(".edit-tags-field").chosen("destroy");
-                        editForm.action = '{!! route('admin.url.index') !!}'; // reset action form
+                        editForm.action = '{!! route('client.links.index') !!}'; // reset action form
 
                         titleModal.value = urlData.title;
                         backHalfModal.value = urlData.back_half;

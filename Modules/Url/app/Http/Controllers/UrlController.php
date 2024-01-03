@@ -49,7 +49,7 @@ class UrlController extends Controller
         if (!$url){
             return "Error";
         }
-        $tags = $this->tagRepo->getAllTags()->get();
+        $tags = $this->tagRepo->getUserTags(auth()->user()->id)->get();
         $tagIds = $this->urlRepo->getRelatedTags($url);
         $relatedTags = [];
         $otherTags = [];
@@ -187,7 +187,7 @@ class UrlController extends Controller
         $route = app('router')->getRoutes($previousUrl)->match(app('request')->create($previousUrl))->getName();
         $routeArr = explode('.', $route);
         if ($routeArr[0] == 'client'){
-            return redirect()->route('client.links.show', $url->back_half)
+            return back()
                 ->with('msg', __('messages.success', ['action' => 'Update', 'attribute' => 'Shorten URL']))
                 ->with('type', 'success');
         }
@@ -197,6 +197,7 @@ class UrlController extends Controller
     }
     function hideListUrl(Request $request)
     {
+        checkPermission($this->module, 'edit');
         $urlIds = $request->urls;
         foreach ($urlIds as $urlId) {
             $this->urlRepo->update($urlId, ['archived' => 0]);
@@ -205,6 +206,7 @@ class UrlController extends Controller
     }
     function activeListUrl(Request $request)
     {
+        checkPermission($this->module, 'edit');
         $urlIds = $request->urls;
         foreach ($urlIds as $urlId) {
             $this->urlRepo->update($urlId, ['archived' => 1]);

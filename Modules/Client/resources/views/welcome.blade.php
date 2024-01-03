@@ -980,9 +980,9 @@
         <div class="container">
             <!-- Short URL Feature -->
             <div class="url-shorten-feature">
-                <form class="url-shorten-form" action="" method="get" id="url-shorten-form">
+                <form class="url-shorten-form" action="{{route('register')}}" method="get" id="url-shorten-form">
                     <div>
-                        <input type="text" class="url-input" placeholder="Shorten a link here..." autocomplete="off" />
+                        <input type="text" name="long_url" class="url-input" placeholder="Shorten a link here..." autocomplete="off" />
                         <span class="alert"></span>
                     </div>
                     <button type="submit" class="btn btn-lg btn-plus-icon">Sign up and get your link!</button>

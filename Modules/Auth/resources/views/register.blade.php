@@ -68,6 +68,9 @@
                                 </label>
                             </div>
                         </div>
+                        @if(!empty(request()->input('long_url')))
+                            <input type="hidden" name="url_when_register" value="{{request()->input('long_url')}}">
+                        @endif
                         <!-- /.col -->
                         <div class="col-4">
                             <button id="register-btn" disabled type="submit" class="btn btn-primary btn-block">Register</button>
