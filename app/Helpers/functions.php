@@ -74,7 +74,7 @@ function getLimitText($content, $limit=20){
 //}
 
 // $actionRouteName = request()->route()->getName()
-function titleBlade($actionRouteName, $modules=[], $actionArr){
+function titleBlade($actionRouteName, $actionArr, $modules=[]){
     $nameArr = explode('.', $actionRouteName);
     if ($nameArr[0] != 'admin'){
         return false;

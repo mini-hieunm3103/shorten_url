@@ -1,22 +1,21 @@
 <?php
 
-namespace Modules\Auth\App\Http\Controllers;
+namespace Modules\Auth\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Modules\Url\app\Http\Repositories\UrlRepository;
-use Modules\Url\app\Http\Requests\UrlRequest;
-use Modules\Url\app\Models\Url;
-use Modules\User\app\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Modules\Url\app\Http\Repositories\UrlRepository;
+use Modules\Url\app\Models\Url;
+use Modules\User\app\Models\User;
 use Spatie\Permission\Models\Role;
 
 class RegisterController extends Controller
