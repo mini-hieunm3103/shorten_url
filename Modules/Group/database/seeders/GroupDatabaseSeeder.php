@@ -79,6 +79,7 @@ class GroupDatabaseSeeder extends Seeder
                         'long_url' => $faker->url(),
                         'back_half' => $faker->regexify('[a-zA-Z0-9]{3,5}'),
                         'clicks' => 0,
+                        'is_custom' => 0,
                         'archived' => 1,
                         'user_id' => $userId,
                         'created_at' => $faker->dateTimeThisYear('now', 'Asia/Ho_Chi_Minh'),
